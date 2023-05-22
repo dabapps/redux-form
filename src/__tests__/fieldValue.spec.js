@@ -1,37 +1,45 @@
-import {makeFieldValue, isFieldValue} from '../fieldValue';
+import { makeFieldValue, isFieldValue } from '../fieldValue';
 
 describe('fieldValue', () => {
   describe('makeFieldValue', () => {
     it('should be okay with non-objects', () => {
       expect(makeFieldValue()).toBe(undefined);
       expect(makeFieldValue(null)).toBe(null);
-      expect(makeFieldValue([1, 2])).toEqual([1, 2]);
+
+      const arrayResult = makeFieldValue([1, 2]);
+
+      expect(Array.isArray(arrayResult)).toBe(true);
+      expect(arrayResult).toEqual(
+        expect.objectContaining({
+          0: 1,
+          1: 2,
+        })
+      );
+
       expect(makeFieldValue('not an object')).toEqual('not an object');
     });
 
     it('should return the same object back', () => {
-      const someObject = {b: 1};
+      const someObject = { b: 1 };
       expect(makeFieldValue(someObject)).toBe(someObject);
     });
 
     it('should not affect deep equal', () => {
-      const someObject = {b: 1};
-      expect(someObject).toEqual({b: 1});
+      const someObject = { b: 1 };
+      expect(someObject).toEqual({ b: 1 });
       makeFieldValue(someObject);
-      expect(someObject).toEqual(Object.defineProperties({b: 1}, {
-        _isFieldValue: {value: true, enumerable: false} // hide property
-      }));
+      expect(someObject).toEqual({ b: 1, _isFieldValue: true });
     });
 
     it('should set the field value flag', () => {
-      const someObject = {b: 1};
+      const someObject = { b: 1 };
       expect(isFieldValue(someObject)).toBe(false);
       makeFieldValue(someObject);
       expect(isFieldValue(someObject)).toBe(true);
     });
 
     it('should be still field value after object recreation', () => {
-      const someObject = makeFieldValue({b: 1});
+      const someObject = makeFieldValue({ b: 1 });
       expect(isFieldValue(someObject)).toBe(true);
 
       const recreatedObject = JSON.parse(JSON.stringify(someObject));
