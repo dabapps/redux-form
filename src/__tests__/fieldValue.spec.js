@@ -1,4 +1,3 @@
-import expect from 'expect';
 import {makeFieldValue, isFieldValue} from '../fieldValue';
 
 describe('fieldValue', () => {

@@ -1,4 +1,3 @@
-import expect from 'expect';
 import setErrors from '../setErrors';
 import {makeFieldValue} from '../fieldValue';
 

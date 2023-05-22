@@ -1,4 +1,3 @@
-import expect from 'expect';
 import {createStore} from 'redux';
 import reducer, {globalErrorKey} from '../reducer';
 import bindActionData from '../bindActionData';
@@ -19,9 +18,8 @@ const compare = (a, b) => {
 describe('reducer', () => {
   it('should initialize state to {}', () => {
     const state = reducer();
-    expect(state)
-      .toExist()
-      .toBeA('object');
+    expect(state).toBeTruthy();
+    expect(typeof state).toBe('object');
     expect(Object.keys(state).length).toBe(0);
   });
 
@@ -32,21 +30,20 @@ describe('reducer', () => {
 
   it('should initialize form state when action has form', () => {
     const state = reducer(undefined, {form: 'foo'});
-    expect(state)
-      .toExist()
-      .toBeA('object');
+    expect(state).toBeTruthy();
+    expect(typeof state).toBe('object');
     expect(Object.keys(state).length).toBe(1);
-    expect(state.foo)
-      .toExist()
-      .toBeA('object')
-      .toEqual({
-        _active: undefined,
-        _asyncValidating: false,
-        [globalErrorKey]: undefined,
-        _initialized: false,
-        _submitting: false,
-        _submitFailed: false
-      });
+    expect(state.foo).toBeTruthy();
+    expect(typeof state.foo).toBe('object');
+
+    expect(state.foo).toEqual({
+      _active: undefined,
+      _asyncValidating: false,
+      [globalErrorKey]: undefined,
+      _initialized: false,
+      _submitting: false,
+      _submitFailed: false
+    });
   });
 
   it('should add an empty array value with empty state', () => {
@@ -3254,21 +3251,20 @@ describe('reducer', () => {
       const result = reducer.plugin({
         foo: (state) => state
       })();
-      expect(result)
-        .toExist()
-        .toBeA('object');
+      expect(result).toBeTruthy();
+      expect(typeof result).toBe('object');
       expect(Object.keys(result).length).toBe(1);
-      expect(result.foo)
-        .toExist()
-        .toBeA('object')
-        .toEqual({
-          _active: undefined,
-          _asyncValidating: false,
-          [globalErrorKey]: undefined,
-          _initialized: false,
-          _submitting: false,
-          _submitFailed: false
-        });
+      expect(result.foo).toBeTruthy();
+      expect(typeof result.foo).toBe('object');
+
+      expect(result.foo).toEqual({
+        _active: undefined,
+        _asyncValidating: false,
+        [globalErrorKey]: undefined,
+        _initialized: false,
+        _submitting: false,
+        _submitFailed: false
+      });
     });
   });
 
@@ -3281,32 +3277,34 @@ describe('reducer', () => {
           'pets[].name': () => 'Fido'
         }
       })();
-      expect(state)
-        .toExist()
-        .toBeA('object');
+      expect(state).toBeTruthy();
+      expect(typeof state).toBe('object');
       expect(Object.keys(state).length).toBe(1);
-      expect(state.foo)
-        .toExist()
-        .toBeA('object')
-        .toEqual({
-          _active: undefined,
-          _asyncValidating: false,
-          [globalErrorKey]: undefined,
-          _initialized: false,
-          _submitting: false,
-          _submitFailed: false,
-          myField: {
-            value: 'normalized',
+      expect(state.foo).toBeTruthy();
+      expect(typeof state.foo).toBe('object');
+
+      expect(state.foo).toEqual({
+        _active: undefined,
+        _asyncValidating: false,
+        [globalErrorKey]: undefined,
+        _initialized: false,
+        _submitting: false,
+        _submitFailed: false,
+
+        myField: {
+          value: 'normalized',
+          _isFieldValue: true
+        },
+
+        person: {
+          name: {
+            value: 'John Doe',
             _isFieldValue: true
-          },
-          person: {
-            name: {
-              value: 'John Doe',
-              _isFieldValue: true
-            }
-          },
-          pets: []
-        });
+          }
+        },
+
+        pets: []
+      });
     });
 
     it('should normalize keyed forms depending on action form key', () => {
@@ -3337,29 +3335,32 @@ describe('reducer', () => {
         form: 'foo',
         key: 'secondSubForm'
       });
-      expect(state)
-        .toExist()
-        .toBeA('object');
+      expect(state).toBeTruthy();
+      expect(typeof state).toBe('object');
       expect(Object.keys(state).length).toBe(1);
-      expect(state.foo)
-        .toExist()
-        .toBeA('object')
-        .toEqual({
-          firstSubform: {
-            ...defaultFields,
-            myField: {
-              value: 'normalized',
+      expect(state.foo).toBeTruthy();
+      expect(typeof state.foo).toBe('object');
+
+      expect(state.foo).toEqual({
+        firstSubform: {
+          ...defaultFields,
+
+          myField: {
+            value: 'normalized',
+            _isFieldValue: true
+          },
+
+          person: {
+            name: {
+              value: 'John Doe',
               _isFieldValue: true
-            },
-            person: {
-              name: {
-                value: 'John Doe',
-                _isFieldValue: true
-              }
-            },
-            pets: []
-          }
-        });
+            }
+          },
+
+          pets: []
+        }
+      });
+
       expect(nextState.foo)
         .toEqual({
           firstSubform: {
@@ -3436,39 +3437,38 @@ describe('reducer', () => {
           ]
         }
       });
-      expect(state)
-        .toExist()
-        .toBeA('object');
-      expect(state.foo)
-        .toExist()
-        .toBeA('object')
-        .toEqual({
-          ...defaultFields,
+      expect(state).toBeTruthy();
+      expect(typeof state).toBe('object');
+      expect(state.foo).toBeTruthy();
+      expect(typeof state.foo).toBe('object');
+
+      expect(state.foo).toEqual({
+        ...defaultFields,
+
+        name: {
+          value: 'normalized',
+          _isFieldValue: true
+        },
+
+        person: {
           name: {
-            value: 'normalized',
+            value: 'JOHN DOE',
             _isFieldValue: true
-          },
-          person: {
-            name: {
-              value: 'JOHN DOE',
-              _isFieldValue: true
-            }
-          },
-          pets: [
-            {
-              name: {
-                value: 'fido',
-                _isFieldValue: true
-              }
-            },
-            {
-              name: {
-                value: 'tucker',
-                _isFieldValue: true
-              }
-            }
-          ]
-        });
+          }
+        },
+
+        pets: [{
+          name: {
+            value: 'fido',
+            _isFieldValue: true
+          }
+        }, {
+          name: {
+            value: 'tucker',
+            _isFieldValue: true
+          }
+        }]
+      });
     });
 
     it('should allow resetForm to work on a normalized form', () => {
@@ -3500,62 +3500,67 @@ describe('reducer', () => {
         form: 'foo',
         ...addArrayValue('pets', {name: 'Fido'})
       });
-      expect(state)
-        .toExist()
-        .toBeA('object');
-      expect(state.foo)
-        .toExist()
-        .toBeA('object')
-        .toEqual({
-          ...defaultFields,
+      expect(state).toBeTruthy();
+      expect(typeof state).toBe('object');
+      expect(state.foo).toBeTruthy();
+      expect(typeof state.foo).toBe('object');
+
+      expect(state.foo).toEqual({
+        ...defaultFields,
+
+        name: {
+          value: 'DOG',
+          _isFieldValue: true
+        },
+
+        person: {
           name: {
-            value: 'DOG',
+            value: 'JOHN DOE',
             _isFieldValue: true
-          },
-          person: {
-            name: {
-              value: 'JOHN DOE',
-              _isFieldValue: true
-            }
-          },
-          pets: [{
-            name: {
-              initial: 'Fido',
-              value: 'fido',
-              _isFieldValue: true
-            }
-          }]
-        });
+          }
+        },
+
+        pets: [{
+          name: {
+            initial: 'Fido',
+            value: 'fido',
+            _isFieldValue: true
+          }
+        }]
+      });
+
       const result = normalizingReducer(state, {
         form: 'foo',
         ...reset()
       });
-      expect(result)
-        .toExist()
-        .toBeA('object');
-      expect(result.foo)
-        .toExist()
-        .toBeA('object')
-        .toEqual({
-          ...defaultFields,
+      expect(result).toBeTruthy();
+      expect(typeof result).toBe('object');
+      expect(result.foo).toBeTruthy();
+      expect(typeof result.foo).toBe('object');
+
+      expect(result.foo).toEqual({
+        ...defaultFields,
+
+        name: {
+          value: undefined,
+          _isFieldValue: true
+        },
+
+        person: {
           name: {
             value: undefined,
             _isFieldValue: true
-          },
-          person: {
-            name: {
-              value: undefined,
-              _isFieldValue: true
-            }
-          },
-          pets: [{
-            name: {
-              initial: 'Fido',
-              value: 'fido',
-              _isFieldValue: true
-            }
-          }]
-        });
+          }
+        },
+
+        pets: [{
+          name: {
+            initial: 'Fido',
+            value: 'fido',
+            _isFieldValue: true
+          }
+        }]
+      });
     });
 
     it('should normalize arbitrarily deeply nested fields', () => {
@@ -3667,213 +3672,205 @@ describe('reducer', () => {
           }]
         }
       });
-      expect(state)
-        .toExist()
-        .toBeA('object');
-      expect(state.foo)
-        .toExist()
-        .toBeA('object')
-        .toEqual({
-          ...defaultFields,
+      expect(state).toBeTruthy();
+      expect(typeof state).toBe('object');
+      expect(state.foo).toBeTruthy();
+      expect(typeof state.foo).toBe('object');
+
+      expect(state.foo).toEqual({
+        ...defaultFields,
+
+        name: {
+          value: 'normalized',
+          _isFieldValue: true
+        },
+
+        person: {
           name: {
-            value: 'normalized',
+            value: 'JOHN DOE',
             _isFieldValue: true
-          },
-          person: {
-            name: {
-              value: 'JOHN DOE',
-              _isFieldValue: true
-            }
-          },
-          pets: [
-            {
-              name: {
-                value: 'fido',
-                _isFieldValue: true
-              }
-            },
-            {
-              name: {
-                value: 'tucker',
-                _isFieldValue: true
-              }
-            }
-          ],
-          cats: [
-            {
-              value: 'LION',
-              _isFieldValue: true
-            },
-            {
-              value: 'PANTHER',
-              _isFieldValue: true
-            },
-            {
-              value: 'GARFIELD',
-              _isFieldValue: true
-            },
-            {
-              value: 'WHISKERS',
-              _isFieldValue: true
-            }
-          ],
-          programming: [{
-            langs: [
-              {
-                value: 'f#',
-                _isFieldValue: true
-              },
-              {
-                value: 'haskell',
-                _isFieldValue: true
-              },
-              {
-                value: 'lisp',
-                _isFieldValue: true
-              },
-              {
-                value: 'ml',
-                _isFieldValue: true
-              },
-              {
-                value: 'ocaml',
-                _isFieldValue: true
-              }
-            ]
+          }
+        },
+
+        pets: [{
+          name: {
+            value: 'fido',
+            _isFieldValue: true
+          }
+        }, {
+          name: {
+            value: 'tucker',
+            _isFieldValue: true
+          }
+        }],
+
+        cats: [{
+          value: 'LION',
+          _isFieldValue: true
+        }, {
+          value: 'PANTHER',
+          _isFieldValue: true
+        }, {
+          value: 'GARFIELD',
+          _isFieldValue: true
+        }, {
+          value: 'WHISKERS',
+          _isFieldValue: true
+        }],
+
+        programming: [{
+          langs: [{
+            value: 'f#',
+            _isFieldValue: true
           }, {
-            langs: [
-              {
-                value: 'c#',
-                _isFieldValue: true
-              },
-              {
-                value: 'c++',
-                _isFieldValue: true
-              },
-              {
-                value: 'java',
-                _isFieldValue: true
-              },
-              {
-                value: 'ruby',
-                _isFieldValue: true
-              },
-              {
-                value: 'smalltalk',
-                _isFieldValue: true
-              }
-            ]
-          }],
-          some: {
-            numbers: [
-              {
-                value: 2,
-                _isFieldValue: true
-              },
-              {
-                value: 4,
-                _isFieldValue: true
-              },
-              {
-                value: 6,
-                _isFieldValue: true
-              },
-              {
-                value: 8,
-                _isFieldValue: true
-              },
-              {
-                value: 10,
-                _isFieldValue: true
-              }
-            ]
-          },
-          a: {
-            very: {
-              deep: {
-                object: {
-                  property: {
-                    value: 'TEST',
-                    _isFieldValue: true
-                  }
-                }
-              }
-            }
-          },
-          my: [{
-            deeply: [{
-              nested: {
-                item: {
-                  value: 'HELLO',
-                  _isFieldValue: true
-                },
-                not: {
-                  value: 'lost',
-                  _isFieldValue: true
-                }
-              },
-              otherKey: {
-                value: 'Goodbye',
-                _isFieldValue: true
-              }
-            }, {
-              nested: {
-                item: {
-                  value: 'HOLA',
-                  _isFieldValue: true
-                },
-                not: {
-                  value: 'lost',
-                  _isFieldValue: true
-                }
-              },
-              otherKey: {
-                value: 'Adios',
-                _isFieldValue: true
-              }
-            }],
-            stays: {
-              value: 'intact',
-              _isFieldValue: true
-            }
+            value: 'haskell',
+            _isFieldValue: true
           }, {
-            deeply: [{
-              nested: {
-                item: {
-                  value: 'WORLD',
-                  _isFieldValue: true
-                },
-                not: {
-                  value: 'lost',
-                  _isFieldValue: true
-                }
-              },
-              otherKey: {
-                value: 'Later',
-                _isFieldValue: true
-              }
-            }, {
-              nested: {
-                item: {
-                  value: 'MUNDO',
-                  _isFieldValue: true
-                },
-                not: {
-                  value: 'lost',
-                  _isFieldValue: true
-                }
-              },
-              otherKey: {
-                value: 'Hasta luego',
-                _isFieldValue: true
-              }
-            }],
-            stays: {
-              value: 'intact',
-              _isFieldValue: true
-            }
+            value: 'lisp',
+            _isFieldValue: true
+          }, {
+            value: 'ml',
+            _isFieldValue: true
+          }, {
+            value: 'ocaml',
+            _isFieldValue: true
           }]
-        });
+        }, {
+          langs: [{
+            value: 'c#',
+            _isFieldValue: true
+          }, {
+            value: 'c++',
+            _isFieldValue: true
+          }, {
+            value: 'java',
+            _isFieldValue: true
+          }, {
+            value: 'ruby',
+            _isFieldValue: true
+          }, {
+            value: 'smalltalk',
+            _isFieldValue: true
+          }]
+        }],
+
+        some: {
+          numbers: [{
+            value: 2,
+            _isFieldValue: true
+          }, {
+            value: 4,
+            _isFieldValue: true
+          }, {
+            value: 6,
+            _isFieldValue: true
+          }, {
+            value: 8,
+            _isFieldValue: true
+          }, {
+            value: 10,
+            _isFieldValue: true
+          }]
+        },
+
+        a: {
+          very: {
+            deep: {
+              object: {
+                property: {
+                  value: 'TEST',
+                  _isFieldValue: true
+                }
+              }
+            }
+          }
+        },
+
+        my: [{
+          deeply: [{
+            nested: {
+              item: {
+                value: 'HELLO',
+                _isFieldValue: true
+              },
+
+              not: {
+                value: 'lost',
+                _isFieldValue: true
+              }
+            },
+
+            otherKey: {
+              value: 'Goodbye',
+              _isFieldValue: true
+            }
+          }, {
+            nested: {
+              item: {
+                value: 'HOLA',
+                _isFieldValue: true
+              },
+
+              not: {
+                value: 'lost',
+                _isFieldValue: true
+              }
+            },
+
+            otherKey: {
+              value: 'Adios',
+              _isFieldValue: true
+            }
+          }],
+
+          stays: {
+            value: 'intact',
+            _isFieldValue: true
+          }
+        }, {
+          deeply: [{
+            nested: {
+              item: {
+                value: 'WORLD',
+                _isFieldValue: true
+              },
+
+              not: {
+                value: 'lost',
+                _isFieldValue: true
+              }
+            },
+
+            otherKey: {
+              value: 'Later',
+              _isFieldValue: true
+            }
+          }, {
+            nested: {
+              item: {
+                value: 'MUNDO',
+                _isFieldValue: true
+              },
+
+              not: {
+                value: 'lost',
+                _isFieldValue: true
+              }
+            },
+
+            otherKey: {
+              value: 'Hasta luego',
+              _isFieldValue: true
+            }
+          }],
+
+          stays: {
+            value: 'intact',
+            _isFieldValue: true
+          }
+        }]
+      });
+
       expect(isFieldValue(state.foo.name)).toBe(true);
       expect(isFieldValue(state.foo.person.name)).toBe(true);
       expect(isFieldValue(state.foo.pets[0].name)).toBe(true);
@@ -3943,19 +3940,19 @@ describe('reducer', () => {
     store.dispatch({form: 'foo', ...focus('a')});
     store.dispatch({form: 'foo', ...focus('b')});
 
-    expect(store.getState()).toMatch({
+    expect(store.getState()).toMatchObject({
       foo: {_active: 'b'}
     });
 
     store.dispatch({form: 'foo', ...blur('a')});
 
-    expect(store.getState()).toMatch({
+    expect(store.getState()).toMatchObject({
       foo: {_active: 'b'}
     });
 
     store.dispatch({form: 'foo', ...blur('b')});
 
-    expect(store.getState().foo)
-      .toExcludeKey('_active');
+    expect(Object.keys(store.getState().foo))
+      .not.toContain('_active');
   });
 });

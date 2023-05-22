@@ -1,11 +1,10 @@
-import expect from 'expect';
 import updateField from '../updateField';
 
 describe('updateField', () => {
   it('should return new field object when something changes', () => {
     const field = {value: 'foo'};
     const result = updateField(field, {value: 'bar'}, false, undefined);
-    expect(result).toNotBe(field);
+    expect(result).not.toBe(field);
   });
 
   it('should set value', () => {

@@ -1,4 +1,3 @@
-import expect from 'expect';
 import isPristine from '../isPristine';
 
 const tryBothWays = (aValue, bValue, result) => {

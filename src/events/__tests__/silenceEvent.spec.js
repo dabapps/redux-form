@@ -1,4 +1,3 @@
-import expect, {createSpy} from 'expect';
 import silenceEvent from '../silenceEvent';
 
 describe('silenceEvent', () => {
@@ -20,14 +19,14 @@ describe('silenceEvent', () => {
   });
 
   it('should call preventDefault and stopPropagation', () => {
-    const preventDefault = createSpy();
-    const stopPropagation = createSpy();
+    const preventDefault = jest.fn();
+    const stopPropagation = jest.fn();
 
     silenceEvent({
       preventDefault,
       stopPropagation
     });
     expect(preventDefault).toHaveBeenCalled();
-    expect(stopPropagation).toNotHaveBeenCalled();
+    expect(stopPropagation).not.toHaveBeenCalled();
   });
 });

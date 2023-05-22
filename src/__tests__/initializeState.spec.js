@@ -1,4 +1,3 @@
-import expect from 'expect';
 import initializeState from '../initializeState';
 import {isFieldValue} from '../fieldValue';
 
@@ -31,25 +30,28 @@ describe('initializeState', () => {
       catLives: 9,
       alive: true
     }, ['foo', 'catLives', 'alive'], {});
-    expect(result)
-      .toBeA('object')
-      .toEqual({
-        foo: {
-          initial: 'bar',
-          value: 'bar',
-          _isFieldValue: true
-        },
-        catLives: {
-          initial: 9,
-          value: 9,
-          _isFieldValue: true
-        },
-        alive: {
-          initial: true,
-          value: true,
-          _isFieldValue: true
-        }
-      });
+    expect(typeof result).toBe('object');
+
+    expect(result).toEqual({
+      foo: {
+        initial: 'bar',
+        value: 'bar',
+        _isFieldValue: true
+      },
+
+      catLives: {
+        initial: 9,
+        value: 9,
+        _isFieldValue: true
+      },
+
+      alive: {
+        initial: true,
+        value: true,
+        _isFieldValue: true
+      }
+    });
+
     expect(isFieldValue(result.foo)).toBe(true);
     expect(isFieldValue(result.catLives)).toBe(true);
     expect(isFieldValue(result.alive)).toBe(true);
@@ -65,29 +67,32 @@ describe('initializeState', () => {
       },
       alive: true
     }, ['foo.bar', 'lives.cat', 'alive'], {});
-    expect(result)
-      .toBeA('object')
-      .toEqual({
-        foo: {
-          bar: {
-            initial: 'baz',
-            value: 'baz',
-            _isFieldValue: true
-          }
-        },
-        lives: {
-          cat: {
-            initial: 9,
-            value: 9,
-            _isFieldValue: true
-          }
-        },
-        alive: {
-          initial: true,
-          value: true,
+    expect(typeof result).toBe('object');
+
+    expect(result).toEqual({
+      foo: {
+        bar: {
+          initial: 'baz',
+          value: 'baz',
           _isFieldValue: true
         }
-      });
+      },
+
+      lives: {
+        cat: {
+          initial: 9,
+          value: 9,
+          _isFieldValue: true
+        }
+      },
+
+      alive: {
+        initial: true,
+        value: true,
+        _isFieldValue: true
+      }
+    });
+
     expect(isFieldValue(result.foo)).toBe(false);
     expect(isFieldValue(result.foo.bar)).toBe(true);
     expect(isFieldValue(result.lives)).toBe(false);
@@ -100,30 +105,28 @@ describe('initializeState', () => {
       foo: ['bar', 'baz', undefined],
       alive: true
     }, ['foo[]', 'alive'], {});
-    expect(result)
-      .toBeA('object')
-      .toEqual({
-        foo: [
-          {
-            initial: 'bar',
-            value: 'bar',
-            _isFieldValue: true
-          },
-          {
-            initial: 'baz',
-            value: 'baz',
-            _isFieldValue: true
-          },
-          {
-            _isFieldValue: true
-          }
-        ],
-        alive: {
-          initial: true,
-          value: true,
-          _isFieldValue: true
-        }
-      });
+    expect(typeof result).toBe('object');
+
+    expect(result).toEqual({
+      foo: [{
+        initial: 'bar',
+        value: 'bar',
+        _isFieldValue: true
+      }, {
+        initial: 'baz',
+        value: 'baz',
+        _isFieldValue: true
+      }, {
+        _isFieldValue: true
+      }],
+
+      alive: {
+        initial: true,
+        value: true,
+        _isFieldValue: true
+      }
+    });
+
     expect(isFieldValue(result.foo)).toBe(false);
     expect(isFieldValue(result.foo[0])).toBe(true);
     expect(isFieldValue(result.foo[1])).toBe(true);
@@ -135,16 +138,18 @@ describe('initializeState', () => {
     const result = initializeState({
       bar: 42
     }, ['foo[]', 'bar'], {});
-    expect(result)
-      .toBeA('object')
-      .toEqual({
-        foo: [],
-        bar: {
-          initial: 42,
-          value: 42,
-          _isFieldValue: true
-        }
-      });
+    expect(typeof result).toBe('object');
+
+    expect(result).toEqual({
+      foo: [],
+
+      bar: {
+        initial: 42,
+        value: 42,
+        _isFieldValue: true
+      }
+    });
+
     expect(isFieldValue(result.foo)).toBe(false);
     expect(isFieldValue(result.bar)).toBe(true);
   });
@@ -153,9 +158,12 @@ describe('initializeState', () => {
     const result = initializeState({
       foo: []
     }, ['foo[]'], {});
-    expect(result)
-      .toBeA('object')
-      .toEqual({foo: []});
+    expect(typeof result).toBe('object');
+
+    expect(result).toEqual({
+      foo: []
+    });
+
     expect(isFieldValue(result.foo)).toBe(false);
   });
 
@@ -164,20 +172,28 @@ describe('initializeState', () => {
       animals: ['cat', 'dog', 'rat'],
       bar: [{deeper: 42}]
     }, ['animals', 'bar'], {});
-    expect(result)
-      .toBeA('object')
-      .toEqual({
-        animals: {
-          initial: ['cat', 'dog', 'rat'],
-          value: ['cat', 'dog', 'rat'],
-          _isFieldValue: true
-        },
-        bar: {
-          initial: [{deeper: 42}],
-          value: [{deeper: 42}],
-          _isFieldValue: true
-        }
-      });
+    expect(typeof result).toBe('object');
+
+    expect(result).toEqual({
+      animals: {
+        initial: ['cat', 'dog', 'rat'],
+        value: ['cat', 'dog', 'rat'],
+        _isFieldValue: true
+      },
+
+      bar: {
+        initial: [{
+          deeper: 42
+        }],
+
+        value: [{
+          deeper: 42
+        }],
+
+        _isFieldValue: true
+      }
+    });
+
     expect(isFieldValue(result.animals)).toBe(true);
     expect(isFieldValue(result.bar)).toBe(true);
   });
@@ -194,20 +210,22 @@ describe('initializeState', () => {
         value: [{deeper: 42}]
       }
     });
-    expect(result)
-      .toBeA('object')
-      .toEqual({
-        animals: {
-          initial: ['cat', 'dog', 'rat'],
-          value: ['cat', 'dog', 'rat'],
-          _isFieldValue: true
-        },
-        bar: {
-          initial: [],
-          value: [],
-          _isFieldValue: true
-        }
-      });
+    expect(typeof result).toBe('object');
+
+    expect(result).toEqual({
+      animals: {
+        initial: ['cat', 'dog', 'rat'],
+        value: ['cat', 'dog', 'rat'],
+        _isFieldValue: true
+      },
+
+      bar: {
+        initial: [],
+        value: [],
+        _isFieldValue: true
+      }
+    });
+
     expect(isFieldValue(result.animals)).toBe(true);
     expect(isFieldValue(result.bar)).toBe(true);
   });
@@ -218,20 +236,34 @@ describe('initializeState', () => {
       lives: {cat: 9},
       alive: true
     }, ['foo', 'lives'], {});
-    expect(result)
-      .toBeA('object')
-      .toEqual({
-        foo: {
-          initial: {bar: 'baz'},
-          value: {bar: 'baz'},
-          _isFieldValue: true
+    expect(typeof result).toBe('object');
+
+    expect(result).toEqual({
+      foo: {
+        initial: {
+          bar: 'baz'
         },
-        lives: {
-          initial: {cat: 9},
-          value: {cat: 9},
-          _isFieldValue: true
-        }
-      });
+
+        value: {
+          bar: 'baz'
+        },
+
+        _isFieldValue: true
+      },
+
+      lives: {
+        initial: {
+          cat: 9
+        },
+
+        value: {
+          cat: 9
+        },
+
+        _isFieldValue: true
+      }
+    });
+
     expect(isFieldValue(result.foo)).toBe(true);
     expect(isFieldValue(result.lives)).toBe(true);
   });
