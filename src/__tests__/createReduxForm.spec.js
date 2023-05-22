@@ -2521,8 +2521,8 @@ describe('createReduxForm', () => {
 
   it('should only rerender the form that changed', () => {
     const store = makeStore();
-    const fooRender = createRestorableSpy().andReturn(<div/>);
-    const barRender = createRestorableSpy().andReturn(<div/>);
+    const fooRender = createRestorableSpy().mockReturnValue(<div/>);
+    const barRender = createRestorableSpy().mockReturnValue(<div/>);
 
     class FooForm extends Component {
       render() {
