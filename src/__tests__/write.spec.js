@@ -28,10 +28,10 @@ describe('write', () => {
 
   it('should put simple arrays', () => {
     const data1 = write('cat', ['foo', 'bar'], {});
-    expect(typeof data1.cat).toBe('array');
+    expect(Array.isArray(data1.cat)).toBe(true);
     expect(data1.cat).toEqual(['foo', 'bar']);
     const data2 = write('dog', ['rabbit', 42], {});
-    expect(typeof data2.dog).toBe('array');
+    expect(Array.isArray(data2.dog)).toBe(true);
     expect(data2.dog).toEqual(['rabbit', 42]);
   });
 
@@ -39,7 +39,7 @@ describe('write', () => {
     const data = write('cat[]', 'meow', {
       cat: [1, 2, 3, 4]
     });
-    expect(typeof data.cat).toBe('array');
+    expect(Array.isArray(data.cat)).toBe(true);
     expect(data.cat).toEqual(['meow', 'meow', 'meow', 'meow']);
   });
 
@@ -47,7 +47,7 @@ describe('write', () => {
     const data = write('cat[]', ['meow', 'woof'], {
       cat: [1, 2, 3, 4]
     });
-    expect(typeof data.cat).toBe('array');
+    expect(Array.isArray(data.cat)).toBe(true);
     expect(data.cat).toEqual(['meow', 'woof']);
   });
 
@@ -55,27 +55,27 @@ describe('write', () => {
     const data = write('cat[]', 'meow', {
       cat: [1, 2, 3, 4]
     });
-    expect(typeof data.cat).toBe('array');
+    expect(Array.isArray(data.cat)).toBe(true);
     expect(data.cat).toEqual(['meow', 'meow', 'meow', 'meow']);
   });
 
   it('should put properties on array values', () => {
     const data1 = write('cat[0].name', 'foo', {});
-    expect(typeof data1.cat).toBe('array');
+    expect(Array.isArray(data1.cat)).toBe(true);
     expect(typeof data1.cat[0]).toBe('object');
     expect(data1.cat[0].name).toBe('foo');
     const data2 = write('dog[2].friend', 'rabbit', {});
-    expect(typeof data2.dog).toBe('array');
+    expect(Array.isArray(data2.dog)).toBe(true);
     expect(typeof data2.dog[2]).toBe('object');
     expect(data2.dog[2].friend).toBe('rabbit');
   });
 
   it('should put simple array values', () => {
     const data1 = write('cat[0]', 'foo', {});
-    expect(typeof data1.cat).toBe('array');
+    expect(Array.isArray(data1.cat)).toBe(true);
     expect(data1.cat[0]).toBe('foo');
     const data2 = write('dog[2]', 'rabbit', {});
-    expect(typeof data2.dog).toBe('array');
+    expect(Array.isArray(data2.dog)).toBe(true);
     expect(data2.dog[2]).toBe('rabbit');
   });
 
@@ -83,17 +83,17 @@ describe('write', () => {
     const data = write('cat[]', 'meow', {
       cat: [1, 2, 3, 4]
     });
-    expect(typeof data.cat).toBe('array');
+    expect(Array.isArray(data.cat)).toBe(true);
     expect(data.cat).toEqual(['meow', 'meow', 'meow', 'meow']);
   });
 
   it('should put properties on array values', () => {
     const data1 = write('cat[0].name', 'foo', {});
-    expect(typeof data1.cat).toBe('array');
+    expect(Array.isArray(data1.cat)).toBe(true);
     expect(typeof data1.cat[0]).toBe('object');
     expect(data1.cat[0].name).toBe('foo');
     const data2 = write('dog[2].friend', 'rabbit', {});
-    expect(typeof data2.dog).toBe('array');
+    expect(Array.isArray(data2.dog)).toBe(true);
     expect(typeof data2.dog[2]).toBe('object');
     expect(data2.dog[2].friend).toBe('rabbit');
   });
@@ -105,7 +105,7 @@ describe('write', () => {
         {name: 'whiskers'}
       ]
     });
-    expect(typeof data1.cat).toBe('array');
+    expect(Array.isArray(data1.cat)).toBe(true);
     expect(typeof data1.cat[0]).toBe('object');
     expect(data1.cat[0].name).toBe('foo');
     expect(typeof data1.cat[1]).toBe('object');
@@ -114,9 +114,9 @@ describe('write', () => {
 
   it('should put complex array values', () => {
     const data = write('cat[0].dog[7].rabbit.fox', 'wolf', {});
-    expect(typeof data.cat).toBe('array');
+    expect(Array.isArray(data.cat)).toBe(true);
     expect(typeof data.cat[0]).toBe('object');
-    expect(typeof data.cat[0].dog).toBe('array');
+    expect(Array.isArray(data.cat[0].dog)).toBe(true);
     expect(typeof data.cat[0].dog[7]).toBe('object');
     expect(typeof data.cat[0].dog[7].rabbit).toBe('object');
     expect(data.cat[0].dog[7].rabbit.fox).toBe('wolf');

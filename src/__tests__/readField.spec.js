@@ -390,7 +390,7 @@ describe('readField', () => {
   it('should initialize an array field', () => {
     const fields = {};
     readField({}, 'foo[]', undefined, fields, {}, undefined, false, defaultProps);
-    expect(typeof fields.foo).toBe('array');
+    expect(Array.isArray(fields.foo)).toBe(true);
     expect(fields.foo[0]).toBe(undefined);
   });
 
@@ -659,7 +659,7 @@ describe('readField', () => {
     const fields = {};
     readField({}, 'pig.foo[].dog.cat[].rat', undefined, fields, {}, undefined, false, defaultProps);
     expect(typeof fields.pig).toBe('object');
-    expect(typeof fields.pig.foo).toBe('array');
+    expect(Array.isArray(fields.pig.foo)).toBe(true);
     expect(fields.pig.foo[0]).toBe(undefined);
   });
 
@@ -683,9 +683,9 @@ describe('readField', () => {
       }
     }, 'pig.foo[].dog.cat[].rat', undefined, fields, {}, undefined, false, defaultProps);
     expect(typeof fields.pig).toBe('object');
-    expect(typeof fields.pig.foo).toBe('array');
+    expect(Array.isArray(fields.pig.foo)).toBe(true);
     expect(typeof fields.pig.foo[0].dog).toBe('object');
-    expect(typeof fields.pig.foo[0].dog.cat).toBe('array');
+    expect(Array.isArray(fields.pig.foo[0].dog.cat)).toBe(true);
     expect(typeof fields.pig.foo[0].dog.cat[0]).toBe('object');
     expect(typeof fields.pig.foo[0].dog.cat[0].rat).toBe('object');
     expectField({

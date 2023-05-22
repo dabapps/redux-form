@@ -488,7 +488,7 @@ describe('createReduxForm', () => {
       </Provider>
     );
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
-    expect(typeof stub.props.fields.children).toBe('array');
+    expect(Array.isArray(stub.props.fields.children)).toBe(true);
     expect(stub.props.fields.children.length).toBe(2);
 
     expectField({
@@ -1369,7 +1369,7 @@ describe('createReduxForm', () => {
     );
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
 
-    expect(typeof stub.props.fields.colors).toBe('array');
+    expect(Array.isArray(stub.props.fields.colors)).toBe(true);
     expect(stub.props.fields.colors.length).toBe(2);
     expectField({
       field: stub.props.fields.colors[ 0 ],
@@ -1417,7 +1417,7 @@ describe('createReduxForm', () => {
     );
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
 
-    expect(typeof stub.props.fields.users).toBe('array');
+    expect(Array.isArray(stub.props.fields.users)).toBe(true);
     expect(stub.props.fields.users.length).toBe(1);
     expect(typeof stub.props.fields.users[ 0 ]).toBe('object');
     expectField({
@@ -1458,7 +1458,7 @@ describe('createReduxForm', () => {
     );
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
 
-    expect(typeof stub.props.fields.users).toBe('array');
+    expect(Array.isArray(stub.props.fields.users)).toBe(true);
     expect(stub.props.fields.users.length).toBe(0);
     expect(typeof stub.props.fields.users.addField).toBe('function');
 
@@ -1496,7 +1496,7 @@ describe('createReduxForm', () => {
     expect(after).not.toBe(before);  // should be a new instance
 
     // check state
-    expect(typeof store.getState().form.testForm.users).toBe('array');
+    expect(Array.isArray(store.getState().form.testForm.users)).toBe(true);
     expect(store.getState().form.testForm.users.length).toBe(1);
     expect(store.getState().form.testForm.users[ 0 ].name)
       .toEqual({
@@ -1532,7 +1532,7 @@ describe('createReduxForm', () => {
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
 
     expect(typeof stub.props.fields.acknowledgements).toBe('object');
-    expect(typeof stub.props.fields.acknowledgements.items).toBe('array');
+    expect(Array.isArray(stub.props.fields.acknowledgements.items)).toBe(true);
     expect(stub.props.fields.acknowledgements.items.length).toBe(0);
     expect(typeof stub.props.fields.acknowledgements.items.addField).toBe('function');
 
@@ -1592,7 +1592,7 @@ describe('createReduxForm', () => {
     );
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
 
-    expect(typeof stub.props.fields.proposals).toBe('array');
+    expect(Array.isArray(stub.props.fields.proposals)).toBe(true);
     expect(stub.props.fields.proposals.length).toBe(0);
     expect(typeof stub.props.fields.proposals.addField).toBe('function');
 
