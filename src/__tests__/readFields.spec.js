@@ -34,23 +34,23 @@ describe('readFields', () => {
       expect(field.onUpdate).toBe(field.onChange);
 
       // call blur
-      expect(blur.calls.length).toBe(0);
+      expect(blur.mock.calls.length).toBe(0);
       field.onBlur('newValue');
-      expect(blur.calls.length).toBe(1);
+      expect(blur.mock.calls.length).toBe(1);
       expect(blur).toHaveBeenCalled();
       expect(blur).toHaveBeenCalledWith(name, 'newValue');
 
       // call change
-      expect(change.calls.length).toBe(0);
+      expect(change.mock.calls.length).toBe(0);
       field.onChange('newValue');
-      expect(change.calls.length).toBe(1);
+      expect(change.mock.calls.length).toBe(1);
       expect(change).toHaveBeenCalled();
       expect(change).toHaveBeenCalledWith(name, 'newValue');
 
       // call focus
-      expect(focus.calls.length).toBe(0);
+      expect(focus.mock.calls.length).toBe(0);
       field.onFocus();
-      expect(focus.calls.length).toBe(1);
+      expect(focus.mock.calls.length).toBe(1);
       expect(focus).toHaveBeenCalled();
     }
     expect(field.error).toBe(error);
@@ -62,9 +62,9 @@ describe('readFields', () => {
     expect(field.visited).toBe(visited);
     expect(field.checked).toBe(checked);
 
-    blur.restore();
-    change.restore();
-    focus.restore();
+    blur.mockReset();
+    change.mockReset();
+    focus.mockReset();
   };
 
   it('should not provide mutators when readonly', () => {
