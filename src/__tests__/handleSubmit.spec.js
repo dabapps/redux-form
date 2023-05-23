@@ -132,20 +132,20 @@ describe('handleSubmit', () => {
 
     return handleSubmit(submit, values, props, asyncValidate)
       .then(result => {
-      expect(result).toBe(undefined);
-      expect(touch).toHaveBeenCalled();
-      expect(touch).toHaveBeenCalledWith(...fields);
-      expect(validate).toHaveBeenCalled();
-      expect(validate).toHaveBeenCalledWith(values, props);
-      expect(asyncValidate).toHaveBeenCalled();
-      expect(asyncValidate).toHaveBeenCalledWith();
-      expect(submit).not.toHaveBeenCalled();
-      expect(startSubmit).not.toHaveBeenCalled();
-      expect(stopSubmit).not.toHaveBeenCalled();
-      expect(submitFailed).toHaveBeenCalled();
-      expect(onSubmitSuccess).not.toHaveBeenCalled();
-      expect(onSubmitFail).toHaveBeenCalled();
-    }, () => {
+        expect(result).toBe(undefined);
+        expect(touch).toHaveBeenCalled();
+        expect(touch).toHaveBeenCalledWith(...fields);
+        expect(validate).toHaveBeenCalled();
+        expect(validate).toHaveBeenCalledWith(values, props);
+        expect(asyncValidate).toHaveBeenCalled();
+        expect(asyncValidate).toHaveBeenCalledWith();
+        expect(submit).not.toHaveBeenCalled();
+        expect(startSubmit).not.toHaveBeenCalled();
+        expect(stopSubmit).not.toHaveBeenCalled();
+        expect(submitFailed).toHaveBeenCalled();
+        expect(onSubmitSuccess).not.toHaveBeenCalled();
+        expect(onSubmitFail).toHaveBeenCalled();
+      }, () => {
         expect(false).toBe(true); // should not get into reject branch
       });
   });
@@ -172,20 +172,20 @@ describe('handleSubmit', () => {
       .then(() => {
         expect(false).toBe(true); // should not get into resolve branch
       }, result => {
-      expect(result).toBe(undefined);
-      expect(touch).toHaveBeenCalled();
-      expect(touch).toHaveBeenCalledWith(...fields);
-      expect(validate).toHaveBeenCalled();
-      expect(validate).toHaveBeenCalledWith(values, props);
-      expect(asyncValidate).toHaveBeenCalled();
-      expect(asyncValidate).toHaveBeenCalledWith();
-      expect(submit).not.toHaveBeenCalled();
-      expect(startSubmit).not.toHaveBeenCalled();
-      expect(stopSubmit).not.toHaveBeenCalled();
-      expect(submitFailed).toHaveBeenCalled();
-      expect(onSubmitSuccess).not.toHaveBeenCalled();
-      expect(onSubmitFail).toHaveBeenCalled();
-    });
+        expect(result).toBe(undefined);
+        expect(touch).toHaveBeenCalled();
+        expect(touch).toHaveBeenCalledWith(...fields);
+        expect(validate).toHaveBeenCalled();
+        expect(validate).toHaveBeenCalledWith(values, props);
+        expect(asyncValidate).toHaveBeenCalled();
+        expect(asyncValidate).toHaveBeenCalledWith();
+        expect(submit).not.toHaveBeenCalled();
+        expect(startSubmit).not.toHaveBeenCalled();
+        expect(stopSubmit).not.toHaveBeenCalled();
+        expect(submitFailed).toHaveBeenCalled();
+        expect(onSubmitSuccess).not.toHaveBeenCalled();
+        expect(onSubmitFail).toHaveBeenCalled();
+      });
   });
 
   it('should sync submit if async validation passes', () => {
@@ -208,21 +208,21 @@ describe('handleSubmit', () => {
 
     return handleSubmit(submit, values, props, asyncValidate)
       .then(result => {
-      expect(result).toBe(69);
-      expect(touch).toHaveBeenCalled();
-      expect(touch).toHaveBeenCalledWith(...fields);
-      expect(validate).toHaveBeenCalled();
-      expect(validate).toHaveBeenCalledWith(values, props);
-      expect(asyncValidate).toHaveBeenCalled();
-      expect(asyncValidate).toHaveBeenCalledWith();
-      expect(submit).toHaveBeenCalled();
-      expect(submit).toHaveBeenCalledWith(values, dispatch, props);
-      expect(startSubmit).not.toHaveBeenCalled();
-      expect(stopSubmit).not.toHaveBeenCalled();
-      expect(submitFailed).not.toHaveBeenCalled();
-      expect(onSubmitSuccess).toHaveBeenCalled();
-      expect(onSubmitFail).not.toHaveBeenCalled();
-    }, () => {
+        expect(result).toBe(69);
+        expect(touch).toHaveBeenCalled();
+        expect(touch).toHaveBeenCalledWith(...fields);
+        expect(validate).toHaveBeenCalled();
+        expect(validate).toHaveBeenCalledWith(values, props);
+        expect(asyncValidate).toHaveBeenCalled();
+        expect(asyncValidate).toHaveBeenCalledWith();
+        expect(submit).toHaveBeenCalled();
+        expect(submit).toHaveBeenCalledWith(values, dispatch, props);
+        expect(startSubmit).not.toHaveBeenCalled();
+        expect(stopSubmit).not.toHaveBeenCalled();
+        expect(submitFailed).not.toHaveBeenCalled();
+        expect(onSubmitSuccess).toHaveBeenCalled();
+        expect(onSubmitFail).not.toHaveBeenCalled();
+      }, () => {
         expect(false).toBe(true); // should not get into reject branch
       });
   });
@@ -247,22 +247,22 @@ describe('handleSubmit', () => {
 
     return handleSubmit(submit, values, props, asyncValidate)
       .then(result => {
-      expect(result).toBe(69);
-      expect(touch).toHaveBeenCalled();
-      expect(touch).toHaveBeenCalledWith(...fields);
-      expect(validate).toHaveBeenCalled();
-      expect(validate).toHaveBeenCalledWith(values, props);
-      expect(asyncValidate).toHaveBeenCalled();
-      expect(asyncValidate).toHaveBeenCalledWith();
-      expect(submit).toHaveBeenCalled();
-      expect(submit).toHaveBeenCalledWith(values, dispatch, props);
-      expect(startSubmit).toHaveBeenCalled();
-      expect(stopSubmit).toHaveBeenCalled();
-      expect(stopSubmit).toHaveBeenCalledWith();
-      expect(submitFailed).not.toHaveBeenCalled();
-      expect(onSubmitSuccess).toHaveBeenCalled();
-      expect(onSubmitFail).not.toHaveBeenCalled();
-    }, () => {
+        expect(result).toBe(69);
+        expect(touch).toHaveBeenCalled();
+        expect(touch).toHaveBeenCalledWith(...fields);
+        expect(validate).toHaveBeenCalled();
+        expect(validate).toHaveBeenCalledWith(values, props);
+        expect(asyncValidate).toHaveBeenCalled();
+        expect(asyncValidate).toHaveBeenCalledWith();
+        expect(submit).toHaveBeenCalled();
+        expect(submit).toHaveBeenCalledWith(values, dispatch, props);
+        expect(startSubmit).toHaveBeenCalled();
+        expect(stopSubmit).toHaveBeenCalled();
+        expect(stopSubmit).toHaveBeenCalledWith();
+        expect(submitFailed).not.toHaveBeenCalled();
+        expect(onSubmitSuccess).toHaveBeenCalled();
+        expect(onSubmitFail).not.toHaveBeenCalled();
+      }, () => {
         expect(false).toBe(true); // should not get into reject branch
       });
   });
@@ -288,23 +288,23 @@ describe('handleSubmit', () => {
 
     return handleSubmit(submit, values, props, asyncValidate)
       .then(result => {
-      expect(result).toBe(undefined);
-      expect(touch).toHaveBeenCalled();
-      expect(touch).toHaveBeenCalledWith(...fields);
-      expect(validate).toHaveBeenCalled();
-      expect(validate).toHaveBeenCalledWith(values, props);
-      expect(asyncValidate).toHaveBeenCalled();
-      expect(asyncValidate).toHaveBeenCalledWith();
-      expect(submit).toHaveBeenCalled();
-      expect(submit).toHaveBeenCalledWith(values, dispatch, props);
-      expect(startSubmit).toHaveBeenCalled();
-      expect(stopSubmit).toHaveBeenCalled();
-      expect(stopSubmit).toHaveBeenCalledWith(submitErrors);
-      expect(submitFailed).not.toHaveBeenCalled();
-      expect(onSubmitSuccess).not.toHaveBeenCalled();
-      expect(onSubmitFail).toHaveBeenCalled();
-      expect(onSubmitFail).toHaveBeenCalledWith(submitErrors);
-    }, () => {
+        expect(result).toBe(undefined);
+        expect(touch).toHaveBeenCalled();
+        expect(touch).toHaveBeenCalledWith(...fields);
+        expect(validate).toHaveBeenCalled();
+        expect(validate).toHaveBeenCalledWith(values, props);
+        expect(asyncValidate).toHaveBeenCalled();
+        expect(asyncValidate).toHaveBeenCalledWith();
+        expect(submit).toHaveBeenCalled();
+        expect(submit).toHaveBeenCalledWith(values, dispatch, props);
+        expect(startSubmit).toHaveBeenCalled();
+        expect(stopSubmit).toHaveBeenCalled();
+        expect(stopSubmit).toHaveBeenCalledWith(submitErrors);
+        expect(submitFailed).not.toHaveBeenCalled();
+        expect(onSubmitSuccess).not.toHaveBeenCalled();
+        expect(onSubmitFail).toHaveBeenCalled();
+        expect(onSubmitFail).toHaveBeenCalledWith(submitErrors);
+      }, () => {
         expect(false).toBe(true); // should not get into reject branch
       });
   });
@@ -332,22 +332,22 @@ describe('handleSubmit', () => {
       .then(() => {
         expect(false).toBe(true); // should not get into resolve branch
       }, result => {
-      expect(result).toBe(submitErrors);
-      expect(touch).toHaveBeenCalled();
-      expect(touch).toHaveBeenCalledWith(...fields);
-      expect(validate).toHaveBeenCalled();
-      expect(validate).toHaveBeenCalledWith(values, props);
-      expect(asyncValidate).toHaveBeenCalled();
-      expect(asyncValidate).toHaveBeenCalledWith();
-      expect(submit).toHaveBeenCalled();
-      expect(submit).toHaveBeenCalledWith(values, dispatch, props);
-      expect(startSubmit).toHaveBeenCalled();
-      expect(stopSubmit).toHaveBeenCalled();
-      expect(stopSubmit).toHaveBeenCalledWith(submitErrors);
-      expect(submitFailed).not.toHaveBeenCalled();
-      expect(onSubmitSuccess).not.toHaveBeenCalled();
-      expect(onSubmitFail).toHaveBeenCalled();
-      expect(onSubmitFail).toHaveBeenCalledWith(submitErrors);
-    });
+        expect(result).toBe(submitErrors);
+        expect(touch).toHaveBeenCalled();
+        expect(touch).toHaveBeenCalledWith(...fields);
+        expect(validate).toHaveBeenCalled();
+        expect(validate).toHaveBeenCalledWith(values, props);
+        expect(asyncValidate).toHaveBeenCalled();
+        expect(asyncValidate).toHaveBeenCalledWith();
+        expect(submit).toHaveBeenCalled();
+        expect(submit).toHaveBeenCalledWith(values, dispatch, props);
+        expect(startSubmit).toHaveBeenCalled();
+        expect(stopSubmit).toHaveBeenCalled();
+        expect(stopSubmit).toHaveBeenCalledWith(submitErrors);
+        expect(submitFailed).not.toHaveBeenCalled();
+        expect(onSubmitSuccess).not.toHaveBeenCalled();
+        expect(onSubmitFail).toHaveBeenCalled();
+        expect(onSubmitFail).toHaveBeenCalledWith(submitErrors);
+      });
   });
 });

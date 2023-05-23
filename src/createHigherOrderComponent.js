@@ -44,14 +44,14 @@ const createHigherOrderComponent = (config,
         submitPassback(() => this.handleSubmit());  // wrapped in function to disallow params
       }
 
-      UNSAFE_componentWillMount() {
+      UNSAFE_componentWillMount() { // eslint-disable-line
         const {fields, form, initialize, initialValues} = this.props;
         if (initialValues && !form._initialized) {
           initialize(initialValues, fields);
         }
       }
 
-      UNSAFE_componentWillReceiveProps(nextProps) {
+      UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line
         if (!deepEqual(this.props.fields, nextProps.fields) || !deepEqual(this.props.form, nextProps.form, {strict: true})) {
           this.fields = readFields(nextProps, this.props, this.fields, this.asyncValidate, isReactNative);
         }

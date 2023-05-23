@@ -30,7 +30,7 @@ const createReduxFormConnector =
           });
         }
 
-        UNSAFE_componentWillReceiveProps(nextProps) {
+        UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line
           this.cache.componentWillReceiveProps(nextProps);
         }
 
