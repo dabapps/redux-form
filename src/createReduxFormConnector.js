@@ -31,7 +31,7 @@ const createReduxFormConnector =
         }
 
         UNSAFE_componentWillReceiveProps(nextProps) {
-          this.cache.UNSAFE_componentWillReceiveProps(nextProps);
+          this.cache.componentWillReceiveProps(nextProps);
         }
 
         render() {
