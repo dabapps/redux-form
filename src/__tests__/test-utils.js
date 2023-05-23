@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom';
+import OriginalTestUtils from 'react-dom/test-utils';
 
 // Custom implementation that returns the fibre tree
 const renderIntoDocument = (reactElement) => {
@@ -41,6 +42,7 @@ const TestUtils = {
   renderIntoDocument,
   findRenderedComponentWithType,
   act: ReactDOM.act
+  Simulate: OriginalTestUtils.Simulate,
 };
 
 export default TestUtils;
