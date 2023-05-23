@@ -12,7 +12,7 @@ const createReduxForm =
     return (config, mapStateToProps, mapDispatchToProps, mergeProps, options) =>
       WrappedComponent => {
         const ReduxFormConnector = reduxFormConnector(WrappedComponent, mapStateToProps, mapDispatchToProps, mergeProps, options);
-        const { withRef = false } = (options || {});
+        const { forwardRef = false } = (options || {});
         const configWithDefaults = {
           overwriteOnInitialValuesChange: true,
           touchOnBlur: true,
@@ -28,11 +28,11 @@ const createReduxForm =
           }
 
           getWrappedInstance() {
-            invariant(withRef,
+            invariant(forwardRef,
               `To access the wrapped instance, you need to specify ` +
-              `{ withRef: true } as the fourth argument of the connect() call.`
+              `{ forwardRef: true } as the fourth argument of the connect() call.`
             );
-            return this.refs.wrappedInstance.refs.wrappedInstance.getWrappedInstance().refs.wrappedInstance;
+            return this.refs.wrappedInstance.refs.wrappedInstance.refs.wrappedInstance;
           }
 
           handleSubmitPassback(submit) {
@@ -40,7 +40,7 @@ const createReduxForm =
           }
 
           render() {
-            if ( withRef ) {
+            if ( forwardRef ) {
               return (<ReduxFormConnector
                 {...configWithDefaults}
                 {...this.props}

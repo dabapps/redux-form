@@ -2793,9 +2793,9 @@ describe('createReduxForm', () => {
     }
 
     const DecoratedForm = reduxForm({
-      form: 'withRefTest',
+      form: 'forwardRefTest',
       fields: ['foo', 'bar']
-    }, null, null, null, {withRef: true})(Container);
+    }, null, null, null, {forwardRef: true})(Container);
 
     const dom = TestUtils.renderIntoDocument(
       <Provider store={store}>
@@ -2807,7 +2807,7 @@ describe('createReduxForm', () => {
 
     expect(() => decorated.someInstanceMethod()).toThrow();
     expect(decorated.getWrappedInstance().someInstanceMethod()).toBe(someData);
-    expect(decorated.refs.wrappedInstance.refs.wrappedInstance.getWrappedInstance().refs.wrappedInstance.someInstanceMethod()).toBe(someData);
+    expect(decorated.refs.wrappedInstance.refs.wrappedInstance.refs.wrappedInstance.someInstanceMethod()).toBe(someData);
   });
 
   it('should change nested fields', () => {

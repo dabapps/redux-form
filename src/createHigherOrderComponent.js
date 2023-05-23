@@ -29,7 +29,7 @@ const createHigherOrderComponent = (config,
                                     options) => {
   const {Component} = React;
   return (reduxMountPoint, formName, formKey, getFormState) => {
-    const { withRef = false } = (options || {});
+    const { forwardRef = false } = (options || {});
     class ReduxForm extends Component {
       constructor(props) {
         super(props);
@@ -144,7 +144,7 @@ const createHigherOrderComponent = (config,
           untouchAll: silenceEvents(() => untouch(...fields))
         };
         const passedProps = propNamespace ? {[propNamespace]: props} : props;
-        if ( withRef ) {
+        if ( forwardRef ) {
           return (<WrappedComponent {...{
             ...passableProps, // contains dispatch
             ...passedProps
