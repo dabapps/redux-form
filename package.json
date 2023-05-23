@@ -17,7 +17,7 @@
     "coverage": "babel-istanbul cover src/__tests__/setup.js",
     "lint": "eslint src",
     "prepublish": "npm run test && npm run clean && npm run build",
-    "test": "mocha --compilers js:babel-register --recursive 'src/**/__tests__/*' --require src/__tests__/setup.js",
+    "test": "jest",
     "test:watch": "npm test -- --watch",
     "test:cov": "babel-node ./node_modules/isparta/bin/isparta cover ./node_modules/mocha/bin/_mocha -- --recursive 'src/**/__tests__/*' --require src/__tests__/setup.js",
     "test:codecov": "cat ./coverage/coverage.json | ./node_modules/codecov.io/bin/codecov.io.js"
@@ -40,7 +40,7 @@
   "homepage": "https://github.com/erikras/redux-form",
   "dependencies": {
     "deep-equal": "^1.0.1",
-    "hoist-non-react-statics": "^2.3.1",
+    "hoist-non-react-statics": "^3.3.2",
     "invariant": "^2.0.0",
     "is-promise": "^2.1.0",
     "prop-types": "^15.5.8",
@@ -81,23 +81,21 @@
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^0.1.0",
     "eslint-plugin-react": "^3.16.1",
-    "expect": "^1.14.0",
     "isparta": "^4.0.0",
-    "jsdom": "^8.4.1",
-    "mocha": "^2.4.5",
-    "mocha-lcov-reporter": "^1.1.0",
-    "react": "^15.0.0",
-    "react-addons-test-utils": "^15.0.0",
-    "react-dom": "^15.0.0",
-    "react-redux": "^5.0.1",
-    "redux": "^3.3.1",
+    "jest": "^23.6.0",
+    "jest-environment-jsdom": "^23.4.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.9",
+    "redux": "^4.2.1",
     "rifraf": "^2.0.2",
     "rimraf": "^2.5.2",
     "webpack": "^1.12.13"
   },
   "peerDependencies": {
-    "react-redux": "^3.0.0 || ^4.0.0 || ^5.0.0",
-    "redux": "^3.0.0 || ^4.0.0"
+    "react": "^17.0.0 | ^18.0.0",
+    "react-redux": "^7.0.0",
+    "redux": "^4.0.0"
   },
   "npmName": "redux-form",
   "npmFileMap": [

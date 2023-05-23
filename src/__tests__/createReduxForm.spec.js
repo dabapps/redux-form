@@ -1,21 +1,42 @@
 /* eslint react/no-multi-comp:0 */
-import expect, {createSpy} from 'expect';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import ReactDOM from 'react-dom';
-import TestUtils from 'react-addons-test-utils';
+import TestUtils from './test-utils';
 import {combineReducers, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import reducer from '../reducer';
 import {makeFieldValue} from '../fieldValue';
 import createReduxForm from '../createReduxForm';
 
-const createRestorableSpy = (fn) => {
-  return createSpy(fn, function restore() {
-    this.calls = [];
-  });
+const INVALID_DOM_PROPS = [
+  'initialValue',
+  'autofill',
+  'onUpdate',
+  'valid',
+  'invalid',
+  'dirty',
+  'pristine',
+  'active',
+  'touched',
+  'visited',
+  'autofilled',
+  'error',
+];
+
+export const domOnlyProps = fieldProps => {
+  const domProps = {};
+
+  for (const key in fieldProps) {
+    if (INVALID_DOM_PROPS.indexOf(key) < 0) {
+      domProps[key] = fieldProps[key];
+    }
+  }
+
+  return domProps;
 };
+
 
 describe('createReduxForm', () => {
   const reduxForm = createReduxForm(false, React, connect);
@@ -24,7 +45,7 @@ describe('createReduxForm', () => {
   }), { form: initialState });
 
   it('should return a decorator function', () => {
-    expect(reduxForm).toBeA('function');
+    expect(typeof reduxForm).toBe('function');
   });
 
   class Form extends Component {
@@ -35,30 +56,30 @@ describe('createReduxForm', () => {
 
   class Passthrough extends Component {
     render() {
-      return <div {...this.props} />;
+      return <div {...domOnlyProps(this.props)} />;
     }
   }
 
   const expectField = ({ field, name, value, initial, valid, dirty, error, touched, visited, readonly, autofilled }) => {
-    expect(field).toBeA('object');
+    expect(typeof field).toBe('object');
     expect(field.name).toBe(name);
     expect(field.value).toEqual(value);
     if (readonly) {
-      expect(field.autofill).toNotExist();
-      expect(field.onBlur).toNotExist();
-      expect(field.onChange).toNotExist();
-      expect(field.onDragStart).toNotExist();
-      expect(field.onDrop).toNotExist();
-      expect(field.onFocus).toNotExist();
-      expect(field.onUpdate).toNotExist();
+      expect(field.autofill).toBeFalsy();
+      expect(field.onBlur).toBeFalsy();
+      expect(field.onChange).toBeFalsy();
+      expect(field.onDragStart).toBeFalsy();
+      expect(field.onDrop).toBeFalsy();
+      expect(field.onFocus).toBeFalsy();
+      expect(field.onUpdate).toBeFalsy();
     } else {
-      expect(field.autofill).toBeA('function');
-      expect(field.onBlur).toBeA('function');
-      expect(field.onChange).toBeA('function');
-      expect(field.onDragStart).toBeA('function');
-      expect(field.onDrop).toBeA('function');
-      expect(field.onFocus).toBeA('function');
-      expect(field.onUpdate).toBeA('function');
+      expect(typeof field.autofill).toBe('function');
+      expect(typeof field.onBlur).toBe('function');
+      expect(typeof field.onChange).toBe('function');
+      expect(typeof field.onDragStart).toBe('function');
+      expect(typeof field.onDrop).toBe('function');
+      expect(typeof field.onFocus).toBe('function');
+      expect(typeof field.onUpdate).toBe('function');
     }
     expect(field.initialValue).toEqual(initial);
     expect(field.valid).toBe(valid);
@@ -87,7 +108,7 @@ describe('createReduxForm', () => {
           <Decorated/>
         </Provider>
       );
-    }).toNotThrow();
+    }).not.toThrow();
   });
 
   it('should pass fields as props', () => {
@@ -102,7 +123,7 @@ describe('createReduxForm', () => {
       </Provider>
     );
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
-    expect(stub.props.fields).toBeA('object');
+    expect(typeof stub.props.fields).toBe('object');
     expectField({
       field: stub.props.fields.foo,
       name: 'foo',
@@ -141,7 +162,7 @@ describe('createReduxForm', () => {
       </Provider>
     );
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
-    expect(stub.props.fields).toBeA('object');
+    expect(typeof stub.props.fields).toBe('object');
     expectField({
       field: stub.props.fields.foo,
       name: 'foo',
@@ -184,7 +205,7 @@ describe('createReduxForm', () => {
 
     stub.props.fields.foo.autofill('fooValue');
 
-    expect(stub.props.fields).toBeA('object');
+    expect(typeof stub.props.fields).toBe('object');
     expectField({
       field: stub.props.fields.foo,
       name: 'foo',
@@ -228,7 +249,7 @@ describe('createReduxForm', () => {
 
     stub.props.fields.foo.onBlur('fooValue');
 
-    expect(stub.props.fields).toBeA('object');
+    expect(typeof stub.props.fields).toBe('object');
     expectField({
       field: stub.props.fields.foo,
       name: 'foo',
@@ -272,7 +293,7 @@ describe('createReduxForm', () => {
 
     stub.props.fields.foo.onBlur('fooValue');
 
-    expect(stub.props.fields).toBeA('object');
+    expect(typeof stub.props.fields).toBe('object');
     expectField({
       field: stub.props.fields.foo,
       name: 'foo',
@@ -315,7 +336,7 @@ describe('createReduxForm', () => {
 
     stub.props.fields.foo.onChange('fooValue');
 
-    expect(stub.props.fields).toBeA('object');
+    expect(typeof stub.props.fields).toBe('object');
     expectField({
       field: stub.props.fields.foo,
       name: 'foo',
@@ -359,7 +380,7 @@ describe('createReduxForm', () => {
 
     stub.props.fields.foo.onChange('fooValue');
 
-    expect(stub.props.fields).toBeA('object');
+    expect(typeof stub.props.fields).toBe('object');
     expectField({
       field: stub.props.fields.foo,
       name: 'foo',
@@ -406,7 +427,7 @@ describe('createReduxForm', () => {
 
     expect(stub.props.active).toBe('foo');
 
-    expect(stub.props.fields).toBeA('object');
+    expect(typeof stub.props.fields).toBe('object');
     expectField({
       field: stub.props.fields.foo,
       name: 'foo',
@@ -489,7 +510,7 @@ describe('createReduxForm', () => {
       </Provider>
     );
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
-    expect(stub.props.fields.children).toBeA('array');
+    expect(Array.isArray(stub.props.fields.children)).toBe(true);
     expect(stub.props.fields.children.length).toBe(2);
 
     expectField({
@@ -850,16 +871,16 @@ describe('createReduxForm', () => {
       div
     );
     const before = store.getState();
-    expect(before.form).toBeA('object');
-    expect(before.form[ form ]).toBeA('object');
-    expect(before.form[ form ].foo).toBeA('object');
-    expect(before.form[ form ].bar).toBeA('object');
+    expect(typeof before.form).toBe('object');
+    expect(typeof before.form[ form ]).toBe('object');
+    expect(typeof before.form[ form ].foo).toBe('object');
+    expect(typeof before.form[ form ].bar).toBe('object');
 
     ReactDOM.unmountComponentAtNode(div);
 
     const after = store.getState();
-    expect(after.form).toBeA('object');
-    expect(after.form[ form ]).toNotExist();
+    expect(typeof after.form).toBe('object');
+    expect(after.form[ form ]).toBeFalsy();
   });
 
   it('should NOT call destroy on unmount if destroyOnUnmount is disabled', () => {
@@ -879,18 +900,18 @@ describe('createReduxForm', () => {
       div
     );
     const before = store.getState();
-    expect(before.form).toBeA('object');
-    expect(before.form[ form ]).toBeA('object');
-    expect(before.form[ form ].foo).toBeA('object');
-    expect(before.form[ form ].bar).toBeA('object');
+    expect(typeof before.form).toBe('object');
+    expect(typeof before.form[ form ]).toBe('object');
+    expect(typeof before.form[ form ].foo).toBe('object');
+    expect(typeof before.form[ form ].bar).toBe('object');
 
     ReactDOM.unmountComponentAtNode(div);
 
     const after = store.getState();
-    expect(after.form).toBeA('object');
-    expect(after.form[ form ]).toBeA('object');
-    expect(after.form[ form ].foo).toBeA('object');
-    expect(after.form[ form ].bar).toBeA('object');
+    expect(typeof after.form).toBe('object');
+    expect(typeof after.form[ form ]).toBe('object');
+    expect(typeof after.form[ form ].foo).toBe('object');
+    expect(typeof after.form[ form ].bar).toBe('object');
   });
 
   it('should hoist statics', () => {
@@ -1077,7 +1098,7 @@ describe('createReduxForm', () => {
     const store = makeStore();
     const form = 'testForm';
     const errorValue = { foo: 'no bears allowed' };
-    const asyncValidate = createSpy().andReturn(Promise.reject(errorValue));
+    const asyncValidate = jest.fn().mockImplementation(() => Promise.reject(errorValue));
     const Decorated = reduxForm({
       form,
       fields: [ 'foo', 'bar' ],
@@ -1096,14 +1117,14 @@ describe('createReduxForm', () => {
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
 
     stub.props.fields.foo.onBlur('dog');
-    expect(asyncValidate).toNotHaveBeenCalled();
+    expect(asyncValidate).not.toHaveBeenCalled();
   });
 
   it('should call async validation if form is dirty and initialized', () => {
     const store = makeStore();
     const form = 'testForm';
     const errorValue = { foo: 'no bears allowed' };
-    const asyncValidate = createSpy().andReturn(Promise.reject(errorValue));
+    const asyncValidate = jest.fn().mockImplementation(() => Promise.reject(errorValue));
     const Decorated = reduxForm({
       form,
       fields: [ 'foo', 'bar' ],
@@ -1129,7 +1150,7 @@ describe('createReduxForm', () => {
     const store = makeStore();
     const form = 'testForm';
     const errorValue = { foo: 'no bears allowed' };
-    const asyncValidate = createSpy().andReturn(Promise.reject(errorValue));
+    const asyncValidate = jest.fn().mockImplementation(() => Promise.reject(errorValue));
     const Decorated = reduxForm({
       form,
       fields: [ 'foo', 'bar' ],
@@ -1158,7 +1179,7 @@ describe('createReduxForm', () => {
     });
     const form = 'testForm';
     const errorValue = { foo: 'no bears allowed' };
-    const asyncValidate = createSpy().andReturn(Promise.reject(errorValue));
+    const asyncValidate = jest.fn().mockImplementation(() => Promise.reject(errorValue));
     const Decorated = reduxForm({
       form,
       fields: [ 'foo[].name' ],
@@ -1177,7 +1198,7 @@ describe('createReduxForm', () => {
   });
 
   it('should call async validation on submit even if pristine and initialized', () => {
-    const submit = createSpy();
+    const submit = jest.fn();
     class FormComponent extends Component {
       render() {
         return (
@@ -1192,7 +1213,7 @@ describe('createReduxForm', () => {
     const store = makeStore();
     const form = 'testForm';
     const errorValue = { foo: 'no dogs allowed' };
-    const asyncValidate = createSpy().andReturn(Promise.reject(errorValue));
+    const asyncValidate = jest.fn().mockImplementation(() => Promise.reject(errorValue));
     const Decorated = reduxForm({
       form,
       fields: [ 'foo', 'bar' ],
@@ -1213,14 +1234,14 @@ describe('createReduxForm', () => {
     TestUtils.Simulate.submit(formElement);
 
     expect(asyncValidate).toHaveBeenCalled();
-    expect(submit).toNotHaveBeenCalled();
+    expect(submit).not.toHaveBeenCalled();
   });
 
   it('should call async validation if form is pristine and initialized but alwaysAsyncValidate is true', () => {
     const store = makeStore();
     const form = 'testForm';
     const errorValue = { foo: 'no bears allowed' };
-    const asyncValidate = createSpy().andReturn(Promise.reject(errorValue));
+    const asyncValidate = jest.fn().mockImplementation(() => Promise.reject(errorValue));
     const Decorated = reduxForm({
       form,
       fields: [ 'foo', 'bar' ],
@@ -1370,7 +1391,7 @@ describe('createReduxForm', () => {
     );
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
 
-    expect(stub.props.fields.colors).toBeA('array');
+    expect(Array.isArray(stub.props.fields.colors)).toBe(true);
     expect(stub.props.fields.colors.length).toBe(2);
     expectField({
       field: stub.props.fields.colors[ 0 ],
@@ -1418,9 +1439,9 @@ describe('createReduxForm', () => {
     );
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
 
-    expect(stub.props.fields.users).toBeA('array');
+    expect(Array.isArray(stub.props.fields.users)).toBe(true);
     expect(stub.props.fields.users.length).toBe(1);
-    expect(stub.props.fields.users[ 0 ]).toBeA('object');
+    expect(typeof stub.props.fields.users[ 0 ]).toBe('object');
     expectField({
       field: stub.props.fields.users[ 0 ].name,
       name: 'users[0].name',
@@ -1459,9 +1480,9 @@ describe('createReduxForm', () => {
     );
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
 
-    expect(stub.props.fields.users).toBeA('array');
+    expect(Array.isArray(stub.props.fields.users)).toBe(true);
     expect(stub.props.fields.users.length).toBe(0);
-    expect(stub.props.fields.users.addField).toBeA('function');
+    expect(typeof stub.props.fields.users.addField).toBe('function');
 
     const before = stub.props.fields.users;
 
@@ -1470,7 +1491,7 @@ describe('createReduxForm', () => {
 
     // check field
     expect(stub.props.fields.users.length).toBe(1);
-    expect(stub.props.fields.users[ 0 ]).toBeA('object');
+    expect(typeof stub.props.fields.users[ 0 ]).toBe('object');
     expectField({
       field: stub.props.fields.users[ 0 ].name,
       name: 'users[0].name',
@@ -1494,10 +1515,10 @@ describe('createReduxForm', () => {
       visited: false
     });
     const after = stub.props.fields.users;
-    expect(after).toNotBe(before);  // should be a new instance
+    expect(after).not.toBe(before);  // should be a new instance
 
     // check state
-    expect(store.getState().form.testForm.users).toBeA('array');
+    expect(Array.isArray(store.getState().form.testForm.users)).toBe(true);
     expect(store.getState().form.testForm.users.length).toBe(1);
     expect(store.getState().form.testForm.users[ 0 ].name)
       .toEqual({
@@ -1532,10 +1553,10 @@ describe('createReduxForm', () => {
     );
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
 
-    expect(stub.props.fields.acknowledgements).toBeA('object');
-    expect(stub.props.fields.acknowledgements.items).toBeA('array');
+    expect(typeof stub.props.fields.acknowledgements).toBe('object');
+    expect(Array.isArray(stub.props.fields.acknowledgements.items)).toBe(true);
     expect(stub.props.fields.acknowledgements.items.length).toBe(0);
-    expect(stub.props.fields.acknowledgements.items.addField).toBeA('function');
+    expect(typeof stub.props.fields.acknowledgements.items.addField).toBe('function');
 
     // add field
     stub.props.fields.acknowledgements.items.addField({
@@ -1545,7 +1566,7 @@ describe('createReduxForm', () => {
 
     // check field
     expect(stub.props.fields.acknowledgements.items.length).toBe(1);
-    expect(stub.props.fields.acknowledgements.items[ 0 ]).toBeA('object');
+    expect(typeof stub.props.fields.acknowledgements.items[ 0 ]).toBe('object');
     expectField({
       field: stub.props.fields.acknowledgements.items[ 0 ].number,
       name: 'acknowledgements.items[0].number',
@@ -1593,9 +1614,9 @@ describe('createReduxForm', () => {
     );
     const stub = TestUtils.findRenderedComponentWithType(dom, Form);
 
-    expect(stub.props.fields.proposals).toBeA('array');
+    expect(Array.isArray(stub.props.fields.proposals)).toBe(true);
     expect(stub.props.fields.proposals.length).toBe(0);
-    expect(stub.props.fields.proposals.addField).toBeA('function');
+    expect(typeof stub.props.fields.proposals.addField).toBe('function');
 
     // add field
     const today = new Date();
@@ -1627,7 +1648,7 @@ describe('createReduxForm', () => {
 
     // check field
     expect(stub.props.fields.proposals.length).toBe(1);
-    expect(stub.props.fields.proposals[ 0 ]).toBeA('object');
+    expect(typeof stub.props.fields.proposals[ 0 ]).toBe('object');
     expectField({
       field: stub.props.fields.proposals[ 0 ].arrival,
       name: 'proposals[0].arrival',
@@ -2184,7 +2205,7 @@ describe('createReduxForm', () => {
     moe.onChange('BONK!');
 
     expect(stub.props.fields.larry).toBe(larry);
-    expect(stub.props.fields.moe).toNotBe(moe);
+    expect(stub.props.fields.moe).not.toBe(moe);
     expect(stub.props.fields.curly).toBe(curly);
   });
 
@@ -2208,9 +2229,9 @@ describe('createReduxForm', () => {
 
     postalCode.onChange('90210');
 
-    expect(stub.props.fields.address).toNotBe(address);
+    expect(stub.props.fields.address).not.toBe(address);
     expect(stub.props.fields.address.street).toBe(street);
-    expect(stub.props.fields.address.postalCode).toNotBe(postalCode);
+    expect(stub.props.fields.address.postalCode).not.toBe(postalCode);
   });
 
   it('should change field tree up to array that changed', () => {
@@ -2235,9 +2256,9 @@ describe('createReduxForm', () => {
 
     shippingPhones.addField();
 
-    expect(stub.props.fields.contact.shipping.phones).toNotBe(shippingPhones);
-    expect(stub.props.fields.contact.shipping).toNotBe(shipping);
-    expect(stub.props.fields.contact).toNotBe(contact);
+    expect(stub.props.fields.contact.shipping.phones).not.toBe(shippingPhones);
+    expect(stub.props.fields.contact.shipping).not.toBe(shipping);
+    expect(stub.props.fields.contact).not.toBe(contact);
     expect(stub.props.fields.contact.billing).toBe(billing);
     expect(stub.props.fields.contact.billing.phones).toBe(billingPhones);
 
@@ -2248,10 +2269,10 @@ describe('createReduxForm', () => {
 
     shippingPhones[ 0 ].onChange('555-1234');
 
-    expect(stub.props.fields.contact.shipping.phones[ 0 ]).toNotBe(shippingPhones0);
-    expect(stub.props.fields.contact.shipping.phones).toNotBe(shippingPhones);
-    expect(stub.props.fields.contact.shipping).toNotBe(shipping);
-    expect(stub.props.fields.contact).toNotBe(contact);
+    expect(stub.props.fields.contact.shipping.phones[ 0 ]).not.toBe(shippingPhones0);
+    expect(stub.props.fields.contact.shipping.phones).not.toBe(shippingPhones);
+    expect(stub.props.fields.contact.shipping).not.toBe(shipping);
+    expect(stub.props.fields.contact).not.toBe(contact);
     expect(stub.props.fields.contact.billing).toBe(billing);
     expect(stub.props.fields.contact.billing.phones).toBe(billingPhones);
   });
@@ -2415,7 +2436,7 @@ describe('createReduxForm', () => {
     const store = makeStore();
     const form = 'testForm';
     const initialValues = { firstName: 'Bobby', lastName: 'Tables', age: 12 };
-    const onSubmit = createSpy().andCall((values, dispatch, props) => {
+    const onSubmit = jest.fn().mockImplementation((values, dispatch, props) => {
       expect(values).toEqual(initialValues);
       expect(dispatch).toEqual(store.dispatch);
       expect(props.testProp).toEqual(1337);
@@ -2456,7 +2477,7 @@ describe('createReduxForm', () => {
 
     const button = TestUtils.findRenderedDOMComponentWithTag(dom, 'button');
 
-    expect(onSubmit).toNotHaveBeenCalled();
+    expect(onSubmit).not.toHaveBeenCalled();
 
     TestUtils.Simulate.click(button);
 
@@ -2468,9 +2489,11 @@ describe('createReduxForm', () => {
     const store = makeStore();
     const form = 'testForm';
     const initialValues = { firstName: 'Bobby', lastName: 'Tables', age: 12 };
-    const onSubmit = createSpy().andReturn(Promise.resolve());
-    const onSubmitFail = createSpy();
-    const validate = createSpy().andReturn({ firstName: 'Go to your room, Bobby.' });
+    const onSubmit = jest.fn().mockImplementation(() => Promise.resolve());
+    const onSubmitFail = jest.fn();
+    const validate = jest.fn().mockImplementation(() => ({
+      firstName: 'Go to your room, Bobby.'
+    }));
     const Decorated = reduxForm({
       form,
       fields: [ 'firstName', 'lastName', 'age' ],
@@ -2508,20 +2531,20 @@ describe('createReduxForm', () => {
 
     const button = TestUtils.findRenderedDOMComponentWithTag(dom, 'button');
 
-    expect(onSubmit).toNotHaveBeenCalled();
-    expect(onSubmitFail).toNotHaveBeenCalled();
+    expect(onSubmit).not.toHaveBeenCalled();
+    expect(onSubmitFail).not.toHaveBeenCalled();
 
     TestUtils.Simulate.click(button);
 
     expect(validate).toHaveBeenCalled();
-    expect(onSubmit).toNotHaveBeenCalled();
+    expect(onSubmit).not.toHaveBeenCalled();
     expect(onSubmitFail).toHaveBeenCalled();
   });
 
   it('should only rerender the form that changed', () => {
     const store = makeStore();
-    const fooRender = createRestorableSpy().andReturn(<div/>);
-    const barRender = createRestorableSpy().andReturn(<div/>);
+    const fooRender = jest.fn().mockReturnValue(<div/>);
+    const barRender = jest.fn().mockReturnValue(<div/>);
 
     class FooForm extends Component {
       render() {
@@ -2559,15 +2582,15 @@ describe('createReduxForm', () => {
     expect(barRender).toHaveBeenCalled();
 
     // restore spies
-    fooRender.restore();
-    barRender.restore();
+    fooRender.mockClear();
+    barRender.mockClear();
 
     // change field on foo
     fooStub.props.fields.name.onChange('Tom');
 
     // second render: only foo form
     expect(fooRender).toHaveBeenCalled();
-    expect(barRender).toNotHaveBeenCalled();
+    expect(barRender).not.toHaveBeenCalled();
   });
 
   it('should only rerender the field components that change', () => {
@@ -2583,7 +2606,7 @@ describe('createReduxForm', () => {
       render() {
         fooRenders++;
         const { field } = this.props;
-        return <input type="text" {...field}/>;
+        return <input type="text" {...domOnlyProps(field)}/>;
       }
     }
     FooInput.propTypes = {
@@ -2598,7 +2621,7 @@ describe('createReduxForm', () => {
       render() {
         barRenders++;
         const { field } = this.props;
-        return <input type="password" {...field}/>;
+        return <input type="password" {...domOnlyProps(field)}/>;
       }
     }
     BarInput.propTypes = {
@@ -2732,7 +2755,7 @@ describe('createReduxForm', () => {
         expect(mingzi.initialValue).toBe('Bob');
         expect(mingzi.value).toBe('Bob');
         return (<div>
-          <input {...mingzi}/>
+          <input {...domOnlyProps(mingzi)}/>
         </div>);
       }
     }
@@ -2750,7 +2773,7 @@ describe('createReduxForm', () => {
     );
   });
 
-  it('should throw when trying to access the wrapped instance if withRef is not specified', () => {
+  it('should throw when trying to access the wrapped instance if forwardRef is not specified', () => {
     const store = makeStore();
 
     class Container extends Component {
@@ -2772,9 +2795,10 @@ describe('createReduxForm', () => {
 
     const decorated = TestUtils.findRenderedComponentWithType(dom, DecoratedForm);
     expect(() => decorated.getWrappedInstance()).toThrow(
-      /To access the wrapped instance, you need to specify \{ withRef: true \} as the fourth argument of the connect\(\) call\./
+      /To access the wrapped instance, you need to specify \{ forwardRef: true \} as the fourth argument of the connect\(\) call\./
     );
   });
+
 
   it('should return the instance of the wrapped component for use in calling child methods', () => {
 
@@ -2796,9 +2820,9 @@ describe('createReduxForm', () => {
     }
 
     const DecoratedForm = reduxForm({
-      form: 'withRefTest',
+      form: 'forwardRefTest',
       fields: ['foo', 'bar']
-    }, null, null, null, {withRef: true})(Container);
+    }, null, null, null, {forwardRef: true})(Container);
 
     const dom = TestUtils.renderIntoDocument(
       <Provider store={store}>
@@ -2810,7 +2834,7 @@ describe('createReduxForm', () => {
 
     expect(() => decorated.someInstanceMethod()).toThrow();
     expect(decorated.getWrappedInstance().someInstanceMethod()).toBe(someData);
-    expect(decorated.refs.wrappedInstance.refs.wrappedInstance.getWrappedInstance().refs.wrappedInstance.someInstanceMethod()).toBe(someData);
+    expect(decorated.refs.wrappedInstance.refs.wrappedInstance.refs.wrappedInstance.someInstanceMethod()).toBe(someData);
   });
 
   it('should change nested fields', () => {
@@ -2818,7 +2842,7 @@ describe('createReduxForm', () => {
     let lastNextBarValue; // eslint-disable-line
 
     class FormComponent extends Component {
-      componentWillReceiveProps(nextProps) {
+      UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line
         /*
          console.info(
          this.props.fields.foo.bar.value,
@@ -2876,11 +2900,10 @@ describe('createReduxForm', () => {
     const nextFooBar = nextFields.foo.bar;
     const nextFooBarValue = nextFields.foo.bar.value;
 
-    expect(nextFooBarValue)
-      .toBe('next')
-      .toNotBe(previousFooBarValue);
-    expect(nextFooBar).toNotBe(previousFooBar);
-    expect(nextFoo).toNotBe(previousFoo);
+    expect(nextFooBarValue).toBe('next');
+    expect(nextFooBarValue).not.toBe(previousFooBarValue);
+    expect(nextFooBar).not.toBe(previousFooBar);
+    expect(nextFoo).not.toBe(previousFoo);
 
     // FAILS
     //expect(lastPrevBarValue).toNotEqual(lastNextBarValue);
@@ -2899,7 +2922,7 @@ describe('createReduxForm', () => {
       render() {
         const {fields: {name}} = this.props;
         return (<div>
-          <input {...name}/>
+          <input {...domOnlyProps(name)}/>
         </div>);
       }
     }

@@ -1,4 +1,3 @@
-import expect from 'expect';
 import isValid from '../isValid';
 
 describe('isValid', () => {

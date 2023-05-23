@@ -1,23 +1,20 @@
-import expect, {createSpy} from 'expect';
 import createOnDragStart, {dataKey} from '../createOnDragStart';
 
 describe('createOnDragStart', () => {
   it('should return a function', () => {
-    expect(createOnDragStart())
-      .toExist()
-      .toBeA('function');
+    expect(createOnDragStart()).toBeTruthy();
+    expect(typeof createOnDragStart()).toBe('function');
   });
 
   it('should return a function that calls dataTransfer.setData with key and result from getValue', () => {
-    const getValue = createSpy().andReturn('bar');
-    const setData = createSpy();
+    const getValue = jest.fn().mockImplementation(() => 'bar');
+    const setData = jest.fn();
     createOnDragStart('foo', getValue)({
       dataTransfer: {setData}
     });
     expect(getValue).toHaveBeenCalled();
-    expect(setData)
-      .toHaveBeenCalled()
-      .toHaveBeenCalledWith(dataKey, 'bar');
+    expect(setData).toHaveBeenCalled();
+    expect(setData).toHaveBeenCalledWith(dataKey, 'bar');
   });
 
 });

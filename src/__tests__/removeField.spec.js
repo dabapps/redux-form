@@ -1,4 +1,3 @@
-import expect from 'expect';
 import removeField from '../removeField';
 
 describe('removeField', () => {
@@ -10,7 +9,7 @@ describe('removeField', () => {
   it('should not return same instance', () => {
     const fields = {foo: 'bar'};
     expect(removeField(fields, 'foo'))
-      .toNotBe(fields);
+      .not.toBe(fields);
   });
 
   it('should remove a simple field', () => {

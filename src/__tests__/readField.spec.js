@@ -1,17 +1,10 @@
-import expect, {createSpy} from 'expect';
 import readField from '../readField';
 const noop = () => null;
 
-const createRestorableSpy = (fn) => {
-  return createSpy(fn, function restore() {
-    this.calls = [];
-  });
-};
-
 describe('readField', () => {
-  const blur = createRestorableSpy();
-  const change = createRestorableSpy();
-  const focus = createRestorableSpy();
+  const blur = jest.fn();
+  const change = jest.fn();
+  const focus = jest.fn();
   const defaultProps = {
     asyncBlurFields: [],
     blur,
@@ -26,47 +19,44 @@ describe('readField', () => {
   };
 
   const expectField = ({field, name, value, dirty, touched, visited, error, initialValue, readonly, checked}) => {
-    expect(field)
-      .toExist()
-      .toBeA('object');
+    expect(field).toBeTruthy();
+    expect(typeof field).toBe('object');
     expect(field.name).toBe(name);
     expect(field.value).toEqual(value);
     if (readonly) {
-      expect(field.onBlur).toNotExist();
-      expect(field.onChange).toNotExist();
-      expect(field.onDragStart).toNotExist();
-      expect(field.onDrop).toNotExist();
-      expect(field.onFocus).toNotExist();
-      expect(field.onUpdate).toNotExist();
+      expect(field.onBlur).toBeFalsy();
+      expect(field.onChange).toBeFalsy();
+      expect(field.onDragStart).toBeFalsy();
+      expect(field.onDrop).toBeFalsy();
+      expect(field.onFocus).toBeFalsy();
+      expect(field.onUpdate).toBeFalsy();
     } else {
-      expect(field.onBlur).toBeA('function');
-      expect(field.onChange).toBeA('function');
-      expect(field.onDragStart).toBeA('function');
-      expect(field.onDrop).toBeA('function');
-      expect(field.onFocus).toBeA('function');
-      expect(field.onUpdate).toBeA('function');
+      expect(typeof field.onBlur).toBe('function');
+      expect(typeof field.onChange).toBe('function');
+      expect(typeof field.onDragStart).toBe('function');
+      expect(typeof field.onDrop).toBe('function');
+      expect(typeof field.onFocus).toBe('function');
+      expect(typeof field.onUpdate).toBe('function');
       expect(field.onUpdate).toBe(field.onChange);
 
       // call blur
-      expect(blur.calls.length).toBe(0);
+      expect(blur.mock.calls.length).toBe(0);
       field.onBlur('newValue');
-      expect(blur.calls.length).toBe(1);
-      expect(blur)
-        .toHaveBeenCalled()
-        .toHaveBeenCalledWith(name, 'newValue');
+      expect(blur.mock.calls.length).toBe(1);
+      expect(blur).toHaveBeenCalled();
+      expect(blur).toHaveBeenCalledWith(name, 'newValue');
 
       // call change
-      expect(change.calls.length).toBe(0);
+      expect(change.mock.calls.length).toBe(0);
       field.onChange('newValue');
-      expect(change.calls.length).toBe(1);
-      expect(change)
-        .toHaveBeenCalled()
-        .toHaveBeenCalledWith(name, 'newValue');
+      expect(change.mock.calls.length).toBe(1);
+      expect(change).toHaveBeenCalled();
+      expect(change).toHaveBeenCalledWith(name, 'newValue');
 
       // call focus
-      expect(focus.calls.length).toBe(0);
+      expect(focus.mock.calls.length).toBe(0);
       field.onFocus();
-      expect(focus.calls.length).toBe(1);
+      expect(focus.mock.calls.length).toBe(1);
       expect(focus).toHaveBeenCalled();
     }
     expect(field.initialValue).toBe(initialValue);
@@ -79,9 +69,9 @@ describe('readField', () => {
     expect(field.visited).toBe(visited);
     expect(field.checked).toBe(checked);
 
-    blur.restore();
-    change.restore();
-    focus.restore();
+    blur.mockClear();
+    change.mockClear();
+    focus.mockClear();
   };
 
   it('should initialize a simple field', () => {
@@ -240,7 +230,7 @@ describe('readField', () => {
       readonly: false
     });
     const afterField = fields.foo;
-    expect(beforeField).toNotBe(afterField);  // field instance should be different
+    expect(beforeField).not.toBe(afterField);  // field instance should be different
   });
 
   it('should initialize a nested field', () => {
@@ -387,14 +377,14 @@ describe('readField', () => {
     });
     const afterFoo = fields.foo;
     const afterField = fields.foo.baz;
-    expect(beforeFoo).toNotBe(afterFoo);         // field container instance should be same
-    expect(beforeField).toNotBe(afterField);  // field instance should be different
+    expect(beforeFoo).not.toBe(afterFoo);         // field container instance should be same
+    expect(beforeField).not.toBe(afterField);  // field instance should be different
   });
 
   it('should initialize an array field', () => {
     const fields = {};
     readField({}, 'foo[]', undefined, fields, {}, undefined, false, defaultProps);
-    expect(fields.foo).toBeA('array');
+    expect(Array.isArray(fields.foo)).toBe(true);
     expect(fields.foo[0]).toBe(undefined);
   });
 
@@ -570,13 +560,13 @@ describe('readField', () => {
     const afterArray = fields.foo;
     const after1 = fields.foo[0];
     const after2 = fields.foo[1];
-    expect(beforeArray).toNotBe(afterArray); // array should be different
-    expect(before1).toNotBe(after1);      // field instance should be different
-    expect(before2).toNotBe(after2);      // field instance should be different
+    expect(beforeArray).not.toBe(afterArray); // array should be different
+    expect(before1).not.toBe(after1);      // field instance should be different
+    expect(before2).not.toBe(after2);      // field instance should be different
   });
 
   it('should allow an array field to add a value', () => {
-    const spy = createSpy();
+    const spy = jest.fn();
     const fields = {};
     readField({
       foo: [
@@ -588,13 +578,12 @@ describe('readField', () => {
       addArrayValue: spy
     });
     fields.foo.addField('rabbit');
-    expect(spy)
-      .toHaveBeenCalled()
-      .toHaveBeenCalledWith('foo', 'rabbit', undefined, []);
+    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith('foo', 'rabbit', undefined, []);
   });
 
   it('should allow an array field to add a deeply nested value', () => {
-    const spy = createSpy();
+    const spy = jest.fn();
     const fields = {};
     readField({
       foo: [
@@ -619,13 +608,12 @@ describe('readField', () => {
       ]
     });
     fields.foo.addField('rabbit');
-    expect(spy)
-      .toHaveBeenCalled()
-      .toHaveBeenCalledWith('foo', 'rabbit', undefined, ['bar[].baz']);
+    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith('foo', 'rabbit', undefined, ['bar[].baz']);
   });
 
   it('should allow an array field to remove a value', () => {
-    const spy = createSpy();
+    const spy = jest.fn();
     const fields = {};
     readField({
       foo: [
@@ -637,9 +625,8 @@ describe('readField', () => {
       removeArrayValue: spy
     });
     fields.foo.removeField(1);
-    expect(spy)
-      .toHaveBeenCalled()
-      .toHaveBeenCalledWith('foo', 1);
+    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith('foo', 1);
   });
 
   it('should remove array field when it is no longer in the store', () => {
@@ -665,8 +652,8 @@ describe('readField', () => {
   it('should initialize a mixed field with empty state', () => {
     const fields = {};
     readField({}, 'pig.foo[].dog.cat[].rat', undefined, fields, {}, undefined, false, defaultProps);
-    expect(fields.pig).toBeA('object');
-    expect(fields.pig.foo).toBeA('array');
+    expect(typeof fields.pig).toBe('object');
+    expect(Array.isArray(fields.pig.foo)).toBe(true);
     expect(fields.pig.foo[0]).toBe(undefined);
   });
 
@@ -689,12 +676,12 @@ describe('readField', () => {
         ]
       }
     }, 'pig.foo[].dog.cat[].rat', undefined, fields, {}, undefined, false, defaultProps);
-    expect(fields.pig).toBeA('object');
-    expect(fields.pig.foo).toBeA('array');
-    expect(fields.pig.foo[0].dog).toBeA('object');
-    expect(fields.pig.foo[0].dog.cat).toBeA('array');
-    expect(fields.pig.foo[0].dog.cat[0]).toBeA('object');
-    expect(fields.pig.foo[0].dog.cat[0].rat).toBeA('object');
+    expect(typeof fields.pig).toBe('object');
+    expect(Array.isArray(fields.pig.foo)).toBe(true);
+    expect(typeof fields.pig.foo[0].dog).toBe('object');
+    expect(Array.isArray(fields.pig.foo[0].dog.cat)).toBe(true);
+    expect(typeof fields.pig.foo[0].dog.cat[0]).toBe('object');
+    expect(typeof fields.pig.foo[0].dog.cat[0].rat).toBe('object');
     expectField({
       field: fields.pig.foo[0].dog.cat[0].rat,
       name: 'pig.foo[0].dog.cat[0].rat',
@@ -760,8 +747,8 @@ describe('readField', () => {
     const afterArrayField = fields.pig.foo;
     const afterObjectField = fields.pig.foo[0];
 
-    expect(beforeArrayField).toNotBe(afterArrayField); // field instance should be different
-    expect(beforeObjectField).toNotBe(afterObjectField); // field instance should be different
+    expect(beforeArrayField).not.toBe(afterArrayField); // field instance should be different
+    expect(beforeObjectField).not.toBe(afterObjectField); // field instance should be different
   });
 
   it('should read an array field with an initial value', () => {
@@ -882,11 +869,11 @@ describe('readField', () => {
       readonly: true
     });
     const field = fields.foo;
-    expect(field.onBlur).toNotExist();
-    expect(field.onChange).toNotExist();
-    expect(field.onDragStart).toNotExist();
-    expect(field.onDrop).toNotExist();
-    expect(field.onFocus).toNotExist();
-    expect(field.onUpdate).toNotExist();
+    expect(field.onBlur).toBeFalsy();
+    expect(field.onChange).toBeFalsy();
+    expect(field.onDragStart).toBeFalsy();
+    expect(field.onDrop).toBeFalsy();
+    expect(field.onFocus).toBeFalsy();
+    expect(field.onUpdate).toBeFalsy();
   });
 });

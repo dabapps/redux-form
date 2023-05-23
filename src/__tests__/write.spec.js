@@ -1,4 +1,3 @@
-import expect from 'expect';
 import write from '../write';
 
 describe('write', () => {
@@ -29,59 +28,54 @@ describe('write', () => {
 
   it('should put simple arrays', () => {
     const data1 = write('cat', ['foo', 'bar'], {});
-    expect(data1.cat)
-      .toBeA('array')
-      .toEqual(['foo', 'bar']);
+    expect(Array.isArray(data1.cat)).toBe(true);
+    expect(data1.cat).toEqual(['foo', 'bar']);
     const data2 = write('dog', ['rabbit', 42], {});
-    expect(data2.dog)
-      .toBeA('array')
-      .toEqual(['rabbit', 42]);
+    expect(Array.isArray(data2.dog)).toBe(true);
+    expect(data2.dog).toEqual(['rabbit', 42]);
   });
 
   it('should put simple indexless array values', () => {
     const data = write('cat[]', 'meow', {
       cat: [1, 2, 3, 4]
     });
-    expect(data.cat)
-      .toBeA('array')
-      .toEqual(['meow', 'meow', 'meow', 'meow']);
+    expect(Array.isArray(data.cat)).toBe(true);
+    expect(data.cat).toEqual(['meow', 'meow', 'meow', 'meow']);
   });
 
   it('should put arrays as indexless array values', () => {
     const data = write('cat[]', ['meow', 'woof'], {
       cat: [1, 2, 3, 4]
     });
-    expect(data.cat)
-      .toBeA('array')
-      .toEqual(['meow', 'woof']);
+    expect(Array.isArray(data.cat)).toBe(true);
+    expect(data.cat).toEqual(['meow', 'woof']);
   });
 
   it('should put simple indexless array values', () => {
     const data = write('cat[]', 'meow', {
       cat: [1, 2, 3, 4]
     });
-    expect(data.cat)
-      .toBeA('array')
-      .toEqual(['meow', 'meow', 'meow', 'meow']);
+    expect(Array.isArray(data.cat)).toBe(true);
+    expect(data.cat).toEqual(['meow', 'meow', 'meow', 'meow']);
   });
 
   it('should put properties on array values', () => {
     const data1 = write('cat[0].name', 'foo', {});
-    expect(data1.cat).toBeA('array');
-    expect(data1.cat[0]).toBeA('object');
+    expect(Array.isArray(data1.cat)).toBe(true);
+    expect(typeof data1.cat[0]).toBe('object');
     expect(data1.cat[0].name).toBe('foo');
     const data2 = write('dog[2].friend', 'rabbit', {});
-    expect(data2.dog).toBeA('array');
-    expect(data2.dog[2]).toBeA('object');
+    expect(Array.isArray(data2.dog)).toBe(true);
+    expect(typeof data2.dog[2]).toBe('object');
     expect(data2.dog[2].friend).toBe('rabbit');
   });
 
   it('should put simple array values', () => {
     const data1 = write('cat[0]', 'foo', {});
-    expect(data1.cat).toBeA('array');
+    expect(Array.isArray(data1.cat)).toBe(true);
     expect(data1.cat[0]).toBe('foo');
     const data2 = write('dog[2]', 'rabbit', {});
-    expect(data2.dog).toBeA('array');
+    expect(Array.isArray(data2.dog)).toBe(true);
     expect(data2.dog[2]).toBe('rabbit');
   });
 
@@ -89,19 +83,18 @@ describe('write', () => {
     const data = write('cat[]', 'meow', {
       cat: [1, 2, 3, 4]
     });
-    expect(data.cat)
-      .toBeA('array')
-      .toEqual(['meow', 'meow', 'meow', 'meow']);
+    expect(Array.isArray(data.cat)).toBe(true);
+    expect(data.cat).toEqual(['meow', 'meow', 'meow', 'meow']);
   });
 
   it('should put properties on array values', () => {
     const data1 = write('cat[0].name', 'foo', {});
-    expect(data1.cat).toBeA('array');
-    expect(data1.cat[0]).toBeA('object');
+    expect(Array.isArray(data1.cat)).toBe(true);
+    expect(typeof data1.cat[0]).toBe('object');
     expect(data1.cat[0].name).toBe('foo');
     const data2 = write('dog[2].friend', 'rabbit', {});
-    expect(data2.dog).toBeA('array');
-    expect(data2.dog[2]).toBeA('object');
+    expect(Array.isArray(data2.dog)).toBe(true);
+    expect(typeof data2.dog[2]).toBe('object');
     expect(data2.dog[2].friend).toBe('rabbit');
   });
 
@@ -112,20 +105,20 @@ describe('write', () => {
         {name: 'whiskers'}
       ]
     });
-    expect(data1.cat).toBeA('array');
-    expect(data1.cat[0]).toBeA('object');
+    expect(Array.isArray(data1.cat)).toBe(true);
+    expect(typeof data1.cat[0]).toBe('object');
     expect(data1.cat[0].name).toBe('foo');
-    expect(data1.cat[1]).toBeA('object');
+    expect(typeof data1.cat[1]).toBe('object');
     expect(data1.cat[1].name).toBe('foo');
   });
 
   it('should put complex array values', () => {
     const data = write('cat[0].dog[7].rabbit.fox', 'wolf', {});
-    expect(data.cat).toBeA('array');
-    expect(data.cat[0]).toBeA('object');
-    expect(data.cat[0].dog).toBeA('array');
-    expect(data.cat[0].dog[7]).toBeA('object');
-    expect(data.cat[0].dog[7].rabbit).toBeA('object');
+    expect(Array.isArray(data.cat)).toBe(true);
+    expect(typeof data.cat[0]).toBe('object');
+    expect(Array.isArray(data.cat[0].dog)).toBe(true);
+    expect(typeof data.cat[0].dog[7]).toBe('object');
+    expect(typeof data.cat[0].dog[7].rabbit).toBe('object');
     expect(data.cat[0].dog[7].rabbit.fox).toBe('wolf');
   });
 
@@ -156,7 +149,7 @@ describe('write', () => {
     const backup = {...initial};
     const result1 = write('a.b', 'dog', initial);
     expect(backup).toEqual(initial);  // initial not mutated
-    expect(result1.a).toNotBe(initial.a);
+    expect(result1.a).not.toBe(initial.a);
     expect(result1.a.b).toBe('dog');
     expect(result1.c).toBe(initial.c);
     expect(result1.i).toBe(initial.i);
@@ -164,9 +157,9 @@ describe('write', () => {
     const result2 = write('c.e.g.h', 'dog', initial);
     expect(backup).toEqual(initial);  // initial not mutated
     expect(result2.a).toBe(initial.a);
-    expect(result2.c).toNotBe(initial.c);
-    expect(result2.c.e).toNotBe(initial.c.e);
-    expect(result2.c.e.g).toNotBe(initial.c.e.i);
+    expect(result2.c).not.toBe(initial.c);
+    expect(result2.c.e).not.toBe(initial.c.e);
+    expect(result2.c.e.g).not.toBe(initial.c.e.i);
     expect(result2.c.e.g.h).toBe('dog');
     expect(result2.i).toBe(initial.i);
     expect(result2.j).toBe(initial.j);
@@ -175,9 +168,9 @@ describe('write', () => {
     expect(result3.a).toBe(initial.a);
     expect(result3.c).toBe(initial.c);
     expect(result3.i).toBe(initial.i);
-    expect(result3.j).toNotBe(initial.j);
+    expect(result3.j).not.toBe(initial.j);
     expect(result3.j[0]).toBe(initial.j[0]);
-    expect(result3.j[1]).toNotBe(initial.j[1]);
+    expect(result3.j[1]).not.toBe(initial.j[1]);
     expect(result3.j[1].l).toBe('dog');
   });
 

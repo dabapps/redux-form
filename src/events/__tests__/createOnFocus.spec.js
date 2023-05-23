@@ -1,19 +1,16 @@
-import expect, {createSpy} from 'expect';
 import createOnFocus from '../createOnFocus';
 
 describe('createOnFocus', () => {
   it('should return a function', () => {
-    expect(createOnFocus())
-      .toExist()
-      .toBeA('function');
+    expect(createOnFocus()).toBeTruthy();
+    expect(typeof createOnFocus()).toBe('function');
   });
 
   it('should return a function that calls focus with name', () => {
-    const focus = createSpy();
+    const focus = jest.fn();
     createOnFocus('foo', focus)();
-    expect(focus)
-      .toHaveBeenCalled()
-      .toHaveBeenCalledWith('foo');
+    expect(focus).toHaveBeenCalled();
+    expect(focus).toHaveBeenCalledWith('foo');
   });
 
 });

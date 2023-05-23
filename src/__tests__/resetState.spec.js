@@ -1,4 +1,3 @@
-import expect from 'expect';
 import resetState from '../resetState';
 import {isFieldValue, makeFieldValue} from '../fieldValue';
 
@@ -22,25 +21,28 @@ describe('resetState', () => {
         value: 'bun'
       })
     });
-    expect(result)
-      .toBeA('object')
-      .toEqual({
-        foo: {
-          initial: 'dog',
-          value: 'dog',
-          _isFieldValue: true
-        },
-        bar: {
-          initial: 'rat',
-          value: 'rat',
-          _isFieldValue: true
-        },
-        baz: {
-          initial: 'hog',
-          value: 'hog',
-          _isFieldValue: true
-        }
-      });
+    expect(typeof result).toBe('object');
+
+    expect(result).toEqual({
+      foo: {
+        initial: 'dog',
+        value: 'dog',
+        _isFieldValue: true
+      },
+
+      bar: {
+        initial: 'rat',
+        value: 'rat',
+        _isFieldValue: true
+      },
+
+      baz: {
+        initial: 'hog',
+        value: 'hog',
+        _isFieldValue: true
+      }
+    });
+
     expect(isFieldValue(result.foo)).toBe(true);
     expect(isFieldValue(result.bar)).toBe(true);
     expect(isFieldValue(result.baz)).toBe(true);
@@ -64,27 +66,30 @@ describe('resetState', () => {
         })
       }
     });
-    expect(result)
-      .toBeA('object')
-      .toEqual({
-        foo: {
-          bar: {
-            initial: 'dog',
-            value: 'dog',
-            _isFieldValue: true
-          }
-        },
-        baz: {
-          chad: {
-            initial: 'fun',
-            value: 'fun',
-            _isFieldValue: true
-          },
-          chaz: {
-            _isFieldValue: true
-          }
+    expect(typeof result).toBe('object');
+
+    expect(result).toEqual({
+      foo: {
+        bar: {
+          initial: 'dog',
+          value: 'dog',
+          _isFieldValue: true
         }
-      });
+      },
+
+      baz: {
+        chad: {
+          initial: 'fun',
+          value: 'fun',
+          _isFieldValue: true
+        },
+
+        chaz: {
+          _isFieldValue: true
+        }
+      }
+    });
+
     expect(isFieldValue(result.foo.bar)).toBe(true);
     expect(isFieldValue(result.baz.chad)).toBe(true);
     expect(isFieldValue(result.baz.chaz)).toBe(true);
@@ -106,25 +111,22 @@ describe('resetState', () => {
         })
       ]
     });
-    expect(result)
-      .toBeA('object')
-      .toEqual({
-        foo: [
-          {
-            initial: 'cat',
-            value: 'cat',
-            _isFieldValue: true
-          },
-          {
-            initial: 'rat',
-            value: 'rat',
-            _isFieldValue: true
-          },
-          {
-            _isFieldValue: true
-          }
-        ]
-      });
+    expect(typeof result).toBe('object');
+
+    expect(result).toEqual({
+      foo: [{
+        initial: 'cat',
+        value: 'cat',
+        _isFieldValue: true
+      }, {
+        initial: 'rat',
+        value: 'rat',
+        _isFieldValue: true
+      }, {
+        _isFieldValue: true
+      }]
+    });
+
     expect(isFieldValue(result.foo[0])).toBe(true);
     expect(isFieldValue(result.foo[1])).toBe(true);
     expect(isFieldValue(result.foo[2])).toBe(true);
@@ -147,26 +149,24 @@ describe('resetState', () => {
         }
       ]
     });
-    expect(result)
-      .toBeA('object')
-      .toEqual({
-        myValues: [
-          {
-            value: {
-              initial: 'cat',
-              value: 'cat',
-              _isFieldValue: true
-            }
-          },
-          {
-            value: {
-              initial: 'pig',
-              value: 'pig',
-              _isFieldValue: true
-            }
-          }
-        ]
-      });
+    expect(typeof result).toBe('object');
+
+    expect(result).toEqual({
+      myValues: [{
+        value: {
+          initial: 'cat',
+          value: 'cat',
+          _isFieldValue: true
+        }
+      }, {
+        value: {
+          initial: 'pig',
+          value: 'pig',
+          _isFieldValue: true
+        }
+      }]
+    });
+
     expect(isFieldValue(result.myValues[0].value)).toBe(true);
     expect(isFieldValue(result.myValues[1].value)).toBe(true);
   });
@@ -175,8 +175,10 @@ describe('resetState', () => {
     const result = resetState({
       foo: []
     });
-    expect(result)
-      .toBeA('object')
-      .toEqual({foo: []});
+    expect(typeof result).toBe('object');
+
+    expect(result).toEqual({
+      foo: []
+    });
   });
 });

@@ -40,6 +40,13 @@ const setErrors = (state, errors, destKey) => {
     return clear();
   }
   if (typeof errors === 'string') {
+    if (Array.isArray(state)) {
+      return Object.defineProperty([...state], destKey, {
+        value: errors,
+        enumerable: true
+      });
+    }
+
     return makeFieldValue({
       ...state,
       [destKey]: errors

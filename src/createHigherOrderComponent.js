@@ -29,7 +29,7 @@ const createHigherOrderComponent = (config,
                                     options) => {
   const {Component} = React;
   return (reduxMountPoint, formName, formKey, getFormState) => {
-    const { withRef = false } = (options || {});
+    const { forwardRef = false } = (options || {});
     class ReduxForm extends Component {
       constructor(props) {
         super(props);
@@ -44,14 +44,14 @@ const createHigherOrderComponent = (config,
         submitPassback(() => this.handleSubmit());  // wrapped in function to disallow params
       }
 
-      componentWillMount() {
+      UNSAFE_componentWillMount() { // eslint-disable-line
         const {fields, form, initialize, initialValues} = this.props;
         if (initialValues && !form._initialized) {
           initialize(initialValues, fields);
         }
       }
 
-      componentWillReceiveProps(nextProps) {
+      UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line
         if (!deepEqual(this.props.fields, nextProps.fields) || !deepEqual(this.props.form, nextProps.form, {strict: true})) {
           this.fields = readFields(nextProps, this.props, this.fields, this.asyncValidate, isReactNative);
         }
@@ -144,7 +144,7 @@ const createHigherOrderComponent = (config,
           untouchAll: silenceEvents(() => untouch(...fields))
         };
         const passedProps = propNamespace ? {[propNamespace]: props} : props;
-        if ( withRef ) {
+        if ( forwardRef ) {
           return (<WrappedComponent {...{
             ...passableProps, // contains dispatch
             ...passedProps

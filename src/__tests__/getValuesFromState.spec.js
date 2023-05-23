@@ -1,4 +1,3 @@
-import expect from 'expect';
 import {makeFieldValue} from '../fieldValue';
 import getValuesFromState from '../getValuesFromState';
 
@@ -10,14 +9,14 @@ describe('getValuesFromState', () => {
       alive: makeFieldValue({value: true}),
       value: makeFieldValue({value: 'value'})
     };
-    expect(getValuesFromState(state))
-      .toBeA('object')
-      .toEqual({
-        foo: 'bar',
-        catLives: 9,
-        alive: true,
-        value: 'value'
-      });
+    expect(typeof getValuesFromState(state)).toBe('object');
+
+    expect(getValuesFromState(state)).toEqual({
+      foo: 'bar',
+      catLives: 9,
+      alive: true,
+      value: 'value'
+    });
   });
 
   it('should understand undefined values that have only been touched', () => {
@@ -26,11 +25,11 @@ describe('getValuesFromState', () => {
       bar: makeFieldValue({touched: true}),
       baz: makeFieldValue({touched: true})
     };
-    expect(getValuesFromState(state))
-      .toBeA('object')
-      .toEqual({
-        foo: 'dog'
-      });
+    expect(typeof getValuesFromState(state)).toBe('object');
+
+    expect(getValuesFromState(state)).toEqual({
+      foo: 'dog'
+    });
   });
 
   it('should get deep values from state', () => {
@@ -43,17 +42,19 @@ describe('getValuesFromState', () => {
       },
       alive: makeFieldValue({value: true})
     };
-    expect(getValuesFromState(state))
-      .toBeA('object')
-      .toEqual({
-        foo: {
-          bar: 'baz'
-        },
-        lives: {
-          cat: 9
-        },
-        alive: true
-      });
+    expect(typeof getValuesFromState(state)).toBe('object');
+
+    expect(getValuesFromState(state)).toEqual({
+      foo: {
+        bar: 'baz'
+      },
+
+      lives: {
+        cat: 9
+      },
+
+      alive: true
+    });
   });
 
   it('should get date values from state', () => {
@@ -67,12 +68,12 @@ describe('getValuesFromState', () => {
         value: date2
       })
     };
-    expect(getValuesFromState(state))
-      .toBeA('object')
-      .toEqual({
-        time1: date1,
-        time2: date2
-      });
+    expect(typeof getValuesFromState(state)).toBe('object');
+
+    expect(getValuesFromState(state)).toEqual({
+      time1: date1,
+      time2: date2
+    });
   });
 
   it('should get undefined values from state', () => {
@@ -84,9 +85,8 @@ describe('getValuesFromState', () => {
         value: undefined
       }
     };
-    expect(getValuesFromState(state))
-      .toBeA('object')
-      .toEqual({});
+    expect(typeof getValuesFromState(state)).toBe('object');
+    expect(getValuesFromState(state)).toEqual({});
   });
 
   it('should get null values from state', () => {
@@ -98,12 +98,12 @@ describe('getValuesFromState', () => {
         value: null
       })
     };
-    expect(getValuesFromState(state))
-      .toBeA('object')
-      .toEqual({
-        foo: null,
-        bar: null
-      });
+    expect(typeof getValuesFromState(state)).toBe('object');
+
+    expect(getValuesFromState(state)).toEqual({
+      foo: null,
+      bar: null
+    });
   });
 
   it('should get empty string values from state', () => {
@@ -115,12 +115,12 @@ describe('getValuesFromState', () => {
         value: ''
       })
     };
-    expect(getValuesFromState(state))
-      .toBeA('object')
-      .toEqual({
-        foo: '',
-        bar: ''
-      });
+    expect(typeof getValuesFromState(state)).toBe('object');
+
+    expect(getValuesFromState(state)).toEqual({
+      foo: '',
+      bar: ''
+    });
   });
 
   it('should get array values from state', () => {
@@ -132,21 +132,23 @@ describe('getValuesFromState', () => {
       ],
       alive: makeFieldValue({value: true})
     };
-    expect(getValuesFromState(state))
-      .toBeA('object')
-      .toEqual({
-        foo: ['bar', 'baz', undefined],
-        alive: true
-      });
+    expect(typeof getValuesFromState(state)).toBe('object');
+
+    expect(getValuesFromState(state)).toEqual({
+      foo: ['bar', 'baz', undefined],
+      alive: true
+    });
   });
 
   it('should allow an array to be empty', () => {
     const state = {
       foo: []
     };
-    expect(getValuesFromState(state))
-      .toBeA('object')
-      .toEqual({foo: []});
+    expect(typeof getValuesFromState(state)).toBe('object');
+
+    expect(getValuesFromState(state)).toEqual({
+      foo: []
+    });
   });
 
   it('should get deep array values from state', () => {
@@ -166,23 +168,25 @@ describe('getValuesFromState', () => {
         }
       ]
     };
-    expect(getValuesFromState(state))
-      .toBeA('object')
-      .toEqual({
-        foo: {
-          animals: ['cat', 'dog', 'rat']
-        },
-        bar: [{deeper: 42}]
-      });
+    expect(typeof getValuesFromState(state)).toBe('object');
+
+    expect(getValuesFromState(state)).toEqual({
+      foo: {
+        animals: ['cat', 'dog', 'rat']
+      },
+
+      bar: [{
+        deeper: 42
+      }]
+    });
   });
 
   it('should ignore empty values from state', () => {
     const state = {
       name: makeFieldValue({}),
     };
-    expect(getValuesFromState(state))
-      .toBeA('object')
-      .toEqual({});
+    expect(typeof getValuesFromState(state)).toBe('object');
+    expect(getValuesFromState(state)).toEqual({});
   });
 
   it('should ignore values starting with _', () => {
@@ -195,12 +199,12 @@ describe('getValuesFromState', () => {
       }),
       _someMetaValue: 'rat'
     };
-    expect(getValuesFromState(state))
-      .toBeA('object')
-      .toEqual({
-        foo: 'dog',
-        bar: 'cat'
-      });
+    expect(typeof getValuesFromState(state)).toBe('object');
+
+    expect(getValuesFromState(state)).toEqual({
+      foo: 'dog',
+      bar: 'cat'
+    });
   });
 
   it('should ignore visited fields without values', () => {
@@ -212,11 +216,11 @@ describe('getValuesFromState', () => {
         visited: true
       })
     };
-    expect(getValuesFromState(state))
-      .toBeA('object')
-      .toEqual({
-        foo: 'dog'
-      });
+    expect(typeof getValuesFromState(state)).toBe('object');
+
+    expect(getValuesFromState(state)).toEqual({
+      foo: 'dog'
+    });
   });
 
   it('should get deep array of objects from state', () => {
@@ -228,13 +232,19 @@ describe('getValuesFromState', () => {
         ]
       }
     };
-    expect(getValuesFromState(state))
-      .toBeA('object')
-      .toEqual({
-        foo: {
-          animals: [{key: 'k1', value: 'v1'}, {key: 'k2', value: 'v2'}]
-        }
-      });
+    expect(typeof getValuesFromState(state)).toBe('object');
+
+    expect(getValuesFromState(state)).toEqual({
+      foo: {
+        animals: [{
+          key: 'k1',
+          value: 'v1'
+        }, {
+          key: 'k2',
+          value: 'v2'
+        }]
+      }
+    });
   });
 
   it('should retrieve values from recreated state', () => {

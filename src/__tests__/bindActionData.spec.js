@@ -1,11 +1,9 @@
-import expect from 'expect';
 import bindActionData from '../bindActionData';
 
 describe('bindActionData', () => {
   it('should return a function when called with a function', () => {
-    expect(bindActionData(() => ({foo: 'bar'}), {baz: 7}))
-      .toExist()
-      .toBeA('function');
+    expect(bindActionData(() => ({foo: 'bar'}), {baz: 7})).toBeTruthy();
+    expect(typeof bindActionData(() => ({foo: 'bar'}), {baz: 7})).toBe('function');
   });
 
 
@@ -36,10 +34,13 @@ describe('bindActionData', () => {
       a: () => ({foo: 'bar'}),
       b: () => ({cat: 'ralph'})
     }, {baz: 7});
-    expect(actions).toExist().toBeA('object');
+    expect(actions).toBeTruthy();
+    expect(typeof actions).toBe('object');
     expect(Object.keys(actions).length).toBe(2);
-    expect(actions.a).toExist().toBeA('function');
-    expect(actions.b).toExist().toBeA('function');
+    expect(actions.a).toBeTruthy();
+    expect(typeof actions.a).toBe('function');
+    expect(actions.b).toBeTruthy();
+    expect(typeof actions.b).toBe('function');
   });
 
   it('should add keys when called with an object', () => {

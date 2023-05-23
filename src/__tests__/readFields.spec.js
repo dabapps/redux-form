@@ -1,60 +1,50 @@
-import expect, {createSpy} from 'expect';
 import readFields from '../readFields';
 
-const createRestorableSpy = (fn) => {
-  return createSpy(fn, function restore() {
-    this.calls = [];
-  });
-};
-
 describe('readFields', () => {
-  const blur = createRestorableSpy();
-  const change = createRestorableSpy();
-  const focus = createRestorableSpy();
+  const blur = jest.fn();
+  const change = jest.fn();
+  const focus = jest.fn();
   const noValidation = () => ({});
 
   const expectField = ({field, name, value, dirty, touched, visited, error, readonly, checked}) => {
-    expect(field)
-      .toExist()
-      .toBeA('object');
+    expect(field).toBeTruthy();
+    expect(typeof field).toBe('object');
     expect(field.name).toBe(name);
     expect(field.value).toEqual(value);
     if (readonly) {
-      expect(field.onBlur).toNotExist();
-      expect(field.onChange).toNotExist();
-      expect(field.onDragStart).toNotExist();
-      expect(field.onDrop).toNotExist();
-      expect(field.onFocus).toNotExist();
-      expect(field.onUpdate).toNotExist();
+      expect(field.onBlur).toBeFalsy();
+      expect(field.onChange).toBeFalsy();
+      expect(field.onDragStart).toBeFalsy();
+      expect(field.onDrop).toBeFalsy();
+      expect(field.onFocus).toBeFalsy();
+      expect(field.onUpdate).toBeFalsy();
     } else {
-      expect(field.onBlur).toBeA('function');
-      expect(field.onChange).toBeA('function');
-      expect(field.onDragStart).toBeA('function');
-      expect(field.onDrop).toBeA('function');
-      expect(field.onFocus).toBeA('function');
-      expect(field.onUpdate).toBeA('function');
+      expect(typeof field.onBlur).toBe('function');
+      expect(typeof field.onChange).toBe('function');
+      expect(typeof field.onDragStart).toBe('function');
+      expect(typeof field.onDrop).toBe('function');
+      expect(typeof field.onFocus).toBe('function');
+      expect(typeof field.onUpdate).toBe('function');
       expect(field.onUpdate).toBe(field.onChange);
 
       // call blur
-      expect(blur.calls.length).toBe(0);
+      expect(blur.mock.calls.length).toBe(0);
       field.onBlur('newValue');
-      expect(blur.calls.length).toBe(1);
-      expect(blur)
-        .toHaveBeenCalled()
-        .toHaveBeenCalledWith(name, 'newValue');
+      expect(blur.mock.calls.length).toBe(1);
+      expect(blur).toHaveBeenCalled();
+      expect(blur).toHaveBeenCalledWith(name, 'newValue');
 
       // call change
-      expect(change.calls.length).toBe(0);
+      expect(change.mock.calls.length).toBe(0);
       field.onChange('newValue');
-      expect(change.calls.length).toBe(1);
-      expect(change)
-        .toHaveBeenCalled()
-        .toHaveBeenCalledWith(name, 'newValue');
+      expect(change.mock.calls.length).toBe(1);
+      expect(change).toHaveBeenCalled();
+      expect(change).toHaveBeenCalledWith(name, 'newValue');
 
       // call focus
-      expect(focus.calls.length).toBe(0);
+      expect(focus.mock.calls.length).toBe(0);
       field.onFocus();
-      expect(focus.calls.length).toBe(1);
+      expect(focus.mock.calls.length).toBe(1);
       expect(focus).toHaveBeenCalled();
     }
     expect(field.error).toBe(error);
@@ -66,9 +56,9 @@ describe('readFields', () => {
     expect(field.visited).toBe(visited);
     expect(field.checked).toBe(checked);
 
-    blur.restore();
-    change.restore();
-    focus.restore();
+    blur.mockClear();
+    change.mockClear();
+    focus.mockClear();
   };
 
   it('should not provide mutators when readonly', () => {
@@ -1215,7 +1205,7 @@ describe('readFields', () => {
     const bar2 = result2.bar;
     expect(foo1.value).toBe('fooValue');
     expect(foo2.value).toBe('newValue');
-    expect(foo1).toNotBe(foo2);
+    expect(foo1).not.toBe(foo2);
     expect(bar1).toBe(bar2);
   });
 

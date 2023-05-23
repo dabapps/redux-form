@@ -1,4 +1,3 @@
-import expect from 'expect';
 import mapValues from '../mapValues';
 
 describe('mapValues', () => {
@@ -13,18 +12,23 @@ describe('mapValues', () => {
   });
 
   it('should call a function on each value', () => {
+    expect(typeof mapValues({
+      a: 1,
+      b: 2,
+      c: 3,
+      d: 4
+    }, value => value * 2)).toBe('object');
+
     expect(mapValues({
       a: 1,
       b: 2,
       c: 3,
       d: 4
-    }, value => value * 2))
-      .toBeA('object')
-      .toEqual({
-        a: 2,
-        b: 4,
-        c: 6,
-        d: 8
-      });
+    }, value => value * 2)).toEqual({
+      a: 2,
+      b: 4,
+      c: 6,
+      d: 8
+    });
   });
 });

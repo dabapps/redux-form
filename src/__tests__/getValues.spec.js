@@ -1,4 +1,3 @@
-import expect from 'expect';
 import getValues from '../getValues';
 
 describe('getValues', () => {
@@ -9,13 +8,13 @@ describe('getValues', () => {
       alive: {value: true}
     };
     const fields = ['foo', 'catLives', 'alive'];
-    expect(getValues(fields, form))
-      .toBeA('object')
-      .toEqual({
-        foo: 'bar',
-        catLives: 9,
-        alive: true
-      });
+    expect(typeof getValues(fields, form)).toBe('object');
+
+    expect(getValues(fields, form)).toEqual({
+      foo: 'bar',
+      catLives: 9,
+      alive: true
+    });
   });
 
   it('should fallback to initialValues when values are undefined', () => {
@@ -38,12 +37,12 @@ describe('getValues', () => {
       foo: {value: 'bar'}
     };
     const fields = ['foo', 'missing'];
-    expect(getValues(fields, form))
-      .toBeA('object')
-      .toEqual({
-        foo: 'bar',
-        missing: undefined
-      });
+    expect(typeof getValues(fields, form)).toBe('object');
+
+    expect(getValues(fields, form)).toEqual({
+      foo: 'bar',
+      missing: undefined
+    });
   });
 
   it('should get values from deep form', () => {
@@ -57,17 +56,19 @@ describe('getValues', () => {
       alive: {value: true}
     };
     const fields = ['foo.bar', 'lives.cat', 'alive'];
-    expect(getValues(fields, form))
-      .toBeA('object')
-      .toEqual({
-        foo: {
-          bar: 'baz'
-        },
-        lives: {
-          cat: 9
-        },
-        alive: true
-      });
+    expect(typeof getValues(fields, form)).toBe('object');
+
+    expect(getValues(fields, form)).toEqual({
+      foo: {
+        bar: 'baz'
+      },
+
+      lives: {
+        cat: 9
+      },
+
+      alive: true
+    });
   });
 
   it('should get values from array form', () => {
@@ -80,12 +81,12 @@ describe('getValues', () => {
       alive: {value: true}
     };
     const fields = ['foo[]', 'alive'];
-    expect(getValues(fields, form))
-      .toBeA('object')
-      .toEqual({
-        foo: ['bar', 'baz', undefined],
-        alive: true
-      });
+    expect(typeof getValues(fields, form)).toBe('object');
+
+    expect(getValues(fields, form)).toEqual({
+      foo: ['bar', 'baz', undefined],
+      alive: true
+    });
   });
 
   it('should allow an array to be empty', () => {
@@ -93,9 +94,11 @@ describe('getValues', () => {
       foo: []
     };
     const fields = ['foo[]'];
-    expect(getValues(fields, form))
-      .toBeA('object')
-      .toEqual({foo: []});
+    expect(typeof getValues(fields, form)).toBe('object');
+
+    expect(getValues(fields, form)).toEqual({
+      foo: []
+    });
   });
 
   it('should get values from deep array form', () => {
@@ -116,14 +119,17 @@ describe('getValues', () => {
       ]
     };
     const fields = ['foo.animals[]', 'bar[].deeper'];
-    expect(getValues(fields, form))
-      .toBeA('object')
-      .toEqual({
-        foo: {
-          animals: ['cat', 'dog', 'rat']
-        },
-        bar: [{deeper: 42}]
-      });
+    expect(typeof getValues(fields, form)).toBe('object');
+
+    expect(getValues(fields, form)).toEqual({
+      foo: {
+        animals: ['cat', 'dog', 'rat']
+      },
+
+      bar: [{
+        deeper: 42
+      }]
+    });
   });
 
   it('should ignore visited fields without values', () => {
@@ -136,11 +142,11 @@ describe('getValues', () => {
       }
     };
     const fields = ['foo', 'bar'];
-    expect(getValues(fields, form))
-      .toBeA('object')
-      .toEqual({
-        foo: 'dog',
-        bar: undefined
-      });
+    expect(typeof getValues(fields, form)).toBe('object');
+
+    expect(getValues(fields, form)).toEqual({
+      foo: 'dog',
+      bar: undefined
+    });
   });
 });

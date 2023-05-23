@@ -1,5 +1,5 @@
 {
-  plugins: [
+  "plugins": [
     "transform-decorators-legacy",
     ["transform-es2015-template-literals", { "loose": true }],
     "transform-es2015-literals",
