@@ -1,8 +1,8 @@
 # `reducer.normalize(Object<String, Object<String, Function>>)`
 
-> Returns a form reducer that will also pass each form value through the normalizing functions provided. The 
-parameter is an object mapping from `formName` to an object mapping from `fieldName` to a normalizer function. The 
-normalizer function is given four parameters and expected to return the normalized value of the field.
+> Returns a form reducer that will also pass each form value through the normalizing functions provided. The
+> parameter is an object mapping from `formName` to an object mapping from `fieldName` to a normalizer function. The
+> normalizer function is given four parameters and expected to return the normalized value of the field.
 
 > The parameters passed to each normalizer function will be:
 
@@ -24,11 +24,10 @@ normalizer function is given four parameters and expected to return the normaliz
 
 ## Explanation
 
-Let's say that you have a form field that only accepts uppercase letters and another one where you want the value to 
+Let's say that you have a form field that only accepts uppercase letters and another one where you want the value to
 be formatted in the `999-999-9999` United States phone number format. `redux-form` gives you a way to normalize your
 data on every action to the reducer by calling the `normalize()` function on the default reducer.
 
 ## Example
 
 See [Normalizing Form Values](../../examples/normalizing) example for more information.
-

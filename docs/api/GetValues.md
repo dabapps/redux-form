@@ -1,7 +1,7 @@
 # `getValues()`
 
-> `redux-form` exports a `getValues(state)` function that will allow you to read the form values from 
-the Redux state manually. _This is an advanced maneuver and should be approached with caution._
+> `redux-form` exports a `getValues(state)` function that will allow you to read the form values from
+> the Redux state manually. _This is an advanced maneuver and should be approached with caution._
 
 > **IMPORTANT: You are responsible for isolating the proper state slice that corresponds to your form!**
 
@@ -10,22 +10,21 @@ the Redux state manually. _This is an advanced maneuver and should be approached
 Let's say your form is set up like this:
 
 ```javascript
-import React, {Component} from 'react';
-import {reduxForm} from 'redux-form';
+import React, { Component } from 'react';
+import { reduxForm } from 'redux-form';
 
 @reduxForm({
-  form: 'myForm'
+  form: 'myForm',
 })
 class MyFormComponent extends Component {
   // ...
 }
-
 ```
 
 In some other component, or in an action creator where you have access to _the full Redux state_...
 
 ```javascript
-import {getValues} from 'redux-form';
+import { getValues } from 'redux-form';
 
 // ...
 

@@ -1,5 +1,22 @@
-import { ADD_ARRAY_VALUE, AUTOFILL, BLUR, CHANGE, DESTROY, FOCUS, INITIALIZE, REMOVE_ARRAY_VALUE, RESET, START_ASYNC_VALIDATION,
-  START_SUBMIT, STOP_ASYNC_VALIDATION, STOP_SUBMIT, SUBMIT_FAILED, SWAP_ARRAY_VALUES, TOUCH, UNTOUCH } from './actionTypes';
+import {
+  ADD_ARRAY_VALUE,
+  AUTOFILL,
+  BLUR,
+  CHANGE,
+  DESTROY,
+  FOCUS,
+  INITIALIZE,
+  REMOVE_ARRAY_VALUE,
+  RESET,
+  START_ASYNC_VALIDATION,
+  START_SUBMIT,
+  STOP_ASYNC_VALIDATION,
+  STOP_SUBMIT,
+  SUBMIT_FAILED,
+  SWAP_ARRAY_VALUES,
+  TOUCH,
+  UNTOUCH,
+} from './actionTypes';
 import mapValues from './mapValues';
 import read from './read';
 import write from './write';
@@ -7,7 +24,7 @@ import getValuesFromState from './getValuesFromState';
 import initializeState from './initializeState';
 import resetState from './resetState';
 import setErrors from './setErrors';
-import {makeFieldValue} from './fieldValue';
+import { makeFieldValue } from './fieldValue';
 import normalizeFields from './normalizeFields';
 import createInitialState from './createInitialState';
 
@@ -19,16 +36,18 @@ export const initialState = {
   [globalErrorKey]: undefined,
   _initialized: false,
   _submitting: false,
-  _submitFailed: false
+  _submitFailed: false,
 };
 
 const behaviors = {
-  [ADD_ARRAY_VALUE](state, {path, index, value, fields}) {
+  [ADD_ARRAY_VALUE](state, { path, index, value, fields }) {
     const array = read(path, state);
-    const stateCopy = {...state};
+    const stateCopy = { ...state };
     const arrayCopy = array ? [...array] : [];
-    const newValue = value !== null && typeof value === 'object' ?
-      initializeState(value, fields || Object.keys(value)) : makeFieldValue({value});
+    const newValue =
+      value !== null && typeof value === 'object'
+        ? initializeState(value, fields || Object.keys(value))
+        : makeFieldValue({ value });
     if (index === undefined) {
       arrayCopy.push(newValue);
     } else {
@@ -36,52 +55,75 @@ const behaviors = {
     }
     return write(path, arrayCopy, stateCopy);
   },
-  [AUTOFILL](state, {field, value}) {
-    return write(field, previous => {
-      const {asyncError, submitError, ...result} = {...previous, value, autofilled: true};
-      return makeFieldValue(result);
-    }, state);
+  [AUTOFILL](state, { field, value }) {
+    return write(
+      field,
+      (previous) => {
+        const { asyncError, submitError, ...result } = {
+          ...previous,
+          value,
+          autofilled: true,
+        };
+        return makeFieldValue(result);
+      },
+      state
+    );
   },
-  [BLUR](state, {field, value, touch}) {
-    const {_active, ...stateCopy} = state;
+  [BLUR](state, { field, value, touch }) {
+    const { _active, ...stateCopy } = state;
     if (_active && _active !== field) {
       // remove _active from state
       stateCopy._active = _active;
     }
-    return write(field, previous => {
-      const result = {...previous};
-      if (value !== undefined) {
-        result.value = value;
-      }
-      if (touch) {
-        result.touched = true;
-      }
-      return makeFieldValue(result);
-    }, stateCopy);
+    return write(
+      field,
+      (previous) => {
+        const result = { ...previous };
+        if (value !== undefined) {
+          result.value = value;
+        }
+        if (touch) {
+          result.touched = true;
+        }
+        return makeFieldValue(result);
+      },
+      stateCopy
+    );
   },
-  [CHANGE](state, {field, value, touch}) {
-    return write(field, previous => {
-      const {asyncError, submitError, autofilled, ...result} = {...previous, value};
-      if (touch) {
-        result.touched = true;
-      }
-      return makeFieldValue(result);
-    }, state);
+  [CHANGE](state, { field, value, touch }) {
+    return write(
+      field,
+      (previous) => {
+        const { asyncError, submitError, autofilled, ...result } = {
+          ...previous,
+          value,
+        };
+        if (touch) {
+          result.touched = true;
+        }
+        return makeFieldValue(result);
+      },
+      state
+    );
   },
   [DESTROY]() {
     return undefined;
   },
-  [FOCUS](state, {field}) {
-    const stateCopy = write(field, previous => makeFieldValue({...previous, visited: true}), state);
+  [FOCUS](state, { field }) {
+    const stateCopy = write(
+      field,
+      (previous) => makeFieldValue({ ...previous, visited: true }),
+      state
+    );
     stateCopy._active = field;
     return stateCopy;
   },
-  [INITIALIZE](state, {data, fields, overwriteValues}) {
+  [INITIALIZE](state, { data, fields, overwriteValues }) {
     return createInitialState(data, fields, state, overwriteValues);
   },
-  [REMOVE_ARRAY_VALUE](state, {path, index: indexOfValue, predicate}) {
+  [REMOVE_ARRAY_VALUE](state, { path, index: indexOfValue, predicate }) {
     const array = read(path, state);
-    const stateCopy = {...state};
+    const stateCopy = { ...state };
     const arrayCopy = array ? [...array] : [];
     let index;
 
@@ -108,74 +150,94 @@ const behaviors = {
       [globalErrorKey]: undefined,
       _initialized: state._initialized,
       _submitting: false,
-      _submitFailed: false
+      _submitFailed: false,
     };
   },
-  [START_ASYNC_VALIDATION](state, {field}) {
+  [START_ASYNC_VALIDATION](state, { field }) {
     return {
       ...state,
-      _asyncValidating: field || true
+      _asyncValidating: field || true,
     };
   },
   [START_SUBMIT](state) {
     return {
       ...state,
-      _submitting: true
+      _submitting: true,
     };
   },
-  [STOP_ASYNC_VALIDATION](state, {errors}) {
+  [STOP_ASYNC_VALIDATION](state, { errors }) {
     return {
       ...setErrors(state, errors, 'asyncError'),
       _asyncValidating: false,
-      [globalErrorKey]: errors && errors[globalErrorKey]
+      [globalErrorKey]: errors && errors[globalErrorKey],
     };
   },
-  [STOP_SUBMIT](state, {errors}) {
+  [STOP_SUBMIT](state, { errors }) {
     return {
       ...setErrors(state, errors, 'submitError'),
       [globalErrorKey]: errors && errors[globalErrorKey],
       _submitting: false,
-      _submitFailed: !!(errors && Object.keys(errors).length)
+      _submitFailed: !!(errors && Object.keys(errors).length),
     };
   },
   [SUBMIT_FAILED](state) {
     return {
       ...state,
-      _submitFailed: true
+      _submitFailed: true,
     };
   },
-  [SWAP_ARRAY_VALUES](state, {path, indexA, indexB}) {
+  [SWAP_ARRAY_VALUES](state, { path, indexA, indexB }) {
     const array = read(path, state);
     const arrayLength = array.length;
-    if (indexA === indexB || isNaN(indexA) || isNaN(indexB) || indexA >= arrayLength || indexB >= arrayLength ) {
+    if (
+      indexA === indexB ||
+      isNaN(indexA) ||
+      isNaN(indexB) ||
+      indexA >= arrayLength ||
+      indexB >= arrayLength
+    ) {
       return state; // do nothing
     }
-    const stateCopy = {...state};
+    const stateCopy = { ...state };
     const arrayCopy = [...array];
     arrayCopy[indexA] = array[indexB];
     arrayCopy[indexB] = array[indexA];
     return write(path, arrayCopy, stateCopy);
   },
-  [TOUCH](state, {fields}) {
+  [TOUCH](state, { fields }) {
     return {
       ...state,
-      ...fields.reduce((accumulator, field) =>
-        write(field, value => makeFieldValue({...value, touched: true}), accumulator), state)
+      ...fields.reduce(
+        (accumulator, field) =>
+          write(
+            field,
+            (value) => makeFieldValue({ ...value, touched: true }),
+            accumulator
+          ),
+        state
+      ),
     };
   },
-  [UNTOUCH](state, {fields}) {
+  [UNTOUCH](state, { fields }) {
     return {
       ...state,
-      ...fields.reduce((accumulator, field) =>
-        write(field, value => {
-          if (value) {
-            const {touched, ...rest} = value;
-            return makeFieldValue(rest);
-          }
-          return makeFieldValue(value);
-        }, accumulator), state)
+      ...fields.reduce(
+        (accumulator, field) =>
+          write(
+            field,
+            (value) => {
+              if (value) {
+                const { touched, ...rest } = value;
+                return makeFieldValue(rest);
+              }
+              return makeFieldValue(value);
+            },
+            accumulator
+          ),
+        state
+      ),
     };
-  }
+  },
 };
 
 const reducer = (state = initialState, action = {}) => {
@@ -184,7 +246,7 @@ const reducer = (state = initialState, action = {}) => {
 };
 
 function formReducer(state = {}, action = {}) {
-  const {form, key, ...rest} = action; // eslint-disable-line no-redeclare
+  const { form, key, ...rest } = action; // eslint-disable-line no-redeclare
   if (!form) {
     return state;
   }
@@ -192,31 +254,43 @@ function formReducer(state = {}, action = {}) {
     if (action.type === DESTROY) {
       return {
         ...state,
-        [form]: state[form] && Object.keys(state[form]).reduce((accumulator, stateKey) =>
-          stateKey === key ? accumulator : {
-            ...accumulator,
-            [stateKey]: state[form][stateKey]
-          }, {})
+        [form]:
+          state[form] &&
+          Object.keys(state[form]).reduce(
+            (accumulator, stateKey) =>
+              stateKey === key
+                ? accumulator
+                : {
+                    ...accumulator,
+                    [stateKey]: state[form][stateKey],
+                  },
+            {}
+          ),
       };
     }
     return {
       ...state,
       [form]: {
         ...state[form],
-        [key]: reducer((state[form] || {})[key], rest)
-      }
+        [key]: reducer((state[form] || {})[key], rest),
+      },
     };
   }
   if (action.type === DESTROY) {
-    return Object.keys(state).reduce((accumulator, formName) =>
-      formName === form ? accumulator : {
-        ...accumulator,
-        [formName]: state[formName]
-      }, {});
+    return Object.keys(state).reduce(
+      (accumulator, formName) =>
+        formName === form
+          ? accumulator
+          : {
+              ...accumulator,
+              [formName]: state[formName],
+            },
+      {}
+    );
   }
   return {
     ...state,
-    [form]: reducer(state[form], rest)
+    [form]: reducer(state[form], rest),
   };
 }
 
@@ -224,17 +298,21 @@ function formReducer(state = {}, action = {}) {
  * Adds additional functionality to the reducer
  */
 function decorate(target) {
-  target.plugin = function plugin(reducers) { // use 'function' keyword to enable 'this'
+  target.plugin = function plugin(reducers) {
+    // use 'function' keyword to enable 'this'
     return decorate((state = {}, action = {}) => {
       const result = this(state, action);
       return {
         ...result,
-        ...mapValues(reducers, (pluginReducer, key) => pluginReducer(result[key] || initialState, action))
+        ...mapValues(reducers, (pluginReducer, key) =>
+          pluginReducer(result[key] || initialState, action)
+        ),
       };
     });
   };
 
-  target.normalize = function normalize(normalizers) { // use 'function' keyword to enable 'this'
+  target.normalize = function normalize(normalizers) {
+    // use 'function' keyword to enable 'this'
     return decorate((state = {}, action = {}) => {
       const result = this(state, action);
       return {
@@ -242,22 +320,33 @@ function decorate(target) {
         ...mapValues(normalizers, (formNormalizers, form) => {
           const runNormalize = (previous, currentResult) => {
             const previousValues = getValuesFromState({
-              ...initialState, ...previous
+              ...initialState,
+              ...previous,
             });
             const formResult = {
               ...initialState,
-              ...currentResult
+              ...currentResult,
             };
             const values = getValuesFromState(formResult);
-            return normalizeFields(formNormalizers, formResult, previous, values, previousValues);
+            return normalizeFields(
+              formNormalizers,
+              formResult,
+              previous,
+              values,
+              previousValues
+            );
           };
           if (action.key) {
             return {
-              ...result[form], [action.key]: runNormalize(state[form][action.key], result[form][action.key])
+              ...result[form],
+              [action.key]: runNormalize(
+                state[form][action.key],
+                result[form][action.key]
+              ),
             };
           }
           return runNormalize(state[form], result[form]);
-        })
+        }),
       };
     });
   };

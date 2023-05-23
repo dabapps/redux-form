@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import createAll from './createAll';
 
 const isNative =
@@ -34,5 +34,5 @@ export const {
   touch,
   touchWithKey,
   untouch,
-  untouchWithKey
+  untouchWithKey,
 } = createAll(isNative, React, connect);

@@ -1,4 +1,4 @@
-const isChecked = value => {
+const isChecked = (value) => {
   if (typeof value === 'boolean') {
     return value;
   }

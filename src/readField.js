@@ -16,7 +16,7 @@ function getSuffix(input, closeIndex) {
   return suffix;
 }
 
-const getNextKey = path => {
+const getNextKey = (path) => {
   const dotIndex = path.indexOf('.');
   const openIndex = path.indexOf('[');
   if (openIndex > 0 && (dotIndex < 0 || openIndex < dotIndex)) {
@@ -29,9 +29,31 @@ const shouldAsyncValidate = (name, asyncBlurFields) =>
   // remove array indices
   ~asyncBlurFields.indexOf(name.replace(/\[[0-9]+\]/g, '[]'));
 
-const readField = (state, fieldName, pathToHere = '', fields, syncErrors, asyncValidate, isReactNative, props, callback = () => null, prefix = '') => {
-  const {asyncBlurFields, autofill, blur, change, focus, form, initialValues, readonly, addArrayValue,
-    removeArrayValue, swapArrayValues} = props;
+const readField = (
+  state,
+  fieldName,
+  pathToHere = '',
+  fields,
+  syncErrors,
+  asyncValidate,
+  isReactNative,
+  props,
+  callback = () => null,
+  prefix = ''
+) => {
+  const {
+    asyncBlurFields,
+    autofill,
+    blur,
+    change,
+    focus,
+    form,
+    initialValues,
+    readonly,
+    addArrayValue,
+    removeArrayValue,
+    swapArrayValues,
+  } = props;
   const dotIndex = fieldName.indexOf('.');
   const openIndex = fieldName.indexOf('[');
   const closeIndex = fieldName.indexOf(']');
@@ -43,7 +65,7 @@ const readField = (state, fieldName, pathToHere = '', fields, syncErrors, asyncV
     // array field
     const key = fieldName.substring(0, openIndex);
     const rest = getSuffix(fieldName, closeIndex);
-    const stateArray = state && state[key] || [];
+    const stateArray = (state && state[key]) || [];
     const fullPrefix = prefix + fieldName.substring(0, closeIndex + 1);
     const subfields = props.fields
       .reduce((accumulator, field) => {
@@ -52,16 +74,18 @@ const readField = (state, fieldName, pathToHere = '', fields, syncErrors, asyncV
         }
         return accumulator;
       }, [])
-      .map(field => getSuffix(field, prefix.length + closeIndex));
-    const addMethods = dest => {
+      .map((field) => getSuffix(field, prefix.length + closeIndex));
+    const addMethods = (dest) => {
       Object.defineProperty(dest, 'addField', {
-        value: (value, index) => addArrayValue(pathToHere + key, value, index, subfields)
+        value: (value, index) =>
+          addArrayValue(pathToHere + key, value, index, subfields),
       });
       Object.defineProperty(dest, 'removeField', {
-        value: index => removeArrayValue(pathToHere + key, index)
+        value: (index) => removeArrayValue(pathToHere + key, index),
       });
       Object.defineProperty(dest, 'swapFields', {
-        value: (indexA, indexB) => swapArrayValues(pathToHere + key, indexA, indexB)
+        value: (indexA, indexB) =>
+          swapArrayValues(pathToHere + key, indexA, indexB),
       });
       return dest;
     };
@@ -80,13 +104,23 @@ const readField = (state, fieldName, pathToHere = '', fields, syncErrors, asyncV
       const nextPath = `${pathToHere}${key}[${index}]${rest ? '.' : ''}`;
       const nextPrefix = `${prefix}${key}[]${rest ? '.' : ''}`;
 
-      let result = readField(fieldState, rest, nextPath, dest, syncErrors,
-        asyncValidate, isReactNative, props, callback, nextPrefix);
+      let result = readField(
+        fieldState,
+        rest,
+        nextPath,
+        dest,
+        syncErrors,
+        asyncValidate,
+        isReactNative,
+        props,
+        callback,
+        nextPrefix
+      );
       if (fieldArray[index] !== result) {
         if (rest) {
           // if something's after [] in field name, the array item is an object field
           // we need it to compare !== to the original (so react re-renders appropriately)
-          result = {...dest};
+          result = { ...dest };
         }
         fieldArray[index] = result;
         changed = true;
@@ -94,7 +128,10 @@ const readField = (state, fieldName, pathToHere = '', fields, syncErrors, asyncV
     });
     if (fieldArray.length > stateArray.length) {
       // remove extra items that aren't in state array
-      fieldArray.splice(stateArray.length, fieldArray.length - stateArray.length);
+      fieldArray.splice(
+        stateArray.length,
+        fieldArray.length - stateArray.length
+      );
     }
     if (changed) {
       fieldArray = addMethods([...fieldArray]);
@@ -111,12 +148,22 @@ const readField = (state, fieldName, pathToHere = '', fields, syncErrors, asyncV
     const nextKey = getNextKey(rest);
     const nextPrefix = prefix + key + '.';
     const previous = subobject[nextKey];
-    const result = readField(state[key] || {}, rest, nextPath, subobject, syncErrors, asyncValidate,
-      isReactNative, props, callback, nextPrefix);
+    const result = readField(
+      state[key] || {},
+      rest,
+      nextPath,
+      subobject,
+      syncErrors,
+      asyncValidate,
+      isReactNative,
+      props,
+      callback,
+      nextPrefix
+    );
     if (result !== previous) {
       subobject = {
         ...subobject,
-        [nextKey]: result
+        [nextKey]: result,
       };
     }
     fields[key] = subobject;
@@ -134,10 +181,15 @@ const readField = (state, fieldName, pathToHere = '', fields, syncErrors, asyncV
     field.value = initialValue;
     field.initialValue = initialValue;
     if (!readonly) {
-      field.autofill = value => autofill(name, value);
-      field.onBlur = createOnBlur(name, blur, isReactNative,
+      field.autofill = (value) => autofill(name, value);
+      field.onBlur = createOnBlur(
+        name,
+        blur,
+        isReactNative,
         shouldAsyncValidate(name, asyncBlurFields) &&
-        ((blurName, blurValue) => silencePromise(asyncValidate(blurName, blurValue))));
+          ((blurName, blurValue) =>
+            silencePromise(asyncValidate(blurName, blurValue)))
+      );
       field.onChange = onChange;
       field.onDragStart = createOnDragStart(name, () => field.value);
       field.onDrop = createOnDrop(name, change);
@@ -146,12 +198,17 @@ const readField = (state, fieldName, pathToHere = '', fields, syncErrors, asyncV
     }
     field.valid = true;
     field.invalid = false;
-    Object.defineProperty(field, '_isField', {value: true});
+    Object.defineProperty(field, '_isField', { value: true });
   }
 
   const fieldState = (fieldName ? state[fieldName] : state) || {};
   const syncError = read(name, syncErrors);
-  const updated = updateField(field, fieldState, name === form._active, syncError);
+  const updated = updateField(
+    field,
+    fieldState,
+    name === form._active,
+    syncError
+  );
   if (fieldName || fields[fieldName] !== updated) {
     fields[fieldName] = updated;
   }

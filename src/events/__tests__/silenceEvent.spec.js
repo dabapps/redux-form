@@ -12,10 +12,12 @@ describe('silenceEvent', () => {
   });
 
   it('should return true if an event', () => {
-    expect(silenceEvent({
-      preventDefault: () => null,
-      stopPropagation: () => null
-    })).toBe(true);
+    expect(
+      silenceEvent({
+        preventDefault: () => null,
+        stopPropagation: () => null,
+      })
+    ).toBe(true);
   });
 
   it('should call preventDefault and stopPropagation', () => {
@@ -24,7 +26,7 @@ describe('silenceEvent', () => {
 
     silenceEvent({
       preventDefault,
-      stopPropagation
+      stopPropagation,
     });
     expect(preventDefault).toHaveBeenCalled();
     expect(stopPropagation).not.toHaveBeenCalled();

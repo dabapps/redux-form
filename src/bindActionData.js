@@ -7,11 +7,11 @@ export default function bindActionData(action, data) {
   if (typeof action === 'function') {
     return (...args) => ({
       ...action(...args),
-      ...data
+      ...data,
     });
   }
   if (typeof action === 'object') {
-    return mapValues(action, value => bindActionData(value, data));
+    return mapValues(action, (value) => bindActionData(value, data));
   }
   return action;
 }

@@ -1,4 +1,4 @@
-import {makeFieldValue} from './fieldValue';
+import { makeFieldValue } from './fieldValue';
 
 function extractKey(field) {
   const dotIndex = field.indexOf('.');
@@ -30,11 +30,19 @@ function extractKey(field) {
   return { isArray, key, nestedPath };
 }
 
-function normalizeField(field, fullFieldPath, state, previousState, values, previousValues, normalizers) {
+function normalizeField(
+  field,
+  fullFieldPath,
+  state,
+  previousState,
+  values,
+  previousValues,
+  normalizers
+) {
   if (field.isArray) {
     if (field.nestedPath) {
-      const array = state && state[field.key] || [];
-      const previousArray = previousState && previousState[field.key] || [];
+      const array = (state && state[field.key]) || [];
+      const previousArray = (previousState && previousState[field.key]) || [];
       const nestedField = extractKey(field.nestedPath);
 
       return array.map((nestedState, i) => {
@@ -62,7 +70,7 @@ function normalizeField(field, fullFieldPath, state, previousState, values, prev
     );
     return field.isArray ? result && result.map(makeFieldValue) : result;
   } else if (field.nestedPath) {
-    const nestedState = state && state[field.key] || {};
+    const nestedState = (state && state[field.key]) || {};
     const nestedField = extractKey(field.nestedPath);
 
     nestedState[nestedField.key] = normalizeField(
@@ -91,7 +99,13 @@ function normalizeField(field, fullFieldPath, state, previousState, values, prev
   return makeFieldValue(finalField);
 }
 
-export default function normalizeFields(normalizers, state, previousState, values, previousValues) {
+export default function normalizeFields(
+  normalizers,
+  state,
+  previousState,
+  values,
+  previousValues
+) {
   const newState = Object.keys(normalizers).reduce((accumulator, field) => {
     const extracted = extractKey(field);
 
@@ -110,6 +124,6 @@ export default function normalizeFields(normalizers, state, previousState, value
 
   return {
     ...state,
-    ...newState
+    ...newState,
   };
 }

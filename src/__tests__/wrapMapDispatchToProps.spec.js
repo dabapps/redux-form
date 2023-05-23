@@ -4,7 +4,7 @@ describe('wrapMapDispatchToProps', () => {
   it('should bind action creators if no mapDispatchToProps given', () => {
     const actionCreators = {
       a: jest.fn(),
-      b: jest.fn()
+      b: jest.fn(),
     };
     const result = wrapMapDispatchToProps(undefined, actionCreators);
     expect(typeof result).toBe('function');
@@ -28,11 +28,11 @@ describe('wrapMapDispatchToProps', () => {
   it('should bind action creators if object mapDispatchToProps given', () => {
     const actionCreators = {
       a: jest.fn(),
-      b: jest.fn()
+      b: jest.fn(),
     };
     const mapDispatchToProps = {
       c: jest.fn(),
-      d: jest.fn()
+      d: jest.fn(),
     };
     const result = wrapMapDispatchToProps(mapDispatchToProps, actionCreators);
     expect(typeof result).toBe('function');
@@ -67,13 +67,13 @@ describe('wrapMapDispatchToProps', () => {
   it('should call mapDispatchToProps when one-param function given', () => {
     const actionCreators = {
       a: jest.fn(),
-      b: jest.fn()
+      b: jest.fn(),
     };
     const mapDispatchToPropsSpy = jest.fn().mockImplementation(() => ({
       c: 42,
-      d: true
+      d: true,
     }));
-    const mapDispatchToProps = dispatch => mapDispatchToPropsSpy(dispatch);
+    const mapDispatchToProps = (dispatch) => mapDispatchToPropsSpy(dispatch);
     expect(mapDispatchToProps.length).toBe(1);
 
     const result = wrapMapDispatchToProps(mapDispatchToProps, actionCreators);
@@ -103,13 +103,14 @@ describe('wrapMapDispatchToProps', () => {
   it('should call mapDispatchToProps when two-param function given', () => {
     const actionCreators = {
       a: jest.fn(),
-      b: jest.fn()
+      b: jest.fn(),
     };
     const mapDispatchToPropsSpy = jest.fn().mockImplementation(() => ({
       c: 42,
-      d: true
+      d: true,
     }));
-    const mapDispatchToProps = (dispatch, ownProps) => mapDispatchToPropsSpy(dispatch, ownProps);
+    const mapDispatchToProps = (dispatch, ownProps) =>
+      mapDispatchToPropsSpy(dispatch, ownProps);
     expect(mapDispatchToProps.length).toBe(2);
 
     const result = wrapMapDispatchToProps(mapDispatchToProps, actionCreators);

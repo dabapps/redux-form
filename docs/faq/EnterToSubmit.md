@@ -1,5 +1,5 @@
 # How can I submit my form when the user presses Enter?
-  
+
 The default browser behavior for `text` and `password` inputs when ↵ is pressed is to activate the first `<button>`
 that does not have `type="button"` specified. The recommended way to structure your form is as follows:
 
@@ -10,13 +10,13 @@ render() {
     <form onSubmit={handleSubmit}>
       <button type="button">Load Data</button>
       <button type="button">Delete Record</button>
-      
+
       <label for="firstname">First Name</label>
       <input id="firstname" type="text" {...firstName}/>
-      
+
       <label for="lastname">Last Name</label>
       <input id="lastname" type="text" {...lastName}/>
-      
+
       <button type="submit">Submit</button>
       <button type="button">Do Something Else</button>
     </form>
@@ -26,7 +26,7 @@ render() {
 
 Things to notice:
 
-1. `handleSubmit` is on the `<form>` element, not on the `<button>`. It does not hurt to put it on the `onClick` for 
-the button, but it doesn't accomplish anything.
+1. `handleSubmit` is on the `<form>` element, not on the `<button>`. It does not hurt to put it on the `onClick` for
+   the button, but it doesn't accomplish anything.
 2. The submit button is explicitly marked `type="submit"`.
 3. You may place any other buttons inside the form as long as they are labeled `type="button"`.

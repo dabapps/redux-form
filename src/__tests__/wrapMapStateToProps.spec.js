@@ -9,15 +9,23 @@ describe('wrapMapStateToProps', () => {
     const mapped = result('bar');
     expect(getForm).toHaveBeenCalled();
     expect(getForm).toHaveBeenCalledWith('bar');
-    expect(mapped).toEqual({form: 'foo'});
+    expect(mapped).toEqual({ form: 'foo' });
   });
 
   it('should throw error when mapStateToProps is not a function', () => {
     const getForm = jest.fn();
-    expect(() => wrapMapStateToProps(true, getForm)).toThrow('mapStateToProps must be a function');
-    expect(() => wrapMapStateToProps(42, getForm)).toThrow('mapStateToProps must be a function');
-    expect(() => wrapMapStateToProps({}, getForm)).toThrow('mapStateToProps must be a function');
-    expect(() => wrapMapStateToProps([], getForm)).toThrow('mapStateToProps must be a function');
+    expect(() => wrapMapStateToProps(true, getForm)).toThrow(
+      'mapStateToProps must be a function'
+    );
+    expect(() => wrapMapStateToProps(42, getForm)).toThrow(
+      'mapStateToProps must be a function'
+    );
+    expect(() => wrapMapStateToProps({}, getForm)).toThrow(
+      'mapStateToProps must be a function'
+    );
+    expect(() => wrapMapStateToProps([], getForm)).toThrow(
+      'mapStateToProps must be a function'
+    );
     expect(getForm).not.toHaveBeenCalled();
   });
 
@@ -26,9 +34,9 @@ describe('wrapMapStateToProps', () => {
     const mapStateToPropsSpy = jest.fn().mockImplementation(() => ({
       a: 42,
       b: true,
-      c: 'baz'
+      c: 'baz',
     }));
-    const mapStateToProps = state => mapStateToPropsSpy(state);
+    const mapStateToProps = (state) => mapStateToPropsSpy(state);
     expect(mapStateToProps.length).toBe(1);
 
     const result = wrapMapStateToProps(mapStateToProps, getForm);
@@ -44,7 +52,7 @@ describe('wrapMapStateToProps', () => {
       a: 42,
       b: true,
       c: 'baz',
-      form: 'foo'
+      form: 'foo',
     });
   });
 
@@ -53,9 +61,10 @@ describe('wrapMapStateToProps', () => {
     const mapStateToPropsSpy = jest.fn().mockImplementation(() => ({
       a: 42,
       b: true,
-      c: 'baz'
+      c: 'baz',
     }));
-    const mapStateToProps = (state, ownProps) => mapStateToPropsSpy(state, ownProps);
+    const mapStateToProps = (state, ownProps) =>
+      mapStateToPropsSpy(state, ownProps);
     expect(mapStateToProps.length).toBe(2);
 
     const result = wrapMapStateToProps(mapStateToProps, getForm);
@@ -71,7 +80,7 @@ describe('wrapMapStateToProps', () => {
       a: 42,
       b: true,
       c: 'baz',
-      form: 'foo'
+      form: 'foo',
     });
   });
 });

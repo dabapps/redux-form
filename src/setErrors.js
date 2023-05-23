@@ -1,6 +1,6 @@
-import {isFieldValue, makeFieldValue} from './fieldValue';
+import { isFieldValue, makeFieldValue } from './fieldValue';
 
-const isMetaKey = key => key[0] === '_';
+const isMetaKey = (key) => key[0] === '_';
 
 /**
  * Sets an error on a field deep in the tree, returning a new copy of the state
@@ -8,16 +8,21 @@ const isMetaKey = key => key[0] === '_';
 const setErrors = (state, errors, destKey) => {
   const clear = () => {
     if (Array.isArray(state)) {
-      return state.map((stateItem, index) => setErrors(stateItem, errors && errors[index], destKey));
+      return state.map((stateItem, index) =>
+        setErrors(stateItem, errors && errors[index], destKey)
+      );
     }
     if (state && typeof state === 'object') {
-      const result = Object.keys(state)
-        .reduce((accumulator, key) =>
-            isMetaKey(key) ? accumulator : {
-              ...accumulator,
-              [key]: setErrors(state[key], errors && errors[key], destKey)
-            },
-          state);
+      const result = Object.keys(state).reduce(
+        (accumulator, key) =>
+          isMetaKey(key)
+            ? accumulator
+            : {
+                ...accumulator,
+                [key]: setErrors(state[key], errors && errors[key], destKey),
+              },
+        state
+      );
       if (isFieldValue(state)) {
         makeFieldValue(result);
       }
@@ -33,7 +38,7 @@ const setErrors = (state, errors, destKey) => {
       return state;
     }
     if (state[destKey]) {
-      const copy = {...state};
+      const copy = { ...state };
       delete copy[destKey];
       return makeFieldValue(copy);
     }
@@ -43,39 +48,48 @@ const setErrors = (state, errors, destKey) => {
     if (Array.isArray(state)) {
       return Object.defineProperty([...state], destKey, {
         value: errors,
-        enumerable: true
+        enumerable: true,
       });
     }
 
     return makeFieldValue({
       ...state,
-      [destKey]: errors
+      [destKey]: errors,
     });
   }
   if (Array.isArray(errors)) {
     if (!state || Array.isArray(state)) {
-      const copy = (state || []).map((stateItem, index) => setErrors(stateItem, errors[index], destKey));
-      errors.forEach((errorItem, index) => copy[index] = setErrors(copy[index], errorItem, destKey));
+      const copy = (state || []).map((stateItem, index) =>
+        setErrors(stateItem, errors[index], destKey)
+      );
+      errors.forEach(
+        (errorItem, index) =>
+          (copy[index] = setErrors(copy[index], errorItem, destKey))
+      );
       return copy;
     }
-    return setErrors(state, errors[0], destKey);  // use first error
+    return setErrors(state, errors[0], destKey); // use first error
   }
   if (isFieldValue(state)) {
     return makeFieldValue({
       ...state,
-      [destKey]: errors
+      [destKey]: errors,
     });
   }
   const errorKeys = Object.keys(errors);
   if (!errorKeys.length && !state) {
     return state;
   }
-  return errorKeys.reduce((accumulator, key) =>
-      isMetaKey(key) ? accumulator : {
-        ...accumulator,
-        [key]: setErrors(state && state[key], errors[key], destKey)
-      },
-    clear() || {});
+  return errorKeys.reduce(
+    (accumulator, key) =>
+      isMetaKey(key)
+        ? accumulator
+        : {
+            ...accumulator,
+            [key]: setErrors(state && state[key], errors[key], destKey),
+          },
+    clear() || {}
+  );
 };
 
 export default setErrors;

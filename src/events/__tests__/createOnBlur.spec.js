@@ -15,12 +15,15 @@ describe('createOnBlur', () => {
 
   it('should return a function that calls blur with name and value from event', () => {
     const blur = jest.fn();
-    createOnBlur('foo', blur)({
+    createOnBlur(
+      'foo',
+      blur
+    )({
       target: {
-        value: 'bar'
+        value: 'bar',
       },
       preventDefault: () => null,
-      stopPropagation: () => null
+      stopPropagation: () => null,
     });
     expect(blur).toHaveBeenCalled();
     expect(blur).toHaveBeenCalledWith('foo', 'bar');
@@ -34,5 +37,4 @@ describe('createOnBlur', () => {
     expect(afterBlur).toHaveBeenCalled();
     expect(afterBlur).toHaveBeenCalledWith('foo', 'bar');
   });
-
 });

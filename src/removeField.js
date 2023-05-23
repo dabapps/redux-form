@@ -1,5 +1,5 @@
 const without = (object, key) => {
-  const copy = {...object};
+  const copy = { ...object };
   delete copy[key];
   return copy;
 };
@@ -29,10 +29,12 @@ const removeField = (fields, path) => {
           copy[index] = result;
         }
       });
-      return copy.length ? {
-        ...fields,
-        [key]: copy
-      } : without(fields, key);
+      return copy.length
+        ? {
+            ...fields,
+            [key]: copy,
+          }
+        : without(fields, key);
     }
     return without(fields, key);
   }
@@ -44,10 +46,12 @@ const removeField = (fields, path) => {
       return fields;
     }
     const result = removeField(fields[key], rest);
-    return Object.keys(result).length ? {
-      ...fields,
-      [key]: removeField(fields[key], rest)
-    } : without(fields, key);
+    return Object.keys(result).length
+      ? {
+          ...fields,
+          [key]: removeField(fields[key], rest),
+        }
+      : without(fields, key);
   }
   return without(fields, path);
 };
