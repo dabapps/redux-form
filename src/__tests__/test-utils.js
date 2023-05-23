@@ -15,6 +15,10 @@ const findRenderedComponentWithTypeInternal = (fibreNode, type, collected) => {
     collected.push(fibreNode.stateNode);
   }
 
+  if (fibreNode.sibling) {
+    findRenderedComponentWithTypeInternal(fibreNode.sibling, type, collected);
+  }
+
   if (fibreNode.child) {
     findRenderedComponentWithTypeInternal(fibreNode.child, type, collected);
   }
@@ -41,7 +45,7 @@ const findRenderedComponentWithType = (fibreNode, type) => {
 const TestUtils = {
   renderIntoDocument,
   findRenderedComponentWithType,
-  act: ReactDOM.act
+  findRenderedDOMComponentWithTag: findRenderedComponentWithType,
   Simulate: OriginalTestUtils.Simulate,
 };
 
