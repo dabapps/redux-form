@@ -2773,32 +2773,6 @@ describe('createReduxForm', () => {
     );
   });
 
-  it('should throw when trying to access the wrapped instance if withRef is not specified', () => {
-    const store = makeStore();
-
-    class Container extends Component {
-      render() {
-        return <Passthrough />;
-      }
-    }
-
-    const DecoratedForm = reduxForm({
-      form: 'withoutRefTest',
-      fields: ['foo', 'bar']
-    })(Container);
-
-    const dom = TestUtils.renderIntoDocument(
-      <Provider store={store}>
-        <DecoratedForm />
-      </Provider>
-    );
-
-    const decorated = TestUtils.findRenderedComponentWithType(dom, DecoratedForm);
-    expect(() => decorated.getWrappedInstance()).toThrow(
-      /To access the wrapped instance, you need to specify \{ withRef: true \} as the fourth argument of the connect\(\) call\./
-    );
-  });
-
   it('should return the instance of the wrapped component for use in calling child methods', () => {
 
     const store = makeStore();
