@@ -13,12 +13,12 @@ describe('silenceEvents', () => {
     silenced(1, 2, 3);
     expect(spy).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledWith(1, 2, 3);
-    spy.mockReset();
+    spy.mockClear();
 
     silenced('foo', 'bar');
     expect(spy).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledWith('foo', 'bar');
-    spy.mockReset();
+    spy.mockClear();
 
     silenced({value: 10}, false);
     expect(spy).toHaveBeenCalled();
@@ -27,7 +27,7 @@ describe('silenceEvents', () => {
       value: 10
     }, false);
 
-    spy.mockReset();
+    spy.mockClear();
   });
 
   it('should return pass other args if first arg is event', () => {
@@ -41,12 +41,12 @@ describe('silenceEvents', () => {
     silenced(event, 1, 2, 3);
     expect(spy).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledWith(1, 2, 3);
-    spy.mockReset();
+    spy.mockClear();
 
     silenced(event, 'foo', 'bar');
     expect(spy).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledWith('foo', 'bar');
-    spy.mockReset();
+    spy.mockClear();
 
     silenced(event, {value: 10}, false);
     expect(spy).toHaveBeenCalled();
@@ -55,7 +55,7 @@ describe('silenceEvents', () => {
       value: 10
     }, false);
 
-    spy.mockReset();
+    spy.mockClear();
   });
 
   it('should silence event', () => {

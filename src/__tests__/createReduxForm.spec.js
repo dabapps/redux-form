@@ -2554,8 +2554,8 @@ describe('createReduxForm', () => {
     expect(barRender).toHaveBeenCalled();
 
     // restore spies
-    fooRender.mockReset();
-    barRender.mockReset();
+    fooRender.mockClear();
+    barRender.mockClear();
 
     // change field on foo
     fooStub.props.fields.name.onChange('Tom');

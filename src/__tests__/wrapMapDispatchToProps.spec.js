@@ -19,7 +19,7 @@ describe('wrapMapDispatchToProps', () => {
     expect(actionCreators.a).toHaveBeenCalled();
     expect(actionCreators.a).toHaveBeenCalledWith('foo');
     expect(dispatch).toHaveBeenCalled();
-    dispatch.mockReset();
+    dispatch.mockClear();
     mapped.b();
     expect(actionCreators.b).toHaveBeenCalled();
     expect(dispatch).toHaveBeenCalled();
@@ -49,16 +49,16 @@ describe('wrapMapDispatchToProps', () => {
     expect(actionCreators.a).toHaveBeenCalled();
     expect(actionCreators.a).toHaveBeenCalledWith('foo');
     expect(dispatch).toHaveBeenCalled();
-    dispatch.mockReset();
+    dispatch.mockClear();
     mapped.b();
     expect(actionCreators.b).toHaveBeenCalled();
     expect(dispatch).toHaveBeenCalled();
-    dispatch.mockReset();
+    dispatch.mockClear();
     mapped.c('bar');
     expect(mapDispatchToProps.c).toHaveBeenCalled();
     expect(mapDispatchToProps.c).toHaveBeenCalledWith('bar');
     expect(dispatch).toHaveBeenCalled();
-    dispatch.mockReset();
+    dispatch.mockClear();
     mapped.d();
     expect(mapDispatchToProps.d).toHaveBeenCalled();
     expect(dispatch).toHaveBeenCalled();
@@ -94,7 +94,7 @@ describe('wrapMapDispatchToProps', () => {
     expect(actionCreators.a).toHaveBeenCalled();
     expect(actionCreators.a).toHaveBeenCalledWith('foo');
     expect(dispatch).toHaveBeenCalled();
-    dispatch.mockReset();
+    dispatch.mockClear();
     mapped.b();
     expect(actionCreators.b).toHaveBeenCalled();
     expect(dispatch).toHaveBeenCalled();
@@ -130,7 +130,7 @@ describe('wrapMapDispatchToProps', () => {
     expect(actionCreators.a).toHaveBeenCalled();
     expect(actionCreators.a).toHaveBeenCalledWith('foo');
     expect(dispatch).toHaveBeenCalled();
-    dispatch.mockReset();
+    dispatch.mockClear();
     mapped.b();
     expect(actionCreators.b).toHaveBeenCalled();
     expect(dispatch).toHaveBeenCalled();

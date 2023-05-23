@@ -69,9 +69,9 @@ describe('readField', () => {
     expect(field.visited).toBe(visited);
     expect(field.checked).toBe(checked);
 
-    blur.mockReset();
-    change.mockReset();
-    focus.mockReset();
+    blur.mockClear();
+    change.mockClear();
+    focus.mockClear();
   };
 
   it('should initialize a simple field', () => {
