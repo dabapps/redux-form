@@ -1,10 +1,5 @@
 import wrapMapDispatchToProps from '../wrapMapDispatchToProps';
 
-const createRestorableSpy = () =>
-  jest.fn(() => null, function resetCalls() { // i'm not sure why expect doesn't do this by default
-    this.calls = [];
-  });
-
 describe('wrapMapDispatchToProps', () => {
   it('should bind action creators if no mapDispatchToProps given', () => {
     const actionCreators = {
@@ -14,7 +9,7 @@ describe('wrapMapDispatchToProps', () => {
     const result = wrapMapDispatchToProps(undefined, actionCreators);
     expect(typeof result).toBe('function');
     expect(result.length).toBe(1);
-    const dispatch = createRestorableSpy();
+    const dispatch = jest.fn();
     const mapped = result(dispatch);
     expect(typeof mapped).toBe('object');
     expect(typeof mapped.a).toBe('function');
@@ -42,7 +37,7 @@ describe('wrapMapDispatchToProps', () => {
     const result = wrapMapDispatchToProps(mapDispatchToProps, actionCreators);
     expect(typeof result).toBe('function');
     expect(result.length).toBe(1);
-    const dispatch = createRestorableSpy();
+    const dispatch = jest.fn();
     const mapped = result(dispatch);
     expect(typeof mapped).toBe('object');
     expect(typeof mapped.a).toBe('function');
@@ -84,7 +79,7 @@ describe('wrapMapDispatchToProps', () => {
     const result = wrapMapDispatchToProps(mapDispatchToProps, actionCreators);
     expect(typeof result).toBe('function');
     expect(result.length).toBe(1);
-    const dispatch = createRestorableSpy();
+    const dispatch = jest.fn();
     const mapped = result(dispatch);
     expect(mapDispatchToPropsSpy).toHaveBeenCalled();
     expect(mapDispatchToPropsSpy).toHaveBeenCalledWith(dispatch);
@@ -120,7 +115,7 @@ describe('wrapMapDispatchToProps', () => {
     const result = wrapMapDispatchToProps(mapDispatchToProps, actionCreators);
     expect(typeof result).toBe('function');
     expect(result.length).toBe(2);
-    const dispatch = createRestorableSpy();
+    const dispatch = jest.fn();
     const mapped = result(dispatch, 75);
     expect(mapDispatchToPropsSpy).toHaveBeenCalled();
     expect(mapDispatchToPropsSpy).toHaveBeenCalledWith(dispatch, 75);

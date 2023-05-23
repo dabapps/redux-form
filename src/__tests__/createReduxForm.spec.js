@@ -10,12 +10,6 @@ import reducer from '../reducer';
 import {makeFieldValue} from '../fieldValue';
 import createReduxForm from '../createReduxForm';
 
-const createRestorableSpy = (fn) => {
-  return jest.fn(fn, function restore() {
-    this.calls = [];
-  });
-};
-
 describe('createReduxForm', () => {
   const reduxForm = createReduxForm(false, React, connect);
   const makeStore = (initialState = {}) => createStore(combineReducers({
@@ -2521,8 +2515,8 @@ describe('createReduxForm', () => {
 
   it('should only rerender the form that changed', () => {
     const store = makeStore();
-    const fooRender = createRestorableSpy().mockReturnValue(<div/>);
-    const barRender = createRestorableSpy().mockReturnValue(<div/>);
+    const fooRender = jest.fn().mockReturnValue(<div/>);
+    const barRender = jest.fn().mockReturnValue(<div/>);
 
     class FooForm extends Component {
       render() {

@@ -1,16 +1,10 @@
 import readField from '../readField';
 const noop = () => null;
 
-const createRestorableSpy = (fn) => {
-  return jest.fn(fn, function restore() {
-    this.calls = [];
-  });
-};
-
 describe('readField', () => {
-  const blur = createRestorableSpy();
-  const change = createRestorableSpy();
-  const focus = createRestorableSpy();
+  const blur = jest.fn();
+  const change = jest.fn();
+  const focus = jest.fn();
   const defaultProps = {
     asyncBlurFields: [],
     blur,
