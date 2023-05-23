@@ -10,6 +10,34 @@ import reducer from '../reducer';
 import {makeFieldValue} from '../fieldValue';
 import createReduxForm from '../createReduxForm';
 
+const INVALID_DOM_PROPS = [
+  'initialValue',
+  'autofill',
+  'onUpdate',
+  'valid',
+  'invalid',
+  'dirty',
+  'pristine',
+  'active',
+  'touched',
+  'visited',
+  'autofilled',
+  'error',
+];
+
+export const domOnlyProps = fieldProps => {
+  const domProps = {};
+
+  for (const key in fieldProps) {
+    if (INVALID_DOM_PROPS.indexOf(key) < 0) {
+      domProps[key] = fieldProps[key];
+    }
+  }
+
+  return domProps;
+};
+
+
 describe('createReduxForm', () => {
   const reduxForm = createReduxForm(false, React, connect);
   const makeStore = (initialState = {}) => createStore(combineReducers({
@@ -28,7 +56,7 @@ describe('createReduxForm', () => {
 
   class Passthrough extends Component {
     render() {
-      return <div {...this.props} />;
+      return <div {...domOnlyProps(this.props)} />;
     }
   }
 
@@ -2578,7 +2606,7 @@ describe('createReduxForm', () => {
       render() {
         fooRenders++;
         const { field } = this.props;
-        return <input type="text" {...field}/>;
+        return <input type="text" {...domOnlyProps(field)}/>;
       }
     }
     FooInput.propTypes = {
@@ -2593,7 +2621,7 @@ describe('createReduxForm', () => {
       render() {
         barRenders++;
         const { field } = this.props;
-        return <input type="password" {...field}/>;
+        return <input type="password" {...domOnlyProps(field)}/>;
       }
     }
     BarInput.propTypes = {
@@ -2727,7 +2755,7 @@ describe('createReduxForm', () => {
         expect(mingzi.initialValue).toBe('Bob');
         expect(mingzi.value).toBe('Bob');
         return (<div>
-          <input {...mingzi}/>
+          <input {...domOnlyProps(mingzi)}/>
         </div>);
       }
     }
@@ -2893,7 +2921,7 @@ describe('createReduxForm', () => {
       render() {
         const {fields: {name}} = this.props;
         return (<div>
-          <input {...name}/>
+          <input {...domOnlyProps(name)}/>
         </div>);
       }
     }
