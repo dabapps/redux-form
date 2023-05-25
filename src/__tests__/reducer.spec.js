@@ -1,5 +1,6 @@
 import { createStore } from 'redux';
-import reducer, { globalErrorKey } from '../reducer';
+import reducer from '../reducer';
+import { globalErrorKey } from '../constants';
 import bindActionData from '../bindActionData';
 import {
   addArrayValue,

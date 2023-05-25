@@ -1,4 +1,4 @@
-import { globalErrorKey } from './reducer';
+import { globalErrorKey } from './constants';
 import initializeState from './initializeState';
 
 const createInitialState = (
