@@ -27,8 +27,7 @@ import setErrors from './setErrors';
 import { makeFieldValue } from './fieldValue';
 import normalizeFields from './normalizeFields';
 import createInitialState from './createInitialState';
-
-export const globalErrorKey = '_error';
+import { globalErrorKey } from './constants';
 
 export const initialState = {
   _active: undefined,
