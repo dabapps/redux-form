@@ -15,10 +15,21 @@ describe('readField', () => {
     readonly: false,
     addArrayValue: noop,
     removeArrayValue: noop,
-    fields: []
+    fields: [],
   };
 
-  const expectField = ({field, name, value, dirty, touched, visited, error, initialValue, readonly, checked}) => {
+  const expectField = ({
+    field,
+    name,
+    value,
+    dirty,
+    touched,
+    visited,
+    error,
+    initialValue,
+    readonly,
+    checked,
+  }) => {
     expect(field).toBeTruthy();
     expect(typeof field).toBe('object');
     expect(field.name).toBe(name);
@@ -86,17 +97,26 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
   });
 
   it('should read a simple field', () => {
     const fields = {};
-    readField({
-      foo: {
-        value: 'bar'
-      }
-    }, 'foo', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {
+        foo: {
+          value: 'bar',
+        },
+      },
+      'foo',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo,
       name: 'foo',
@@ -106,21 +126,30 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
   });
 
   it('should read a simple field with initial values', () => {
     const fields = {};
-    readField({
-      foo: {
-        value: 'bar',
-        initial: 'dog'
+    readField(
+      {
+        foo: {
+          value: 'bar',
+          initial: 'dog',
+        },
+      },
+      'foo',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      {
+        ...defaultProps,
+        initialValues: { foo: 'cat' },
       }
-    }, 'foo', undefined, fields, {}, undefined, false, {
-      ...defaultProps,
-      initialValues: {foo: 'cat'}
-    });
+    );
     expectField({
       field: fields.foo,
       name: 'foo',
@@ -130,19 +159,28 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: 'dog', // state.initial should override prop
-      readonly: false
+      readonly: false,
     });
   });
 
   it('should read a simple field with sync errors', () => {
     const fields = {};
-    readField({
-      foo: {
-        value: 'bar'
-      }
-    }, 'foo', undefined, fields, {
-      foo: 'fooError'
-    }, undefined, false, defaultProps);
+    readField(
+      {
+        foo: {
+          value: 'bar',
+        },
+      },
+      'foo',
+      undefined,
+      fields,
+      {
+        foo: 'fooError',
+      },
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo,
       name: 'foo',
@@ -152,17 +190,26 @@ describe('readField', () => {
       visited: false,
       error: 'fooError',
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
   });
 
   it('should set checked for boolean value', () => {
     const fields = {};
-    readField({
-      foo: {
-        value: true
-      }
-    }, 'foo', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {
+        foo: {
+          value: true,
+        },
+      },
+      'foo',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo,
       name: 'foo',
@@ -173,13 +220,22 @@ describe('readField', () => {
       error: undefined,
       initialValue: '',
       readonly: false,
-      checked: true
+      checked: true,
     });
-    readField({
-      foo: {
-        value: false
-      }
-    }, 'foo', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {
+        foo: {
+          value: false,
+        },
+      },
+      'foo',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo,
       name: 'foo',
@@ -190,17 +246,26 @@ describe('readField', () => {
       error: undefined,
       initialValue: '',
       readonly: false,
-      checked: false
+      checked: false,
     });
   });
 
   it('should update simple fields', () => {
     const fields = {};
-    readField({
-      foo: {
-        value: 'bar'
-      }
-    }, 'foo', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {
+        foo: {
+          value: 'bar',
+        },
+      },
+      'foo',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo,
       name: 'foo',
@@ -210,14 +275,23 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
     const beforeField = fields.foo;
-    readField({
-      foo: {
-        value: 'dog'
-      }
-    }, 'foo', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {
+        foo: {
+          value: 'dog',
+        },
+      },
+      'foo',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo,
       name: 'foo',
@@ -227,15 +301,24 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
     const afterField = fields.foo;
-    expect(beforeField).not.toBe(afterField);  // field instance should be different
+    expect(beforeField).not.toBe(afterField); // field instance should be different
   });
 
   it('should initialize a nested field', () => {
     const fields = {};
-    readField({}, 'foo.baz', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {},
+      'foo.baz',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo.baz,
       name: 'foo.baz',
@@ -245,19 +328,28 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
   });
 
   it('should read a nested field', () => {
     const fields = {};
-    readField({
-      foo: {
-        baz: {
-          value: 'bar'
-        }
-      }
-    }, 'foo.baz', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {
+        foo: {
+          baz: {
+            value: 'bar',
+          },
+        },
+      },
+      'foo.baz',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo.baz,
       name: 'foo.baz',
@@ -267,27 +359,36 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
   });
 
   it('should read a nested field with initial value', () => {
     const fields = {};
-    readField({
-      foo: {
-        baz: {
-          value: 'bar',
-          initial: 'dog'
-        }
-      }
-    }, 'foo.baz', undefined, fields, {}, undefined, false, {
-      ...defaultProps,
-      initialValues: {
+    readField(
+      {
         foo: {
-          baz: 'cat'
-        }
+          baz: {
+            value: 'bar',
+            initial: 'dog',
+          },
+        },
+      },
+      'foo.baz',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      {
+        ...defaultProps,
+        initialValues: {
+          foo: {
+            baz: 'cat',
+          },
+        },
       }
-    });
+    );
     expectField({
       field: fields.foo.baz,
       name: 'foo.baz',
@@ -297,23 +398,32 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: 'dog', // state.initial should override prop
-      readonly: false
+      readonly: false,
     });
   });
 
   it('should read a nested field with sync errors', () => {
     const fields = {};
-    readField({
-      foo: {
-        baz: {
-          value: 'bar'
-        }
-      }
-    }, 'foo.baz', undefined, fields, {
-      foo: {
-        baz: 'bazError'
-      }
-    }, undefined, false, defaultProps);
+    readField(
+      {
+        foo: {
+          baz: {
+            value: 'bar',
+          },
+        },
+      },
+      'foo.baz',
+      undefined,
+      fields,
+      {
+        foo: {
+          baz: 'bazError',
+        },
+      },
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo.baz,
       name: 'foo.baz',
@@ -323,23 +433,32 @@ describe('readField', () => {
       visited: false,
       error: 'bazError',
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
   });
 
   it('should update a nested field', () => {
     const fields = {};
-    readField({
-      foo: {
-        baz: {
-          value: 'bar'
-        }
-      }
-    }, 'foo.baz', undefined, fields, {
-      foo: {
-        baz: 'bazError'
-      }
-    }, undefined, false, defaultProps);
+    readField(
+      {
+        foo: {
+          baz: {
+            value: 'bar',
+          },
+        },
+      },
+      'foo.baz',
+      undefined,
+      fields,
+      {
+        foo: {
+          baz: 'bazError',
+        },
+      },
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo.baz,
       name: 'foo.baz',
@@ -349,21 +468,30 @@ describe('readField', () => {
       visited: false,
       error: 'bazError',
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
     const beforeFoo = fields.foo;
     const beforeField = fields.foo.baz;
-    readField({
-      foo: {
-        baz: {
-          value: 'barNew'
-        }
-      }
-    }, 'foo.baz', undefined, fields, {
-      foo: {
-        baz: 'bazError'
-      }
-    }, undefined, false, defaultProps);
+    readField(
+      {
+        foo: {
+          baz: {
+            value: 'barNew',
+          },
+        },
+      },
+      'foo.baz',
+      undefined,
+      fields,
+      {
+        foo: {
+          baz: 'bazError',
+        },
+      },
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo.baz,
       name: 'foo.baz',
@@ -373,29 +501,44 @@ describe('readField', () => {
       visited: false,
       error: 'bazError',
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
     const afterFoo = fields.foo;
     const afterField = fields.foo.baz;
-    expect(beforeFoo).not.toBe(afterFoo);         // field container instance should be same
-    expect(beforeField).not.toBe(afterField);  // field instance should be different
+    expect(beforeFoo).not.toBe(afterFoo); // field container instance should be same
+    expect(beforeField).not.toBe(afterField); // field instance should be different
   });
 
   it('should initialize an array field', () => {
     const fields = {};
-    readField({}, 'foo[]', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {},
+      'foo[]',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expect(Array.isArray(fields.foo)).toBe(true);
     expect(fields.foo[0]).toBe(undefined);
   });
 
   it('should read an array field', () => {
     const fields = {};
-    readField({
-      foo: [
-        {value: 'bar'},
-        {value: 'baz'}
-      ]
-    }, 'foo[]', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {
+        foo: [{ value: 'bar' }, { value: 'baz' }],
+      },
+      'foo[]',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo[0],
       name: 'foo[0]',
@@ -405,7 +548,7 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
     expectField({
       field: fields.foo[1],
@@ -416,24 +559,30 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
     expect(fields.foo[2]).toBe(undefined);
   });
 
   it('should read an array field with an initial value', () => {
     const fields = {};
-    readField({
-      foo: [
-        {value: 'bar'},
-        {value: 'baz'}
-      ]
-    }, 'foo[]', undefined, fields, {}, undefined, false, {
-      ...defaultProps,
-      initialValues: {
-        foo: ['cat1', 'cat2']
+    readField(
+      {
+        foo: [{ value: 'bar' }, { value: 'baz' }],
+      },
+      'foo[]',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      {
+        ...defaultProps,
+        initialValues: {
+          foo: ['cat1', 'cat2'],
+        },
       }
-    });
+    );
     expectField({
       field: fields.foo[0],
       name: 'foo[0]',
@@ -443,7 +592,7 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: 'cat1',
-      readonly: false
+      readonly: false,
     });
     expectField({
       field: fields.foo[1],
@@ -454,20 +603,26 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: 'cat2',
-      readonly: false
+      readonly: false,
     });
   });
 
   it('should read an array field with sync errors', () => {
     const fields = {};
-    readField({
-      foo: [
-        {value: 'bar'},
-        {value: 'baz'}
-      ]
-    }, 'foo[]', undefined, fields, {
-      foo: ['error1', 'error2']
-    }, undefined, false, defaultProps);
+    readField(
+      {
+        foo: [{ value: 'bar' }, { value: 'baz' }],
+      },
+      'foo[]',
+      undefined,
+      fields,
+      {
+        foo: ['error1', 'error2'],
+      },
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo[0],
       name: 'foo[0]',
@@ -477,7 +632,7 @@ describe('readField', () => {
       visited: false,
       error: 'error1',
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
     expectField({
       field: fields.foo[1],
@@ -488,20 +643,26 @@ describe('readField', () => {
       visited: false,
       error: 'error2',
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
   });
 
   it('should update an array field', () => {
     const fields = {};
-    readField({
-      foo: [
-        {value: 'bar'},
-        {value: 'baz'}
-      ]
-    }, 'foo[]', undefined, fields, {
-      foo: ['error1', 'error2']
-    }, undefined, false, defaultProps);
+    readField(
+      {
+        foo: [{ value: 'bar' }, { value: 'baz' }],
+      },
+      'foo[]',
+      undefined,
+      fields,
+      {
+        foo: ['error1', 'error2'],
+      },
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo[0],
       name: 'foo[0]',
@@ -511,7 +672,7 @@ describe('readField', () => {
       visited: false,
       error: 'error1',
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
     expectField({
       field: fields.foo[1],
@@ -522,19 +683,25 @@ describe('readField', () => {
       visited: false,
       error: 'error2',
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
     const beforeArray = fields.foo;
     const before1 = fields.foo[0];
     const before2 = fields.foo[1];
-    readField({
-      foo: [
-        {value: 'barNew'},
-        {value: 'bazNew'}
-      ]
-    }, 'foo[]', undefined, fields, {
-      foo: ['error1', 'error2']
-    }, undefined, false, defaultProps);
+    readField(
+      {
+        foo: [{ value: 'barNew' }, { value: 'bazNew' }],
+      },
+      'foo[]',
+      undefined,
+      fields,
+      {
+        foo: ['error1', 'error2'],
+      },
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo[0],
       name: 'foo[0]',
@@ -544,7 +711,7 @@ describe('readField', () => {
       visited: false,
       error: 'error1',
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
     expectField({
       field: fields.foo[1],
@@ -555,28 +722,34 @@ describe('readField', () => {
       visited: false,
       error: 'error2',
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
     const afterArray = fields.foo;
     const after1 = fields.foo[0];
     const after2 = fields.foo[1];
     expect(beforeArray).not.toBe(afterArray); // array should be different
-    expect(before1).not.toBe(after1);      // field instance should be different
-    expect(before2).not.toBe(after2);      // field instance should be different
+    expect(before1).not.toBe(after1); // field instance should be different
+    expect(before2).not.toBe(after2); // field instance should be different
   });
 
   it('should allow an array field to add a value', () => {
     const spy = jest.fn();
     const fields = {};
-    readField({
-      foo: [
-        {value: 'bar'},
-        {value: 'baz'}
-      ]
-    }, 'foo[]', undefined, fields, {}, undefined, false, {
-      ...defaultProps,
-      addArrayValue: spy
-    });
+    readField(
+      {
+        foo: [{ value: 'bar' }, { value: 'baz' }],
+      },
+      'foo[]',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      {
+        ...defaultProps,
+        addArrayValue: spy,
+      }
+    );
     fields.foo.addField('rabbit');
     expect(spy).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledWith('foo', 'rabbit', undefined, []);
@@ -585,28 +758,29 @@ describe('readField', () => {
   it('should allow an array field to add a deeply nested value', () => {
     const spy = jest.fn();
     const fields = {};
-    readField({
-      foo: [
-        {
-          bar: [
-            { baz: 'foo[0].bar[0].baz' },
-            { baz: 'foo[0].bar[1].baz' }
-          ]
-        },
-        {
-          bar: [
-            { baz: 'foo[1].bar[0].baz' },
-            { baz: 'foo[1].bar[1].baz' }
-          ]
-        }
-      ]
-    }, 'foo[]', undefined, fields, {}, undefined, false, {
-      ...defaultProps,
-      addArrayValue: spy,
-      fields: [
-        'foo[].bar[].baz'
-      ]
-    });
+    readField(
+      {
+        foo: [
+          {
+            bar: [{ baz: 'foo[0].bar[0].baz' }, { baz: 'foo[0].bar[1].baz' }],
+          },
+          {
+            bar: [{ baz: 'foo[1].bar[0].baz' }, { baz: 'foo[1].bar[1].baz' }],
+          },
+        ],
+      },
+      'foo[]',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      {
+        ...defaultProps,
+        addArrayValue: spy,
+        fields: ['foo[].bar[].baz'],
+      }
+    );
     fields.foo.addField('rabbit');
     expect(spy).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledWith('foo', 'rabbit', undefined, ['bar[].baz']);
@@ -615,15 +789,21 @@ describe('readField', () => {
   it('should allow an array field to remove a value', () => {
     const spy = jest.fn();
     const fields = {};
-    readField({
-      foo: [
-        {value: 'bar'},
-        {value: 'baz'}
-      ]
-    }, 'foo[]', undefined, fields, {}, undefined, false, {
-      ...defaultProps,
-      removeArrayValue: spy
-    });
+    readField(
+      {
+        foo: [{ value: 'bar' }, { value: 'baz' }],
+      },
+      'foo[]',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      {
+        ...defaultProps,
+        removeArrayValue: spy,
+      }
+    );
     fields.foo.removeField(1);
     expect(spy).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledWith('foo', 1);
@@ -631,27 +811,49 @@ describe('readField', () => {
 
   it('should remove array field when it is no longer in the store', () => {
     const fields = {};
-    readField({
-      foo: [
-        {value: 'bar'},
-        {value: 'baz'}
-      ]
-    }, 'foo[]', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {
+        foo: [{ value: 'bar' }, { value: 'baz' }],
+      },
+      'foo[]',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expect(fields.foo.length).toBe(2);
     expect(fields.foo[0].value).toBe('bar');
     expect(fields.foo[1].value).toBe('baz');
-    readField({
-      foo: [
-        {value: 'bar'}
-      ]
-    }, 'foo[]', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {
+        foo: [{ value: 'bar' }],
+      },
+      'foo[]',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expect(fields.foo.length).toBe(1);
     expect(fields.foo[0].value).toBe('bar');
   });
 
   it('should initialize a mixed field with empty state', () => {
     const fields = {};
-    readField({}, 'pig.foo[].dog.cat[].rat', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {},
+      'pig.foo[].dog.cat[].rat',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expect(typeof fields.pig).toBe('object');
     expect(Array.isArray(fields.pig.foo)).toBe(true);
     expect(fields.pig.foo[0]).toBe(undefined);
@@ -659,23 +861,32 @@ describe('readField', () => {
 
   it('should read a mixed field', () => {
     const fields = {};
-    readField({
-      pig: {
-        foo: [
-          {
-            dog: {
-              cat: [
-                {
-                  rat: {
-                    value: 'hello'  // that's deep, baby!
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      }
-    }, 'pig.foo[].dog.cat[].rat', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {
+        pig: {
+          foo: [
+            {
+              dog: {
+                cat: [
+                  {
+                    rat: {
+                      value: 'hello', // that's deep, baby!
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      'pig.foo[].dog.cat[].rat',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expect(typeof fields.pig).toBe('object');
     expect(Array.isArray(fields.pig.foo)).toBe(true);
     expect(typeof fields.pig.foo[0].dog).toBe('object');
@@ -691,23 +902,32 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
   });
 
   it('should change complex field instances when updating a mixed field', () => {
     const fields = {};
-    readField({
-      pig: {
-        foo: [
-          {
-            dog: {
-              value: 'hello'
-            }
-          }
-        ]
-      }
-    }, 'pig.foo[].dog', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {
+        pig: {
+          foo: [
+            {
+              dog: {
+                value: 'hello',
+              },
+            },
+          ],
+        },
+      },
+      'pig.foo[].dog',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.pig.foo[0].dog,
       name: 'pig.foo[0].dog',
@@ -717,22 +937,31 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
     const beforeArrayField = fields.pig.foo;
     const beforeObjectField = fields.pig.foo[0];
 
-    readField({
-      pig: {
-        foo: [
-          {
-            dog: {
-              value: 'goodbye'
-            }
-          }
-        ]
-      }
-    }, 'pig.foo[].dog', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {
+        pig: {
+          foo: [
+            {
+              dog: {
+                value: 'goodbye',
+              },
+            },
+          ],
+        },
+      },
+      'pig.foo[].dog',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.pig.foo[0].dog,
       name: 'pig.foo[0].dog',
@@ -742,7 +971,7 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
     const afterArrayField = fields.pig.foo;
     const afterObjectField = fields.pig.foo[0];
@@ -753,38 +982,45 @@ describe('readField', () => {
 
   it('should read an array field with an initial value', () => {
     const fields = {};
-    readField({
-      pig: {
-        foo: [
-          {
-            dog: {
-              cat: [
-                {
-                  rat: {
-                    value: 'hello'
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      }
-    }, 'pig.foo[].dog.cat[].rat', undefined, fields, {}, undefined, false, {
-      ...defaultProps,
-      initialValues: {
+    readField(
+      {
         pig: {
           foo: [
             {
               dog: {
                 cat: [
-                  {rat: 'initVal'}
-                ]
-              }
-            }
-          ]
-        }
+                  {
+                    rat: {
+                      value: 'hello',
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      'pig.foo[].dog.cat[].rat',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      {
+        ...defaultProps,
+        initialValues: {
+          pig: {
+            foo: [
+              {
+                dog: {
+                  cat: [{ rat: 'initVal' }],
+                },
+              },
+            ],
+          },
+        },
       }
-    });
+    );
     expectField({
       field: fields.pig.foo[0].dog.cat[0].rat,
       name: 'pig.foo[0].dog.cat[0].rat',
@@ -794,41 +1030,48 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: 'initVal',
-      readonly: false
+      readonly: false,
     });
   });
 
   it('should read a mixed field with sync errors', () => {
     const fields = {};
-    readField({
-      pig: {
-        foo: [
-          {
-            dog: {
-              cat: [
-                {
-                  rat: {
-                    value: 'hello'
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      }
-    }, 'pig.foo[].dog.cat[].rat', undefined, fields, {
-      pig: {
-        foo: [
-          {
-            dog: {
-              cat: [
-                {rat: 'syncError'}
-              ]
-            }
-          }
-        ]
-      }
-    }, undefined, false, defaultProps);
+    readField(
+      {
+        pig: {
+          foo: [
+            {
+              dog: {
+                cat: [
+                  {
+                    rat: {
+                      value: 'hello',
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      'pig.foo[].dog.cat[].rat',
+      undefined,
+      fields,
+      {
+        pig: {
+          foo: [
+            {
+              dog: {
+                cat: [{ rat: 'syncError' }],
+              },
+            },
+          ],
+        },
+      },
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.pig.foo[0].dog.cat[0].rat,
       name: 'pig.foo[0].dog.cat[0].rat',
@@ -838,17 +1081,26 @@ describe('readField', () => {
       visited: false,
       error: 'syncError',
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
   });
 
   it('should allow an array value', () => {
     const fields = {};
-    readField({
-      foo: {
-        value: [1, 2]
-      }
-    }, 'foo', undefined, fields, {}, undefined, false, defaultProps);
+    readField(
+      {
+        foo: {
+          value: [1, 2],
+        },
+      },
+      'foo',
+      undefined,
+      fields,
+      {},
+      undefined,
+      false,
+      defaultProps
+    );
     expectField({
       field: fields.foo,
       name: 'foo',
@@ -858,7 +1110,7 @@ describe('readField', () => {
       visited: false,
       error: undefined,
       initialValue: '',
-      readonly: false
+      readonly: false,
     });
   });
 
@@ -866,7 +1118,7 @@ describe('readField', () => {
     const fields = {};
     readField({}, 'foo', undefined, fields, {}, undefined, false, {
       ...defaultProps,
-      readonly: true
+      readonly: true,
     });
     const field = fields.foo;
     expect(field.onBlur).toBeFalsy();

@@ -1,5 +1,5 @@
 # Does `redux-form` work with React Native?
-  
+
 Yes, it does.
 
 #### If your are using all `react-native@18+`, `redux@4+` and `npm@3+`
@@ -7,7 +7,7 @@ Yes, it does.
 Just import it as usual:
 
 ```javascript
-import {reduxForm} from 'redux-form';
+import { reduxForm } from 'redux-form';
 ```
 
 #### Else
@@ -15,11 +15,13 @@ import {reduxForm} from 'redux-form';
 All you have to do is use:
 
 ```javascript
-import {reduxForm} from 'redux-form/native';
+import { reduxForm } from 'redux-form/native';
 ```
+
 instead of
+
 ```javascript
-import {reduxForm} from 'redux-form';
+import { reduxForm } from 'redux-form';
 ```
 
 #### Note:

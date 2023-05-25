@@ -20,12 +20,15 @@ describe('silenceEvents', () => {
     expect(spy).toHaveBeenCalledWith('foo', 'bar');
     spy.mockClear();
 
-    silenced({value: 10}, false);
+    silenced({ value: 10 }, false);
     expect(spy).toHaveBeenCalled();
 
-    expect(spy).toHaveBeenCalledWith({
-      value: 10
-    }, false);
+    expect(spy).toHaveBeenCalledWith(
+      {
+        value: 10,
+      },
+      false
+    );
 
     spy.mockClear();
   });
@@ -35,7 +38,7 @@ describe('silenceEvents', () => {
     const silenced = silenceEvents(spy);
     const event = {
       preventDefault: () => null,
-      stopPropagation: () => null
+      stopPropagation: () => null,
     };
 
     silenced(event, 1, 2, 3);
@@ -48,12 +51,15 @@ describe('silenceEvents', () => {
     expect(spy).toHaveBeenCalledWith('foo', 'bar');
     spy.mockClear();
 
-    silenced(event, {value: 10}, false);
+    silenced(event, { value: 10 }, false);
     expect(spy).toHaveBeenCalled();
 
-    expect(spy).toHaveBeenCalledWith({
-      value: 10
-    }, false);
+    expect(spy).toHaveBeenCalledWith(
+      {
+        value: 10,
+      },
+      false
+    );
 
     spy.mockClear();
   });
@@ -64,7 +70,7 @@ describe('silenceEvents', () => {
     const stopPropagation = jest.fn();
     const event = {
       preventDefault,
-      stopPropagation
+      stopPropagation,
     };
 
     silenceEvents(spy)(event);

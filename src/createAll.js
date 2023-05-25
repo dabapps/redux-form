@@ -9,16 +9,26 @@ import getValues from './getValuesFromState';
 
 // bind form as first parameter of action creators
 const boundActions = {
-  ...mapValues({
-    ...actions,
-    autofillWithKey: (key, ...args) => bindActionData(actions.autofill, {key})(...args),
-    changeWithKey: (key, ...args) => bindActionData(actions.change, {key})(...args),
-    initializeWithKey: (key, ...args) => bindActionData(actions.initialize, {key})(...args),
-    reset: (key) => bindActionData(actions.reset, {key})(),
-    touchWithKey: (key, ...args) => bindActionData(actions.touch, {key})(...args),
-    untouchWithKey: (key, ...args) => bindActionData(actions.untouch, {key})(...args),
-    destroy: (key) => bindActionData(actions.destroy, {key})()
-  }, action => (form, ...args) => bindActionData(action, {form})(...args))
+  ...mapValues(
+    {
+      ...actions,
+      autofillWithKey: (key, ...args) =>
+        bindActionData(actions.autofill, { key })(...args),
+      changeWithKey: (key, ...args) =>
+        bindActionData(actions.change, { key })(...args),
+      initializeWithKey: (key, ...args) =>
+        bindActionData(actions.initialize, { key })(...args),
+      reset: (key) => bindActionData(actions.reset, { key })(),
+      touchWithKey: (key, ...args) =>
+        bindActionData(actions.touch, { key })(...args),
+      untouchWithKey: (key, ...args) =>
+        bindActionData(actions.untouch, { key })(...args),
+      destroy: (key) => bindActionData(actions.destroy, { key })(),
+    },
+    (action) =>
+      (form, ...args) =>
+        bindActionData(action, { form })(...args)
+  ),
 };
 
 const addArrayValue = boundActions.addArrayValue;
@@ -72,6 +82,6 @@ export default function createAll(isReactNative, React, connect) {
     touch,
     touchWithKey,
     untouch,
-    untouchWithKey
+    untouchWithKey,
   };
 }

@@ -4,7 +4,7 @@
 
 The reducer listens to dispatched actions from the component to maintain your state in Redux.
 
-The `reduxForm()` decorator decorates a component to enable it as a form. This will 
+The `reduxForm()` decorator decorates a component to enable it as a form. This will
 create two nested Higher Order Components (HOCs) that will wrap your component: `ReduxFormConnector`
 connects to Redux and `ReduxForm` handles all the dispatching and provides information to your component.
 
@@ -12,53 +12,66 @@ connects to Redux and `ReduxForm` handles all the dispatching and provides infor
 
 ### Step #1
 
-The first thing that you have to do is to give the `redux-form` reducer to Redux. You will only have to do 
+The first thing that you have to do is to give the `redux-form` reducer to Redux. You will only have to do
 this once, no matter how many form components your app uses.
 
 ```js
-import {createStore, combineReducers} from 'redux';
-import {reducer as formReducer} from 'redux-form';
+import { createStore, combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 const reducers = {
   // ... your other reducers here ...
-  form: formReducer     // <---- Mounted at 'form'. See note below.
-}
+  form: formReducer, // <---- Mounted at 'form'. See note below.
+};
 const reducer = combineReducers(reducers);
 const store = createStore(reducer);
 ```
 
-If you're okay with mounting `redux-form` at `form`, skip to __Step #2__.
+If you're okay with mounting `redux-form` at `form`, skip to **Step #2**.
 
-__NOTE:__ The default mount point for `redux-form` is at `form`. The only good reason to mount it somewhere else is 
-if you already have a reducer mounted at `form` that you cannot move. Since Redux is still so young, it seems 
-unlikely that you have a legacy Redux application that has fixed reducer mount points, but if you absolutely must 
-move it, `redux-form` will let you do that. See the 
+**NOTE:** The default mount point for `redux-form` is at `form`. The only good reason to mount it somewhere else is
+if you already have a reducer mounted at `form` that you cannot move. Since Redux is still so young, it seems
+unlikely that you have a legacy Redux application that has fixed reducer mount points, but if you absolutely must
+move it, `redux-form` will let you do that. See the
 [Alternate Redux Mount Point Example](http://redux-form.com/4.2.0/#/examples/alternate-mount-point) for details.
 
 ### Step #2
 
 Decorate your form component with `reduxForm()`. This will provide your component with `props` allowing you to attach
 your inputs to `redux-form`.
-  
+
 ```js
-import React, {Component} from 'react';
-import {reduxForm} from 'redux-form';
+import React, { Component } from 'react';
+import { reduxForm } from 'redux-form';
 
 class ContactForm extends Component {
   render() {
-    const {fields: {firstName, lastName, email}, handleSubmit} = this.props;
+    const {
+      fields: { firstName, lastName, email },
+      handleSubmit,
+    } = this.props;
     return (
       <form onSubmit={handleSubmit}>
         <div>
           <label for="firstname">First Name</label>
-          <input id="firstname" type="text" placeholder="First Name" {...firstName}/>
+          <input
+            id="firstname"
+            type="text"
+            placeholder="First Name"
+            {...firstName}
+          />
         </div>
         <div>
           <label for="lastname">Last Name</label>
-          <input id="lastname" type="text" placeholder="Last Name" {...lastName}/>
+          <input
+            id="lastname"
+            type="text"
+            placeholder="Last Name"
+            {...lastName}
+          />
         </div>
         <div>
           <label for="email">Email</label>
-          <input id="email" type="email" placeholder="Email" {...email}/>
+          <input id="email" type="email" placeholder="Email" {...email} />
         </div>
         <button type="submit">Submit</button>
       </form>
@@ -66,9 +79,10 @@ class ContactForm extends Component {
   }
 }
 
-ContactForm = reduxForm({ // <----- THIS IS THE IMPORTANT PART!
-  form: 'contact',                           // a unique name for this form
-  fields: ['firstName', 'lastName', 'email'] // all the fields in your form
+ContactForm = reduxForm({
+  // <----- THIS IS THE IMPORTANT PART!
+  form: 'contact', // a unique name for this form
+  fields: ['firstName', 'lastName', 'email'], // all the fields in your form
 })(ContactForm);
 
 export default ContactForm;

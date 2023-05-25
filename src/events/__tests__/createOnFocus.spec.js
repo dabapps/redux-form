@@ -12,5 +12,4 @@ describe('createOnFocus', () => {
     expect(focus).toHaveBeenCalled();
     expect(focus).toHaveBeenCalledWith('foo');
   });
-
 });

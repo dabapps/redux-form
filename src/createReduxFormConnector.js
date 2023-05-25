@@ -9,58 +9,82 @@ import createHigherOrderComponent from './createHigherOrderComponent';
  */
 const createReduxFormConnector =
   (isReactNative, React, connect) =>
-    (WrappedComponent, mapStateToProps, mapDispatchToProps, mergeProps, options) => {
-      const {Component} = React;
-      const { forwardRef = false } = (options || {});
-      class ReduxFormConnector extends Component {
-        constructor(props) {
-          super(props);
-          this.cache = new LazyCache(this, {
-            ReduxForm: {
-              params: [
-                // props that effect how redux-form connects to the redux store
-                'reduxMountPoint',
-                'form',
-                'formKey',
-                'getFormState'
-              ],
-              fn: createHigherOrderComponent(props, isReactNative, React, connect, WrappedComponent,
-                mapStateToProps, mapDispatchToProps, mergeProps, options)
-            }
-          });
-        }
-
-        UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line
-          this.cache.componentWillReceiveProps(nextProps);
-        }
-
-        render() {
-          const ReduxForm = this.cache.get('ReduxForm');
-          // remove some redux-form config-only props
-          const {reduxMountPoint, destroyOnUnmount, form, getFormState, touchOnBlur, touchOnChange,
-            ...passableProps } = this.props; // eslint-disable-line no-redeclare
-          if ( forwardRef ) {
-            return <ReduxForm {...passableProps} ref="wrappedInstance"/>;
-          }
-          return <ReduxForm {...passableProps}/>;
-        }
+  (
+    WrappedComponent,
+    mapStateToProps,
+    mapDispatchToProps,
+    mergeProps,
+    options
+  ) => {
+    const { Component } = React;
+    const { forwardRef = false } = options || {};
+    class ReduxFormConnector extends Component {
+      constructor(props) {
+        super(props);
+        this.cache = new LazyCache(this, {
+          ReduxForm: {
+            params: [
+              // props that effect how redux-form connects to the redux store
+              'reduxMountPoint',
+              'form',
+              'formKey',
+              'getFormState',
+            ],
+            fn: createHigherOrderComponent(
+              props,
+              isReactNative,
+              React,
+              connect,
+              WrappedComponent,
+              mapStateToProps,
+              mapDispatchToProps,
+              mergeProps,
+              options
+            ),
+          },
+        });
       }
-      ReduxFormConnector.displayName = `ReduxFormConnector(${getDisplayName(WrappedComponent)})`;
-      ReduxFormConnector.WrappedComponent = WrappedComponent;
-      ReduxFormConnector.propTypes = {
-        destroyOnUnmount: PropTypes.bool,
-        reduxMountPoint: PropTypes.string,
-        form: PropTypes.string.isRequired,
-        formKey: PropTypes.string,
-        getFormState: PropTypes.func,
-        touchOnBlur: PropTypes.bool,
-        touchOnChange: PropTypes.bool
-      };
-      ReduxFormConnector.defaultProps = {
-        reduxMountPoint: 'form',
-        getFormState: (state, reduxMountPoint) => state[reduxMountPoint]
-      };
-      return ReduxFormConnector;
+
+      UNSAFE_componentWillReceiveProps(nextProps) {
+        this.cache.componentWillReceiveProps(nextProps);
+      }
+
+      render() {
+        const ReduxForm = this.cache.get('ReduxForm');
+        // remove some redux-form config-only props
+        const {
+          reduxMountPoint,
+          destroyOnUnmount,
+          form,
+          getFormState,
+          touchOnBlur,
+          touchOnChange,
+          ...passableProps
+        } = this.props; // eslint-disable-line no-redeclare
+        if (forwardRef) {
+          return <ReduxForm {...passableProps} ref="wrappedInstance" />;
+        }
+        return <ReduxForm {...passableProps} />;
+      }
+    }
+    ReduxFormConnector.displayName = `ReduxFormConnector(${getDisplayName(
+      WrappedComponent
+    )})`;
+    ReduxFormConnector.WrappedComponent = WrappedComponent;
+    ReduxFormConnector.propTypes = {
+      destroyOnUnmount: PropTypes.bool,
+      reduxMountPoint: PropTypes.string,
+      form: PropTypes.string.isRequired,
+      formKey: PropTypes.string,
+      getFormState: PropTypes.func,
+      touchOnBlur: PropTypes.bool,
+      touchOnChange: PropTypes.bool,
     };
+    ReduxFormConnector.defaultProps = {
+      reduxMountPoint: 'form',
+      getFormState: (state, reduxMountPoint) => state[reduxMountPoint],
+    };
+    return ReduxFormConnector;
+  };
 
 export default createReduxFormConnector;

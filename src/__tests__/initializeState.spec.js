@@ -1,9 +1,11 @@
 import initializeState from '../initializeState';
-import {isFieldValue} from '../fieldValue';
+import { isFieldValue } from '../fieldValue';
 
 describe('initializeState', () => {
   it('should throw error when no fields passed', () => {
-    expect(() => initializeState({}, undefined, {})).toThrow(/fields must be passed/);
+    expect(() => initializeState({}, undefined, {})).toThrow(
+      /fields must be passed/
+    );
   });
 
   it('should return empty if no fields', () => {
@@ -14,42 +16,46 @@ describe('initializeState', () => {
     const result = initializeState({}, ['foo', 'bar'], {});
     expect(result).toEqual({
       foo: {
-        _isFieldValue: true
+        _isFieldValue: true,
       },
       bar: {
-        _isFieldValue: true
-      }
+        _isFieldValue: true,
+      },
     });
     expect(isFieldValue(result.foo)).toBe(true);
     expect(isFieldValue(result.bar)).toBe(true);
   });
 
   it('should initialize simple field values to state', () => {
-    const result = initializeState({
-      foo: 'bar',
-      catLives: 9,
-      alive: true
-    }, ['foo', 'catLives', 'alive'], {});
+    const result = initializeState(
+      {
+        foo: 'bar',
+        catLives: 9,
+        alive: true,
+      },
+      ['foo', 'catLives', 'alive'],
+      {}
+    );
     expect(typeof result).toBe('object');
 
     expect(result).toEqual({
       foo: {
         initial: 'bar',
         value: 'bar',
-        _isFieldValue: true
+        _isFieldValue: true,
       },
 
       catLives: {
         initial: 9,
         value: 9,
-        _isFieldValue: true
+        _isFieldValue: true,
       },
 
       alive: {
         initial: true,
         value: true,
-        _isFieldValue: true
-      }
+        _isFieldValue: true,
+      },
     });
 
     expect(isFieldValue(result.foo)).toBe(true);
@@ -58,15 +64,19 @@ describe('initializeState', () => {
   });
 
   it('should initialize deep field values to state', () => {
-    const result = initializeState({
-      foo: {
-        bar: 'baz'
+    const result = initializeState(
+      {
+        foo: {
+          bar: 'baz',
+        },
+        lives: {
+          cat: 9,
+        },
+        alive: true,
       },
-      lives: {
-        cat: 9
-      },
-      alive: true
-    }, ['foo.bar', 'lives.cat', 'alive'], {});
+      ['foo.bar', 'lives.cat', 'alive'],
+      {}
+    );
     expect(typeof result).toBe('object');
 
     expect(result).toEqual({
@@ -74,23 +84,23 @@ describe('initializeState', () => {
         bar: {
           initial: 'baz',
           value: 'baz',
-          _isFieldValue: true
-        }
+          _isFieldValue: true,
+        },
       },
 
       lives: {
         cat: {
           initial: 9,
           value: 9,
-          _isFieldValue: true
-        }
+          _isFieldValue: true,
+        },
       },
 
       alive: {
         initial: true,
         value: true,
-        _isFieldValue: true
-      }
+        _isFieldValue: true,
+      },
     });
 
     expect(isFieldValue(result.foo)).toBe(false);
@@ -101,30 +111,38 @@ describe('initializeState', () => {
   });
 
   it('should initialize array field values to state', () => {
-    const result = initializeState({
-      foo: ['bar', 'baz', undefined],
-      alive: true
-    }, ['foo[]', 'alive'], {});
+    const result = initializeState(
+      {
+        foo: ['bar', 'baz', undefined],
+        alive: true,
+      },
+      ['foo[]', 'alive'],
+      {}
+    );
     expect(typeof result).toBe('object');
 
     expect(result).toEqual({
-      foo: [{
-        initial: 'bar',
-        value: 'bar',
-        _isFieldValue: true
-      }, {
-        initial: 'baz',
-        value: 'baz',
-        _isFieldValue: true
-      }, {
-        _isFieldValue: true
-      }],
+      foo: [
+        {
+          initial: 'bar',
+          value: 'bar',
+          _isFieldValue: true,
+        },
+        {
+          initial: 'baz',
+          value: 'baz',
+          _isFieldValue: true,
+        },
+        {
+          _isFieldValue: true,
+        },
+      ],
 
       alive: {
         initial: true,
         value: true,
-        _isFieldValue: true
-      }
+        _isFieldValue: true,
+      },
     });
 
     expect(isFieldValue(result.foo)).toBe(false);
@@ -135,9 +153,13 @@ describe('initializeState', () => {
   });
 
   it('should be okay with no array value given', () => {
-    const result = initializeState({
-      bar: 42
-    }, ['foo[]', 'bar'], {});
+    const result = initializeState(
+      {
+        bar: 42,
+      },
+      ['foo[]', 'bar'],
+      {}
+    );
     expect(typeof result).toBe('object');
 
     expect(result).toEqual({
@@ -146,8 +168,8 @@ describe('initializeState', () => {
       bar: {
         initial: 42,
         value: 42,
-        _isFieldValue: true
-      }
+        _isFieldValue: true,
+      },
     });
 
     expect(isFieldValue(result.foo)).toBe(false);
@@ -155,43 +177,55 @@ describe('initializeState', () => {
   });
 
   it('should allow an array field to be empty', () => {
-    const result = initializeState({
-      foo: []
-    }, ['foo[]'], {});
+    const result = initializeState(
+      {
+        foo: [],
+      },
+      ['foo[]'],
+      {}
+    );
     expect(typeof result).toBe('object');
 
     expect(result).toEqual({
-      foo: []
+      foo: [],
     });
 
     expect(isFieldValue(result.foo)).toBe(false);
   });
 
   it('should initialize array values to state', () => {
-    const result = initializeState({
-      animals: ['cat', 'dog', 'rat'],
-      bar: [{deeper: 42}]
-    }, ['animals', 'bar'], {});
+    const result = initializeState(
+      {
+        animals: ['cat', 'dog', 'rat'],
+        bar: [{ deeper: 42 }],
+      },
+      ['animals', 'bar'],
+      {}
+    );
     expect(typeof result).toBe('object');
 
     expect(result).toEqual({
       animals: {
         initial: ['cat', 'dog', 'rat'],
         value: ['cat', 'dog', 'rat'],
-        _isFieldValue: true
+        _isFieldValue: true,
       },
 
       bar: {
-        initial: [{
-          deeper: 42
-        }],
+        initial: [
+          {
+            deeper: 42,
+          },
+        ],
 
-        value: [{
-          deeper: 42
-        }],
+        value: [
+          {
+            deeper: 42,
+          },
+        ],
 
-        _isFieldValue: true
-      }
+        _isFieldValue: true,
+      },
     });
 
     expect(isFieldValue(result.animals)).toBe(true);
@@ -199,31 +233,35 @@ describe('initializeState', () => {
   });
 
   it('should initialize array values to state, changing existing values', () => {
-    const result = initializeState({
-      animals: ['cat', 'dog', 'rat'],
-      bar: []
-    }, ['animals', 'bar'], {
-      animals: {
-        value: ['hog', 'pig', 'doe']
+    const result = initializeState(
+      {
+        animals: ['cat', 'dog', 'rat'],
+        bar: [],
       },
-      bar: {
-        value: [{deeper: 42}]
+      ['animals', 'bar'],
+      {
+        animals: {
+          value: ['hog', 'pig', 'doe'],
+        },
+        bar: {
+          value: [{ deeper: 42 }],
+        },
       }
-    });
+    );
     expect(typeof result).toBe('object');
 
     expect(result).toEqual({
       animals: {
         initial: ['cat', 'dog', 'rat'],
         value: ['cat', 'dog', 'rat'],
-        _isFieldValue: true
+        _isFieldValue: true,
       },
 
       bar: {
         initial: [],
         value: [],
-        _isFieldValue: true
-      }
+        _isFieldValue: true,
+      },
     });
 
     expect(isFieldValue(result.animals)).toBe(true);
@@ -231,37 +269,41 @@ describe('initializeState', () => {
   });
 
   it('should initialize object values to state', () => {
-    const result = initializeState({
-      foo: {bar: 'baz'},
-      lives: {cat: 9},
-      alive: true
-    }, ['foo', 'lives'], {});
+    const result = initializeState(
+      {
+        foo: { bar: 'baz' },
+        lives: { cat: 9 },
+        alive: true,
+      },
+      ['foo', 'lives'],
+      {}
+    );
     expect(typeof result).toBe('object');
 
     expect(result).toEqual({
       foo: {
         initial: {
-          bar: 'baz'
+          bar: 'baz',
         },
 
         value: {
-          bar: 'baz'
+          bar: 'baz',
         },
 
-        _isFieldValue: true
+        _isFieldValue: true,
       },
 
       lives: {
         initial: {
-          cat: 9
+          cat: 9,
         },
 
         value: {
-          cat: 9
+          cat: 9,
         },
 
-        _isFieldValue: true
-      }
+        _isFieldValue: true,
+      },
     });
 
     expect(isFieldValue(result.foo)).toBe(true);

@@ -8,8 +8,7 @@ describe('asyncValidation', () => {
     const fn = () => null;
     const start = () => null;
     const stop = () => null;
-    expect(() => asyncValidation(fn, start, stop, field))
-      .toThrow(/promise/);
+    expect(() => asyncValidation(fn, start, stop, field)).toThrow(/promise/);
   });
 
   it('should return a promise', () => {
@@ -27,11 +26,14 @@ describe('asyncValidation', () => {
     expect(fn).toHaveBeenCalled();
     expect(start).toHaveBeenCalled();
     expect(start).toHaveBeenCalledWith(field);
-    return promise.then(() => {
-      expect(stop).toHaveBeenCalled();
-    }, () => {
-      expect(false).toBe(true); // should not get into reject branch
-    });
+    return promise.then(
+      () => {
+        expect(stop).toHaveBeenCalled();
+      },
+      () => {
+        expect(false).toBe(true); // should not get into reject branch
+      }
+    );
   });
 
   it('should throw when promise rejected with no errors', () => {
@@ -42,15 +44,18 @@ describe('asyncValidation', () => {
     expect(fn).toHaveBeenCalled();
     expect(start).toHaveBeenCalled();
     expect(start).toHaveBeenCalledWith(field);
-    return promise.then(() => {
-      expect(false).toBe(true); // should not get into resolve branch
-    }, () => {
-      expect(stop).toHaveBeenCalled();
-    });
+    return promise.then(
+      () => {
+        expect(false).toBe(true); // should not get into resolve branch
+      },
+      () => {
+        expect(stop).toHaveBeenCalled();
+      }
+    );
   });
 
   it('should call start, fn, and stop on promise reject', () => {
-    const errors = {foo: 'error'};
+    const errors = { foo: 'error' };
     const fn = jest.fn().mockImplementation(() => Promise.reject(errors));
     const start = jest.fn();
     const stop = jest.fn();
@@ -58,11 +63,14 @@ describe('asyncValidation', () => {
     expect(fn).toHaveBeenCalled();
     expect(start).toHaveBeenCalled();
     expect(start).toHaveBeenCalledWith(field);
-    return promise.then(() => {
-      expect(false).toBe(true); // should not get into resolve branch
-    }, () => {
-      expect(stop).toHaveBeenCalled();
-      expect(stop).toHaveBeenCalledWith(errors);
-    });
+    return promise.then(
+      () => {
+        expect(false).toBe(true); // should not get into resolve branch
+      },
+      () => {
+        expect(stop).toHaveBeenCalled();
+        expect(stop).toHaveBeenCalledWith(errors);
+      }
+    );
   });
 });

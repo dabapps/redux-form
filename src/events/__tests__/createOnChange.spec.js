@@ -12,5 +12,4 @@ describe('createOnChange', () => {
     expect(change).toHaveBeenCalled();
     expect(change).toHaveBeenCalledWith('foo', 'bar');
   });
-
 });

@@ -53,9 +53,11 @@ const updateField = (field, formField, active, syncError) => {
     field.initialValue = formField.initial;
   }
 
-  return Object.keys(diff).length ? {
-    ...field,
-    ...diff
-  } : field;
+  return Object.keys(diff).length
+    ? {
+        ...field,
+        ...diff,
+      }
+    : field;
 };
 export default updateField;

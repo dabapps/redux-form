@@ -1,5 +1,5 @@
 import React from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import createAll from './createAll';
 
 export const {
@@ -28,5 +28,5 @@ export const {
   touch,
   touchWithKey,
   untouch,
-  untouchWithKey
+  untouchWithKey,
 } = createAll(true, React, connect);

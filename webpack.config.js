@@ -3,9 +3,9 @@ var webpack = require('webpack');
 var env = process.env.NODE_ENV;
 var plugins = [
   new webpack.DefinePlugin({
-    'process.env.NODE_ENV': JSON.stringify(env)
+    'process.env.NODE_ENV': JSON.stringify(env),
   }),
-  new webpack.optimize.OccurenceOrderPlugin()
+  new webpack.optimize.OccurenceOrderPlugin(),
 ];
 
 if (env === 'production') {
@@ -13,8 +13,8 @@ if (env === 'production') {
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
         screw_ie8: true,
-        warnings: false
-      }
+        warnings: false,
+      },
     })
   );
 }
@@ -23,24 +23,24 @@ var reactExternal = {
   root: 'React',
   commonjs2: 'react',
   commonjs: 'react',
-  amd: 'react'
+  amd: 'react',
 };
 
 module.exports = {
   externals: {
-    'react': reactExternal
+    react: reactExternal,
   },
   module: {
     loaders: [
-      { test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules/ }
-    ]
+      { test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules/ },
+    ],
   },
   output: {
     library: 'ReduxForm',
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
   },
   plugins: plugins,
   resolve: {
-    extensions: ['', '.js']
-  }
+    extensions: ['', '.js'],
+  },
 };

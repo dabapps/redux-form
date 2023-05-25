@@ -14,7 +14,7 @@ const write = (path, value, object) => {
     const key = path.substring(0, dotIndex);
     return {
       ...object,
-      [key]: write(path.substring(dotIndex + 1), value, object[key] || {})
+      [key]: write(path.substring(dotIndex + 1), value, object[key] || {}),
     };
   }
   if (openIndex >= 0 && (dotIndex < 0 || openIndex < dotIndex)) {
@@ -35,46 +35,48 @@ const write = (path, value, object) => {
         arrayCopy[index] = write(rest, value, dest);
         return {
           ...(object || {}),
-          [key]: arrayCopy
+          [key]: arrayCopy,
         };
       }
       const copy = [...array];
       copy[index] = typeof value === 'function' ? value(copy[index]) : value;
       return {
         ...(object || {}),
-        [key]: copy
+        [key]: copy,
       };
     }
     // indexless array
     if (rest.length) {
       // need to keep recursing
       if ((!array || !array.length) && typeof value === 'function') {
-        return object;  // don't even set a value under [key]
+        return object; // don't even set a value under [key]
       }
-      const arrayCopy = array.map(dest => write(rest, value, dest));
+      const arrayCopy = array.map((dest) => write(rest, value, dest));
       return {
         ...(object || {}),
-        [key]: arrayCopy
+        [key]: arrayCopy,
       };
     }
     let result;
     if (Array.isArray(value)) {
       result = value;
     } else if (object[key]) {
-      result = array.map(dest => typeof value === 'function' ? value(dest) : value);
+      result = array.map((dest) =>
+        typeof value === 'function' ? value(dest) : value
+      );
     } else if (typeof value === 'function') {
-      return object;  // don't even set a value under [key]
+      return object; // don't even set a value under [key]
     } else {
       result = value;
     }
     return {
       ...(object || {}),
-      [key]: result
+      [key]: result,
     };
   }
   return {
     ...object,
-    [path]: typeof value === 'function' ? value(object[path]) : value
+    [path]: typeof value === 'function' ? value(object[path]) : value,
   };
 };
 

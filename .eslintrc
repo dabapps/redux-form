@@ -9,8 +9,9 @@
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
     "react/react-in-jsx-scope": 2,
-    "comma-dangle": 0,  // not sure why airbnb turned this on. gross!
-    "indent": [2, 2, {"SwitchCase": 1}],
+    "comma-dangle": 0, // not sure why airbnb turned this on. gross!
+    "indent": 0,
+    "camelcase": 0,
     "spaced-comment": 0,
     "no-redeclare": 0,
     "no-console": 2,
@@ -20,7 +21,5 @@
     // Temporarily disabled for test/* until babel/babel-eslint#33 is resolved
     "padded-blocks": 0
   },
-  "plugins": [
-    "react"
-  ]
+  "plugins": ["react"]
 }

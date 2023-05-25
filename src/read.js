@@ -13,7 +13,10 @@ const read = (path, object) => {
   const closeIndex = path.indexOf(']');
   if (dotIndex >= 0 && (openIndex < 0 || dotIndex < openIndex)) {
     // iterate down object tree
-    return read(path.substring(dotIndex + 1), object[path.substring(0, dotIndex)]);
+    return read(
+      path.substring(dotIndex + 1),
+      object[path.substring(0, dotIndex)]
+    );
   }
   if (openIndex >= 0 && (dotIndex < 0 || openIndex < dotIndex)) {
     if (closeIndex < 0) {

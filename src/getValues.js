@@ -3,8 +3,8 @@
  *  Fallback to .initialValue when .value is undefined to prevent double render/initialize cycle.
  *  See {@link https://github.com/erikras/redux-form/issues/621}.
  */
-const itemToValue =
-  ({value, initialValue}) => typeof value !== 'undefined' ? value : initialValue;
+const itemToValue = ({ value, initialValue }) =>
+  typeof value !== 'undefined' ? value : initialValue;
 
 const getValue = (field, state, dest) => {
   const dotIndex = field.indexOf('.');
@@ -20,7 +20,7 @@ const getValue = (field, state, dest) => {
     if (rest[0] === '.') {
       rest = rest.substring(1);
     }
-    const array = state && state[key] || [];
+    const array = (state && state[key]) || [];
     if (rest) {
       if (!dest[key]) {
         dest[key] = [];
@@ -41,7 +41,7 @@ const getValue = (field, state, dest) => {
     if (!dest[key]) {
       dest[key] = {};
     }
-    getValue(rest, state && state[key] || {}, dest[key]);
+    getValue(rest, (state && state[key]) || {}, dest[key]);
   } else {
     dest[field] = state[field] && itemToValue(state[field]);
   }

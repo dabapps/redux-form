@@ -2,18 +2,18 @@ import read from '../read';
 
 describe('read', () => {
   it('should get simple values', () => {
-    expect(read('foo', {foo: 'bar'})).toBe('bar');
-    expect(read('foo', {foo: 7})).toBe(7);
-    expect(read('bar', {bar: true})).toBe(true);
+    expect(read('foo', { foo: 'bar' })).toBe('bar');
+    expect(read('foo', { foo: 7 })).toBe(7);
+    expect(read('bar', { bar: true })).toBe(true);
   });
 
   it('should get arbitrarily deep dotted values', () => {
     const data = {
       foo: {
         bar: {
-          baz: 42
-        }
-      }
+          baz: 42,
+        },
+      },
     };
     expect(read('foo', data)).toBe(data.foo);
     expect(read('foo.bar', data)).toBe(data.foo.bar);
@@ -22,7 +22,7 @@ describe('read', () => {
 
   it('should return undefined if structure is incomplete', () => {
     const data = {
-      foo: {}
+      foo: {},
     };
     expect(read('foo', data)).toBe(data.foo);
     expect(read('foo.bar', data)).toBe(undefined);
@@ -37,7 +37,7 @@ describe('read', () => {
 
   it('should get simple array values', () => {
     const data = {
-      cat: ['foo', 'bar', 'baz']
+      cat: ['foo', 'bar', 'baz'],
     };
     expect(read('cat[0]', data)).toBe('foo');
     expect(read('cat[1]', data)).toBe('bar');
@@ -46,7 +46,7 @@ describe('read', () => {
 
   it('should get return undefined when array is not there', () => {
     const data = {
-      cat: undefined
+      cat: undefined,
     };
     expect(read('cat[0]', data)).toBe(undefined);
   });
@@ -54,8 +54,8 @@ describe('read', () => {
   it('should get complex array values', () => {
     const data = {
       rat: {
-        cat: [{name: 'foo'}, {name: 'bar'}, {name: 'baz'}]
-      }
+        cat: [{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }],
+      },
     };
     expect(read('rat.cat[0].name', data)).toBe('foo');
     expect(read('rat.cat[0][name]', data)).toBe('foo');

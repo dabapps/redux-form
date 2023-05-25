@@ -17,21 +17,27 @@ describe('isEvent', () => {
   });
 
   it('should return false if event has no stopPropagation', () => {
-    expect(isEvent({
-      preventDefault: () => null
-    })).toBe(false);
+    expect(
+      isEvent({
+        preventDefault: () => null,
+      })
+    ).toBe(false);
   });
 
   it('should return false if event has no preventDefault', () => {
-    expect(isEvent({
-      stopPropagation: () => null
-    })).toBe(false);
+    expect(
+      isEvent({
+        stopPropagation: () => null,
+      })
+    ).toBe(false);
   });
 
   it('should return true if event has stopPropagation, and preventDefault', () => {
-    expect(isEvent({
-      stopPropagation: () => null,
-      preventDefault: () => null
-    })).toBe(true);
+    expect(
+      isEvent({
+        stopPropagation: () => null,
+        preventDefault: () => null,
+      })
+    ).toBe(true);
   });
 });

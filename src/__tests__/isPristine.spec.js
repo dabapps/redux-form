@@ -7,7 +7,7 @@ const tryBothWays = (aValue, bValue, result) => {
 
 describe('isPristine', () => {
   it('should return true if the values are ===', () => {
-    const aValue = {foo: 'bar'};
+    const aValue = { foo: 'bar' };
     const bValue = ['foo', 'baz'];
     const cValue = 7;
     expect(isPristine(aValue, aValue)).toBe(true);
@@ -29,29 +29,28 @@ describe('isPristine', () => {
   });
 
   it('should return false when key values are different types', () => {
-    tryBothWays({foo: null}, {foo: 'bar'}, false);
-    tryBothWays({foo: undefined}, {foo: 'bar'}, false);
-    tryBothWays({foo: 69}, {foo: 'bar'}, false);
+    tryBothWays({ foo: null }, { foo: 'bar' }, false);
+    tryBothWays({ foo: undefined }, { foo: 'bar' }, false);
+    tryBothWays({ foo: 69 }, { foo: 'bar' }, false);
   });
 
   it('should return false when key values are different', () => {
-    tryBothWays({foo: 'bar'}, {foo: 'baz'}, false);
-    tryBothWays({foo: 7, bar: 8}, {foo: 7, bar: 9}, false);
+    tryBothWays({ foo: 'bar' }, { foo: 'baz' }, false);
+    tryBothWays({ foo: 7, bar: 8 }, { foo: 7, bar: 9 }, false);
     const date1 = new Date();
     const date2 = new Date(date1.getTime() + 1);
-    tryBothWays({date: date1}, {date: date2}, false);
-
+    tryBothWays({ date: date1 }, { date: date2 }, false);
   });
 
   it('should return false when the number of keys is different', () => {
-    tryBothWays({foo: 'bar'}, {}, false);
+    tryBothWays({ foo: 'bar' }, {}, false);
     tryBothWays([1], [1, 2], false);
   });
 
   it('should return true when matching key values are null, undefined, or empty string', () => {
-    tryBothWays({foo: ''}, {foo: null}, true);
-    tryBothWays({foo: ''}, {foo: undefined}, true);
-    tryBothWays({foo: null}, {foo: undefined}, true);
+    tryBothWays({ foo: '' }, { foo: null }, true);
+    tryBothWays({ foo: '' }, { foo: undefined }, true);
+    tryBothWays({ foo: null }, { foo: undefined }, true);
   });
 
   it('should return false when comparing false to other falsy values', () => {
@@ -61,18 +60,21 @@ describe('isPristine', () => {
   });
 
   it('should return false when number of keys is different', () => {
-    tryBothWays({foo: 'bar'}, {}, false);
+    tryBothWays({ foo: 'bar' }, {}, false);
     tryBothWays([1], [1, 2], false);
   });
 
   it('should return true when key values are equal', () => {
     const date = new Date();
-    tryBothWays({foo: 'bar', when: date}, {foo: 'bar', when: date}, true);
-    tryBothWays({foo: 7, bar: 9, when: date}, {foo: 7, bar: 9, when: date}, true);
+    tryBothWays({ foo: 'bar', when: date }, { foo: 'bar', when: date }, true);
+    tryBothWays(
+      { foo: 7, bar: 9, when: date },
+      { foo: 7, bar: 9, when: date },
+      true
+    );
   });
 
   it('should return false when one value is null the other is 0 (number)', () => {
     tryBothWays(null, 0, false);
   });
-
 });

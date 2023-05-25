@@ -1,7 +1,6 @@
 import isValid from '../isValid';
 
 describe('isValid', () => {
-
   it('should return true if the value is falsy', () => {
     expect(isValid(undefined)).toBe(true);
     expect(isValid(null)).toBe(true);
@@ -30,13 +29,13 @@ describe('isValid', () => {
   });
 
   it('should return true if the value is an object with a falsy value', () => {
-    expect(isValid({name: undefined})).toBe(true);
-    expect(isValid({name: null})).toBe(true);
-    expect(isValid({name: false})).toBe(true);
-    expect(isValid({name: ''})).toBe(true);
+    expect(isValid({ name: undefined })).toBe(true);
+    expect(isValid({ name: null })).toBe(true);
+    expect(isValid({ name: false })).toBe(true);
+    expect(isValid({ name: '' })).toBe(true);
   });
 
   it('should return false if the value is an object with a value', () => {
-    expect(isValid({name: 'error'})).toBe(false);
+    expect(isValid({ name: 'error' })).toBe(false);
   });
 });
